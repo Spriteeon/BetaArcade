@@ -58,6 +58,16 @@ protected:
 	/** Handler for when a touch input stops. */
 	void TouchStopped(ETouchIndex::Type FingerIndex, FVector Location);
 
+	// FRAN - Camera zoom control
+	void CameraZoomIn();
+	void CameraZoomOut();
+	UPROPERTY(EditAnywhere)
+	float cameraZoomValue = 0.0f;
+	UPROPERTY(EditAnywhere)
+	float minCameraZoom = 0.0f;
+	UPROPERTY(EditAnywhere)
+	float maxCameraZoom = 0.0f;
+
 protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;

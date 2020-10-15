@@ -67,6 +67,10 @@ void ABetaArcadeCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 	PlayerInputComponent->BindAxis("TurnRate", this, &ABetaArcadeCharacter::TurnAtRate);
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("LookUpRate", this, &ABetaArcadeCharacter::LookUpAtRate);
+	PlayerInputComponent->BindAction("CameraZoomIn", IE_Pressed, this, &ABetaArcadeCharacter::CameraZoomIn);
+	PlayerInputComponent->BindAction("CameraZoomIn", IE_Released, this, &ABetaArcadeCharacter::CameraZoomIn);
+	PlayerInputComponent->BindAction("CameraZoomOut", IE_Pressed, this, &ABetaArcadeCharacter::CameraZoomOut);
+	PlayerInputComponent->BindAction("CameraZoomOut", IE_Released, this, &ABetaArcadeCharacter::CameraZoomOut);
 
 	// handle touch devices
 	PlayerInputComponent->BindTouch(IE_Pressed, this, &ABetaArcadeCharacter::TouchStarted);
@@ -75,7 +79,6 @@ void ABetaArcadeCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 	// VR headset functionality
 	PlayerInputComponent->BindAction("ResetVR", IE_Pressed, this, &ABetaArcadeCharacter::OnResetVR);
 }
-
 
 void ABetaArcadeCharacter::OnResetVR()
 {
@@ -90,6 +93,18 @@ void ABetaArcadeCharacter::TouchStarted(ETouchIndex::Type FingerIndex, FVector L
 void ABetaArcadeCharacter::TouchStopped(ETouchIndex::Type FingerIndex, FVector Location)
 {
 		StopJumping();
+}
+
+void ABetaArcadeCharacter::CameraZoomIn()
+{
+	if (CameraBoom->TargetArmLength - cameraZoomValue > minCameraZoom)
+		CameraBoom->TargetArmLength -= cameraZoomValue;
+}
+
+void ABetaArcadeCharacter::CameraZoomOut()
+{
+	if (CameraBoom->TargetArmLength + cameraZoomValue < maxCameraZoom)
+		CameraBoom->TargetArmLength += cameraZoomValue;
 }
 
 void ABetaArcadeCharacter::TurnAtRate(float Rate)
