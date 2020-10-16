@@ -9,6 +9,9 @@
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
 
+#include "Engine.h"
+#include "TimerManager.h"
+
 //////////////////////////////////////////////////////////////////////////
 // ABetaArcadeCharacter
 
@@ -45,6 +48,7 @@ ABetaArcadeCharacter::ABetaArcadeCharacter()
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
+
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -147,4 +151,19 @@ void ABetaArcadeCharacter::MoveRight(float Value)
 		// add movement in that direction
 		AddMovementInput(Direction, Value);
 	}
+}
+
+// Called when the game starts or when spawned
+void ABetaArcadeCharacter::BeginPlay()
+{
+
+	Super::BeginPlay();
+
+	GetWorldTimerManager().SetTimer(MemberTimerHandle, this, &ABetaArcadeCharacter::TrackPlayerPosition, 1.0f, true, 0.0f);
+
+}
+
+void ABetaArcadeCharacter::TrackPlayerPosition()
+{
+	currentPosition = this->GetActorLocation();
 }

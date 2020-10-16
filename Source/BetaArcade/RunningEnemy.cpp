@@ -24,7 +24,15 @@ void ARunningEnemy::BeginPlay()
 // Called every frame
 void ARunningEnemy::Tick(float DeltaTime)
 {
+
 	Super::Tick(DeltaTime);
+
+	if (health <= 0)
+	{
+		Die();
+	}
+
+	UpdatePosition();
 
 }
 
