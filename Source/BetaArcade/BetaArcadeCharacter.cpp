@@ -95,6 +95,7 @@ void ABetaArcadeCharacter::TouchStopped(ETouchIndex::Type FingerIndex, FVector L
 		StopJumping();
 }
 
+// FRAN - CAMERA ZOOM
 void ABetaArcadeCharacter::CameraZoomIn()
 {
 	if (CameraBoom->TargetArmLength - cameraZoomValue > minCameraZoom)
@@ -110,13 +111,13 @@ void ABetaArcadeCharacter::CameraZoomOut()
 void ABetaArcadeCharacter::TurnAtRate(float Rate)
 {
 	// calculate delta for this frame from the rate information
-	AddControllerYawInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());
+	//AddControllerYawInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());
 }
 
 void ABetaArcadeCharacter::LookUpAtRate(float Rate)
 {
 	// calculate delta for this frame from the rate information
-	AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
+	//AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
 }
 
 void ABetaArcadeCharacter::MoveForward(float Value)
