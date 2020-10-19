@@ -50,3 +50,10 @@ void ARunningEnemy::Die()
 {
 
 }
+
+// Called to bind functionality to input
+void ARunningEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+{
+	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+}

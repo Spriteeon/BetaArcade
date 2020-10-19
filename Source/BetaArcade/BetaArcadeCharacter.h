@@ -82,10 +82,8 @@ public:
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
-	FVector currentPosition;
-	FTimerHandle MemberTimerHandle;
-
-	void TrackPlayerPosition();
+	/*FVector currentPosition;
+	FVector GetPlayerPosition();*/
 
 };
 

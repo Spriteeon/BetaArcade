@@ -159,11 +159,12 @@ void ABetaArcadeCharacter::BeginPlay()
 
 	Super::BeginPlay();
 
-	GetWorldTimerManager().SetTimer(MemberTimerHandle, this, &ABetaArcadeCharacter::TrackPlayerPosition, 1.0f, true, 0.0f);
+	//GetWorldTimerManager().SetTimer(MemberTimerHandle, this, &ABetaArcadeCharacter::TrackPlayerPosition, 1.0f, true, 0.0f);
 
 }
 
-void ABetaArcadeCharacter::TrackPlayerPosition()
-{
-	currentPosition = this->GetActorLocation();
-}
+//FVector ABetaArcadeCharacter::GetPlayerPosition()
+//{
+//	currentPosition = this->GetActorLocation();
+//	return currentPosition;
+//}
