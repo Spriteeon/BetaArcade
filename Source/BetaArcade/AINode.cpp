@@ -13,13 +13,16 @@ AAINode::AAINode()
 // Called when the game starts or when spawned
 void AAINode::BeginPlay()
 {
+
 	Super::BeginPlay();
+	nodePosition = this->GetActorLocation();
 	
 }
 
 // Called every frame
 void AAINode::Tick(float DeltaTime)
 {
+
 	Super::Tick(DeltaTime);
 
 }

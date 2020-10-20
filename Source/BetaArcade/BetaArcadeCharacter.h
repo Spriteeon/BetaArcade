@@ -77,6 +77,7 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
+
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject **/
