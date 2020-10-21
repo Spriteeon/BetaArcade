@@ -7,15 +7,19 @@
 #include "GameFramework/Character.h"
 #include "BetaArcadeCharacter.generated.h"
 
-enum PlayerState
+UENUM(BlueprintType)
+namespace PlayerState // Namespace because enum was throwing "Member ... is not a type name"
 {
-	Idle,
-	Running,
-	Jumping,
-	Vaulting,
-	Sliding,
-	Crunching,
-};
+	enum State
+	{
+		Idle		UMETA(DisplayName = "Idle"),
+		Running		UMETA(DisplayName = "Running"),
+		Jumping		UMETA(DisplayName = "Jumping"),
+		Vaulting	UMETA(DisplayName = "Vaulting"),
+		Sliding		UMETA(DisplayName = "Sliding"),
+		Crouching	UMETA(DisplayName = "Crouching")
+	};
+}
 
 UCLASS(config=Game)
 class ABetaArcadeCharacter : public ACharacter
@@ -76,7 +80,9 @@ protected:
 
 	// State control
 	void HandleState();
-	
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	//PlayerState playerState = PlayerState::Idle;
+	TEnumAsByte<PlayerState::State> playerState;
 
 	// FRAN - Camera zoom control
 	void CameraZoomIn();
