@@ -51,6 +51,7 @@ ABetaArcadeCharacter::ABetaArcadeCharacter()
 
 	playerLives = MAX_PLAYER_LIVES;
 	//playerState = new AIdlePlayerState();
+	playerState = PlayerState::Idle;
 }
 
 //////////////////////////////////////////////////////////////////////////
