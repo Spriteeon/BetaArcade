@@ -42,7 +42,7 @@ public:
 
 	const int MAX_PLAYER_LIVES = 3;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-	int playerLives = 0;
+	int playerLives = 3;
 
 protected:
 
