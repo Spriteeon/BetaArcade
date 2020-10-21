@@ -7,6 +7,16 @@
 #include "GameFramework/Character.h"
 #include "BetaArcadeCharacter.generated.h"
 
+enum PlayerState
+{
+	Idle,
+	Running,
+	Jumping,
+	Vaulting,
+	Sliding,
+	Crunching,
+};
+
 UCLASS(config=Game)
 class ABetaArcadeCharacter : public ACharacter
 {
@@ -29,6 +39,10 @@ public:
 	/** Base look up/down rate, in deg/sec. Other scaling may affect final rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
 	float BaseLookUpRate;
+
+	const int MAX_PLAYER_LIVES = 3;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	int playerLives = 0;
 
 protected:
 
@@ -58,6 +72,11 @@ protected:
 
 	/** Handler for when a touch input stops. */
 	void TouchStopped(ETouchIndex::Type FingerIndex, FVector Location);
+
+
+	// State control
+	void HandleState();
+	
 
 	// FRAN - Camera zoom control
 	void CameraZoomIn();

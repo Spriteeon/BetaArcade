@@ -49,6 +49,8 @@ ABetaArcadeCharacter::ABetaArcadeCharacter()
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
 
+	playerLives = MAX_PLAYER_LIVES;
+	//playerState = new AIdlePlayerState();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -82,6 +84,12 @@ void ABetaArcadeCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 
 	// VR headset functionality
 	PlayerInputComponent->BindAction("ResetVR", IE_Pressed, this, &ABetaArcadeCharacter::OnResetVR);
+}
+
+// FRAN - State control
+void ABetaArcadeCharacter::HandleState()
+{
+	//switch()
 }
 
 void ABetaArcadeCharacter::OnResetVR()
