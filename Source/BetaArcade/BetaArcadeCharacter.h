@@ -12,12 +12,10 @@ namespace PlayerState // Namespace because enum was throwing "Member ... is not 
 {
 	enum State
 	{
-		Idle		UMETA(DisplayName = "Idle"),
 		Running		UMETA(DisplayName = "Running"),
 		Jumping		UMETA(DisplayName = "Jumping"),
 		Vaulting	UMETA(DisplayName = "Vaulting"),
 		Sliding		UMETA(DisplayName = "Sliding"),
-		Crouching	UMETA(DisplayName = "Crouching")
 	};
 }
 
@@ -49,6 +47,8 @@ public:
 	int playerLives = 3;
 
 protected:
+
+	void Tick();
 
 	/** Resets HMD orientation in VR. */
 	void OnResetVR();
@@ -83,6 +83,9 @@ protected:
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	//PlayerState playerState = PlayerState::Idle;
 	TEnumAsByte<PlayerState::State> playerState;
+
+	void Slide();
+	void StopSliding();
 
 	// FRAN - Camera zoom control
 	void CameraZoomIn();
