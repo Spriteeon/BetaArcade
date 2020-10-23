@@ -15,6 +15,11 @@
 //////////////////////////////////////////////////////////////////////////
 // ABetaArcadeCharacter
 
+
+// FRAN NOTES - 
+// - Speed var
+// - Lives get and set
+
 ABetaArcadeCharacter::ABetaArcadeCharacter()
 {
 	// Set size for collision capsule
