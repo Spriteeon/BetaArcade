@@ -15,11 +15,6 @@
 //////////////////////////////////////////////////////////////////////////
 // ABetaArcadeCharacter
 
-
-// FRAN NOTES - 
-// - Speed var
-// - Lives get and set
-
 ABetaArcadeCharacter::ABetaArcadeCharacter()
 {
 	// Set size for collision capsule
@@ -93,8 +88,9 @@ void ABetaArcadeCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 	PlayerInputComponent->BindAction("ResetVR", IE_Pressed, this, &ABetaArcadeCharacter::OnResetVR);
 }
 
-void ABetaArcadeCharacter::Tick()
-{
+void ABetaArcadeCharacter::Tick(float DeltaTime) 
+{ 
+	Super::Tick(DeltaTime); 
 	HandleState();
 }
 
@@ -104,6 +100,8 @@ void ABetaArcadeCharacter::HandleState()
 	switch (playerState)
 	{
 		case PlayerState::Running:
+			if (constantRun)
+				MoveForward(1.0f);
 			break;
 
 		case PlayerState::Jumping:

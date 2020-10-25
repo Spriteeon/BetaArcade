@@ -42,13 +42,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
 	float BaseLookUpRate;
 
-	const int MAX_PLAYER_LIVES = 3;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-	int playerLives = 3;
-
 protected:
-
-	void Tick();
 
 	/** Resets HMD orientation in VR. */
 	void OnResetVR();
@@ -91,11 +85,19 @@ protected:
 	void CameraZoomIn();
 	void CameraZoomOut();
 	UPROPERTY(EditAnywhere)
-	float cameraZoomValue = 0.0f;
+		float cameraZoomValue = 0.0f;
 	UPROPERTY(EditAnywhere)
-	float minCameraZoom = 0.0f;
+		float minCameraZoom = 0.0f;
 	UPROPERTY(EditAnywhere)
-	float maxCameraZoom = 0.0f;
+		float maxCameraZoom = 0.0f;
+
+	const int MAX_PLAYER_LIVES = 3;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		int playerLives = 3;
+
+	// Constant run toggle for testing!
+	UPROPERTY(EditAnywhere)
+		bool constantRun = false;
 
 protected:
 	// APawn interface
@@ -105,6 +107,7 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
+	virtual void Tick(float DeltaTime) override;
 
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
@@ -114,5 +117,8 @@ public:
 	/*FVector currentPosition;
 	FVector GetPlayerPosition();*/
 
+	int GetPlayerLives() { return playerLives; };
+	// Adds however many lives are passed in, to take away lives just pass in a negative
+	void AddPlayerLives(int& lives) { playerLives += lives; };
 };
 
