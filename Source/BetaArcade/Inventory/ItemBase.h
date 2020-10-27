@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-//#include "Engine.h"
+#include "BetaArcadeCharacter.h"
 #include "ItemBase.generated.h"
 
 UCLASS()
@@ -22,14 +22,27 @@ public:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	
+	
+	
+	
 	//Use function for item.
 	UFUNCTION(Category = "Item")
-		virtual void OnUse(class ABetaArcadeCharacter* Character)PURE_VIRTUAL(AItemBase,);
+		virtual void OnUse(class ABetaArcadeCharacter* Character)/*PURE_VIRTUAL(AItemBase,)*/ {};
 
 	//Collision function. 
 	UFUNCTION(Category = "Item")
 		void OnOverlap(AActor* MyOverlappedActor, AActor* OtherActor);
-		
+
+	//Action function (what happens before actor is destroyed).
+	UFUNCTION(Category = "Item")
+		virtual void ItemAction() {};
+
+
+	
+	
+	
+	
 	//Property for item ID number.
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 			int ItemID;
@@ -43,8 +56,9 @@ public:
 			class UTexture2D* ItemThumbnail;
 
 	//Property For item name.
-		UPROPERTY(EditAnywhere, BlueprintReadWrite, category = "Item")
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 			FText ItemName;
+	
 
 	//Hotbar that owns the items. 
 		UPROPERTY()
