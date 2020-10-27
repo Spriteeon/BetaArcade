@@ -17,6 +17,13 @@ void AItemBase::BeginPlay()
 	
 }
 
+
+//Function for collision. (Destroy actor on overlap for now.)
+void AItemBase::OnOverlap(AActor * MyOverlappedActor, AActor * OtherActor)
+{
+	Destroy();
+}
+
 // Called every frame
 void AItemBase::Tick(float DeltaTime)
 {

@@ -28,7 +28,7 @@ public:
 
 	//Collision function. 
 	UFUNCTION(Category = "Item")
-		void OnOverlap(AActor* MyOverlappedActor, AActor* OtherActor) {};
+		void OnOverlap(AActor* MyOverlappedActor, AActor* OtherActor);
 		
 	//Property for item ID number.
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
