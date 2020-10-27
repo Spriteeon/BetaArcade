@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Engine.h"
+//#include "Engine.h"
 #include "ItemBase.generated.h"
 
 UCLASS()
@@ -22,6 +22,13 @@ public:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	//Use function for item.
+	UFUNCTION(Category = "Item")
+		virtual void OnUse() {};
+
+	//Collision function. 
+	UFUNCTION(Category = "Item")
+		void OnOverlap(AActor* MyOverlappedActor, AActor* OtherActor) {};
 		
 	//Property for item ID number.
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
