@@ -49,6 +49,8 @@ ABetaArcadeCharacter::ABetaArcadeCharacter()
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
 
+	playerLives = MAX_PLAYER_LIVES;
+	playerState = PlayerState::Running;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -60,6 +62,8 @@ void ABetaArcadeCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 	check(PlayerInputComponent);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
+	PlayerInputComponent->BindAction("Slide", IE_Pressed, this, &ABetaArcadeCharacter::Slide);
+	PlayerInputComponent->BindAction("Slide", IE_Released, this, &ABetaArcadeCharacter::StopSliding);
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &ABetaArcadeCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &ABetaArcadeCharacter::MoveRight);
@@ -84,6 +88,51 @@ void ABetaArcadeCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 	PlayerInputComponent->BindAction("ResetVR", IE_Pressed, this, &ABetaArcadeCharacter::OnResetVR);
 }
 
+void ABetaArcadeCharacter::Tick(float DeltaTime) 
+{ 
+	Super::Tick(DeltaTime); 
+	HandleState();
+}
+
+// FRAN - State control
+void ABetaArcadeCharacter::HandleState()
+{
+	switch (playerState)
+	{
+		case PlayerState::Running:
+			if (constantRun)
+				MoveForward(1.0f);
+			break;
+
+		case PlayerState::Jumping:
+			break;
+
+		case PlayerState::Vaulting:
+			break;
+
+		case PlayerState::Sliding:
+			break;
+
+		/*case default:
+			break;*/
+	}
+}
+
+void ABetaArcadeCharacter::Slide()
+{
+	if (playerState == PlayerState::Running)
+	{
+		playerState = PlayerState::Sliding;
+		UE_LOG(LogTemp, Log, TEXT("Slide"));
+	}
+}
+
+void ABetaArcadeCharacter::StopSliding()
+{
+	UE_LOG(LogTemp, Log, TEXT("SlideSTOP"));
+	playerState = PlayerState::Running;
+}
+
 void ABetaArcadeCharacter::OnResetVR()
 {
 	UHeadMountedDisplayFunctionLibrary::ResetOrientationAndPosition();
@@ -91,12 +140,14 @@ void ABetaArcadeCharacter::OnResetVR()
 
 void ABetaArcadeCharacter::TouchStarted(ETouchIndex::Type FingerIndex, FVector Location)
 {
-		Jump();
+	playerState = PlayerState::Jumping;
+	Jump();
 }
 
 void ABetaArcadeCharacter::TouchStopped(ETouchIndex::Type FingerIndex, FVector Location)
 {
-		StopJumping();
+	playerState = PlayerState::Running;
+	StopJumping();
 }
 
 // FRAN - CAMERA ZOOM
@@ -135,6 +186,7 @@ void ABetaArcadeCharacter::MoveForward(float Value)
 		// get forward vector
 		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 		AddMovementInput(Direction, Value);
+		playerState = PlayerState::Running;
 	}
 }
 
@@ -150,6 +202,7 @@ void ABetaArcadeCharacter::MoveRight(float Value)
 		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 		// add movement in that direction
 		AddMovementInput(Direction, Value);
+		playerState = PlayerState::Running;
 	}
 }
 
@@ -159,11 +212,12 @@ void ABetaArcadeCharacter::BeginPlay()
 
 	Super::BeginPlay();
 
-	GetWorldTimerManager().SetTimer(MemberTimerHandle, this, &ABetaArcadeCharacter::TrackPlayerPosition, 1.0f, true, 0.0f);
+	//GetWorldTimerManager().SetTimer(MemberTimerHandle, this, &ABetaArcadeCharacter::TrackPlayerPosition, 1.0f, true, 0.0f);
 
 }
 
-void ABetaArcadeCharacter::TrackPlayerPosition()
-{
-	currentPosition = this->GetActorLocation();
-}
+//FVector ABetaArcadeCharacter::GetPlayerPosition()
+//{
+//	currentPosition = this->GetActorLocation();
+//	return currentPosition;
+//}

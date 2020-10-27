@@ -7,6 +7,18 @@
 #include "GameFramework/Character.h"
 #include "BetaArcadeCharacter.generated.h"
 
+UENUM(BlueprintType)
+namespace PlayerState // Namespace because enum was throwing "Member ... is not a type name"
+{
+	enum State
+	{
+		Running		UMETA(DisplayName = "Running"),
+		Jumping		UMETA(DisplayName = "Jumping"),
+		Vaulting	UMETA(DisplayName = "Vaulting"),
+		Sliding		UMETA(DisplayName = "Sliding"),
+	};
+}
+
 UCLASS(config=Game)
 class ABetaArcadeCharacter : public ACharacter
 {
@@ -59,15 +71,33 @@ protected:
 	/** Handler for when a touch input stops. */
 	void TouchStopped(ETouchIndex::Type FingerIndex, FVector Location);
 
+
+	// State control
+	void HandleState();
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	//PlayerState playerState = PlayerState::Idle;
+	TEnumAsByte<PlayerState::State> playerState;
+
+	void Slide();
+	void StopSliding();
+
 	// FRAN - Camera zoom control
 	void CameraZoomIn();
 	void CameraZoomOut();
 	UPROPERTY(EditAnywhere)
-	float cameraZoomValue = 0.0f;
+		float cameraZoomValue = 0.0f;
 	UPROPERTY(EditAnywhere)
-	float minCameraZoom = 0.0f;
+		float minCameraZoom = 0.0f;
 	UPROPERTY(EditAnywhere)
-	float maxCameraZoom = 0.0f;
+		float maxCameraZoom = 0.0f;
+
+	const int MAX_PLAYER_LIVES = 3;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		int playerLives = 3;
+
+	// Constant run toggle for testing!
+	UPROPERTY(EditAnywhere)
+		bool constantRun = false;
 
 protected:
 	// APawn interface
@@ -77,15 +107,18 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
+	virtual void Tick(float DeltaTime) override;
+
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
-	FVector currentPosition;
-	FTimerHandle MemberTimerHandle;
+	/*FVector currentPosition;
+	FVector GetPlayerPosition();*/
 
-	void TrackPlayerPosition();
-
+	int GetPlayerLives() { return playerLives; };
+	// Adds however many lives are passed in, to take away lives just pass in a negative
+	void AddPlayerLives(int& lives) { playerLives += lives; };
 };
 
