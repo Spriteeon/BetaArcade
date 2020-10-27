@@ -24,7 +24,7 @@ public:
 
 	//Use function for item.
 	UFUNCTION(Category = "Item")
-		virtual void OnUse() {};
+		virtual void OnUse(class ABetaArcadeCharacter* Character)PURE_VIRTUAL(AItemBase,);
 
 	//Collision function. 
 	UFUNCTION(Category = "Item")
@@ -46,6 +46,9 @@ public:
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, category = "Item")
 			FText ItemName;
 
+	//Hotbar that owns the items. 
+		UPROPERTY()
+		class UHotBarComponent* OwningHotBar;
 	
 
 };
