@@ -8,7 +8,7 @@
 #include "BetaArcadeCharacter.generated.h"
 
 UENUM(BlueprintType)
-namespace PlayerState // Namespace because enum was throwing "Member ... is not a type name"
+namespace CharacterState // Namespace because enum was throwing "Member ... is not a type name"
 {
 	enum State
 	{
@@ -16,6 +16,21 @@ namespace PlayerState // Namespace because enum was throwing "Member ... is not 
 		Jumping		UMETA(DisplayName = "Jumping"),
 		Vaulting	UMETA(DisplayName = "Vaulting"),
 		Sliding		UMETA(DisplayName = "Sliding"),
+	};
+}
+
+UENUM(BlueprintType)
+namespace PowerState
+{
+	enum State
+	{
+		None		UMETA(DisplayName = "None"),
+		SpeedBoost	UMETA(DisplayName = "SpeedBoost"),
+		ScoreBonus	UMETA(DisplayName = "ScoreBonus"),
+		ExtraLife	UMETA(DisplayName = "ExtraLife"),
+		LightBall	UMETA(DisplayName = "LightBall"),
+		FullLight	UMETA(DisplayName = "FullLight"),
+		SporeEffect	UMETA(DisplayName = "SporeEffect"),
 	};
 }
 
@@ -76,8 +91,13 @@ protected:
 	void HandleState();
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	//PlayerState playerState = PlayerState::Idle;
-	TEnumAsByte<PlayerState::State> playerState;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TEnumAsByte<CharacterState::State> characterState;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TEnumAsByte<PowerState::State> powerState;
 
+	void BetaJump();
+	void BetaJumpStop();
 	void Slide();
 	void StopSliding();
 
@@ -93,7 +113,7 @@ protected:
 
 	const int MAX_PLAYER_LIVES = 3;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-		int playerLives = 3;
+		int playerLives = 0;
 
 	// Constant run toggle for testing!
 	UPROPERTY(EditAnywhere)
