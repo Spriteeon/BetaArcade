@@ -50,7 +50,7 @@ ABetaArcadeCharacter::ABetaArcadeCharacter()
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
 
 	playerLives = MAX_PLAYER_LIVES;
-	playerState = PlayerState::Running;
+	characterState = CharacterState::Running;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -60,8 +60,8 @@ void ABetaArcadeCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 {
 	// Set up gameplay key bindings
 	check(PlayerInputComponent);
-	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
-	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ABetaArcadeCharacter::BetaJump);
+	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ABetaArcadeCharacter::BetaJumpStop);
 	PlayerInputComponent->BindAction("Slide", IE_Pressed, this, &ABetaArcadeCharacter::Slide);
 	PlayerInputComponent->BindAction("Slide", IE_Released, this, &ABetaArcadeCharacter::StopSliding);
 
@@ -97,20 +97,20 @@ void ABetaArcadeCharacter::Tick(float DeltaTime)
 // FRAN - State control
 void ABetaArcadeCharacter::HandleState()
 {
-	switch (playerState)
+	switch (characterState)
 	{
-		case PlayerState::Running:
+		case CharacterState::Running:
 			if (constantRun)
 				MoveForward(1.0f);
 			break;
 
-		case PlayerState::Jumping:
+		case CharacterState::Jumping:
 			break;
 
-		case PlayerState::Vaulting:
+		case CharacterState::Vaulting:
 			break;
 
-		case PlayerState::Sliding:
+		case CharacterState::Sliding:
 			break;
 
 		/*case default:
@@ -118,19 +118,37 @@ void ABetaArcadeCharacter::HandleState()
 	}
 }
 
+void ABetaArcadeCharacter::BetaJump()
+{
+	UE_LOG(LogTemp, Log, TEXT("Jump"));
+	characterState = CharacterState::Jumping;
+	Jump();
+}
+
+void ABetaArcadeCharacter::BetaJumpStop()
+{
+	UE_LOG(LogTemp, Log, TEXT("JumpSTOP"));
+	characterState = CharacterState::Running;
+	StopJumping();
+}
+
 void ABetaArcadeCharacter::Slide()
 {
-	if (playerState == PlayerState::Running)
+	if (characterState == CharacterState::Running)
 	{
-		playerState = PlayerState::Sliding;
+		characterState = CharacterState::Sliding;
 		UE_LOG(LogTemp, Log, TEXT("Slide"));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Log, TEXT("Can't slide"));
 	}
 }
 
 void ABetaArcadeCharacter::StopSliding()
 {
 	UE_LOG(LogTemp, Log, TEXT("SlideSTOP"));
-	playerState = PlayerState::Running;
+	characterState = CharacterState::Running;
 }
 
 void ABetaArcadeCharacter::OnResetVR()
@@ -140,14 +158,10 @@ void ABetaArcadeCharacter::OnResetVR()
 
 void ABetaArcadeCharacter::TouchStarted(ETouchIndex::Type FingerIndex, FVector Location)
 {
-	playerState = PlayerState::Jumping;
-	Jump();
 }
 
 void ABetaArcadeCharacter::TouchStopped(ETouchIndex::Type FingerIndex, FVector Location)
-{
-	playerState = PlayerState::Running;
-	StopJumping();
+{	
 }
 
 // FRAN - CAMERA ZOOM
@@ -186,7 +200,7 @@ void ABetaArcadeCharacter::MoveForward(float Value)
 		// get forward vector
 		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 		AddMovementInput(Direction, Value);
-		playerState = PlayerState::Running;
+		characterState = CharacterState::Running;
 	}
 }
 
@@ -202,7 +216,7 @@ void ABetaArcadeCharacter::MoveRight(float Value)
 		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 		// add movement in that direction
 		AddMovementInput(Direction, Value);
-		playerState = PlayerState::Running;
+		characterState = CharacterState::Running;
 	}
 }
 
