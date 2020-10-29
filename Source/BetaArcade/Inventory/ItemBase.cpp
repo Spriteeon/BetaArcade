@@ -21,8 +21,8 @@ void AItemBase::BeginPlay()
 //Function for collision. (Destroy actor on overlap for now.)
 void AItemBase::OnOverlap(AActor * MyOverlappedActor, AActor * OtherActor)
 {
-	//ItemAction();
-	//Destroy();
+	void ItemAction(ABetaArcadeCharacter* Character, AActor* OtherActor);
+	Destroy();
 }
 
 // Called every frame

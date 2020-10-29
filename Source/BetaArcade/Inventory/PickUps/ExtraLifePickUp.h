@@ -15,6 +15,6 @@ class BETAARCADE_API AExtraLifePickUp : public AItemBase
 	GENERATED_BODY()
 
 protected:
-	//virtual void ItemAction();
+	virtual void ItemAction(ABetaArcadeCharacter* Character, AActor* OtherActor);
 	
 };

@@ -36,7 +36,7 @@ public:
 
 	//Action function (what happens before actor is destroyed).
 	UFUNCTION(Category = "Item")
-		virtual void ItemAction() {};
+		virtual void ItemAction(ABetaArcadeCharacter* Character, AActor* OtherActor) {};
 
 
 	
@@ -49,7 +49,7 @@ public:
 
 	//Property for item mesh. 
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
-			class UStaticMesh* ItemMesh;
+			class UStaticMeshComponent* ItemMesh;
 
 	//Property for item Thumbnail. 
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
@@ -59,6 +59,9 @@ public:
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 			FText ItemName;
 	
+	//Property for collision component.
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
+			UCapsuleComponent* PickUpCollision;
 
 	//Hotbar that owns the items. 
 		UPROPERTY()
