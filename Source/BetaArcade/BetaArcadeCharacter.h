@@ -139,6 +139,6 @@ public:
 
 	int GetPlayerLives() { return playerLives; };
 	// Adds however many lives are passed in, to take away lives just pass in a negative
-	void AddPlayerLives(int& lives) { playerLives += lives; };
+	void AddPlayerLives(int lives) { playerLives += lives; };
 };
 
