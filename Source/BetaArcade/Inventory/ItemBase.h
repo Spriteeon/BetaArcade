@@ -28,7 +28,7 @@ public:
 	
 	//Use function for item.
 	UFUNCTION(Category = "Item")
-		virtual void OnUse(class ABetaArcadeCharacter* Character)/*PURE_VIRTUAL(AItemBase,)*/ {};
+		virtual void OnHotbarUse(class ABetaArcadeCharacter* Character)/*PURE_VIRTUAL(AItemBase,)*/ {};
 
 	//Collision function. 
 	UFUNCTION(Category = "Item")
@@ -44,7 +44,7 @@ public:
 	
 	
 	//Property for item ID number.
-		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
+		UPROPERTY(VisibleAnywhere, /*BlueprintReadOnly,*/ Category = "Item")
 			int ItemID;
 
 	//Property for item mesh. 
@@ -62,6 +62,9 @@ public:
 	//Property for collision component.
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 			UCapsuleComponent* PickUpCollision;
+		
+		/** Returns CapsuleComponent subobject **/
+	/*FORCEINLINE*/ class UCapsuleComponent* GetCollisionComponent() const { return PickUpCollision; }
 
 	//Hotbar that owns the items. 
 		UPROPERTY()
