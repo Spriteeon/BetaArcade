@@ -8,6 +8,8 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Inventory/ItemBase.h"
+#include "Inventory/HotBarComponent.h"
 
 #include "Engine.h"
 #include "TimerManager.h"
@@ -51,6 +53,12 @@ ABetaArcadeCharacter::ABetaArcadeCharacter()
 
 	playerLives = MAX_PLAYER_LIVES;
 	playerState = PlayerState::Running;
+
+	//BETH - Initialising Hotbar
+
+	Hotbar = CreateDefaultSubobject<UHotBarComponent>("HotBar");
+	Hotbar->NumSlots = 5;
+	
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -93,6 +101,19 @@ void ABetaArcadeCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime); 
 	HandleState();
 }
+
+//BETH - Item and Hotbar Stuff
+
+void ABetaArcadeCharacter::OnItemAction(class AItemBase* Item)
+{
+	if (Item)
+	{
+		Item->ItemAction(this);
+		Item->ItemActionBP(this); //Blueprint Event
+	}
+}
+
+
 
 // FRAN - State control
 void ABetaArcadeCharacter::HandleState()

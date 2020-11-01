@@ -7,6 +7,9 @@
 #include "HotBarComponent.generated.h"
 
 
+//Binding events to UI via Blueprints
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnHotbarUpdated);
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BETAARCADE_API UHotBarComponent : public UActorComponent
 {
@@ -15,14 +18,36 @@ class BETAARCADE_API UHotBarComponent : public UActorComponent
 public:	
 	// Sets default values for this component's properties
 	UHotBarComponent();
-
-protected:
+	
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	bool AddItem(class AItemBase* Item);
+	bool RemoveItem(class AItemBase* Item);
+
+
+	//For Items to be given at the start of the game.
+	/*UPROPERTY(EditAnywhere, Instanced)
+		TArray<class AItemBase*> DefaultItems;*/
+
+	//Number of slots in the inventory. 
+	UPROPERTY(EditAnywhere, Category = "Hotbar")
+		int32 NumSlots;
+
+	//UPROPERTY for updating the UI. 
+	UPROPERTY(BlueprintAssignable, Category = "Hotbar")
+		FOnHotbarUpdated OnHotbarUpdated;
+
+	//Array of items currently in hotbar
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Items")
+		TArray<class AItemBase*> Items;
+
+
+protected:
+	
+
+
+	
 
 		
 };

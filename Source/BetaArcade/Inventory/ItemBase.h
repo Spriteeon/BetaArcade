@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "BetaArcadeCharacter.h"
+#include "Components/CapsuleComponent.h"
 #include "ItemBase.generated.h"
 
 UCLASS()
@@ -15,6 +16,8 @@ class BETAARCADE_API AItemBase : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AItemBase();
+	
+	virtual class UWorld* GetWorld() const { return World; };
 	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -28,7 +31,7 @@ public:
 	
 	//Use function for item.
 	UFUNCTION(Category = "Item")
-		virtual void OnHotbarUse(class ABetaArcadeCharacter* Character)/*PURE_VIRTUAL(AItemBase,)*/ {};
+		virtual void OnHotbarUse(class ABetaArcadeCharacter* Character)PURE_VIRTUAL(AItemBase, );
 
 	//Collision function. 
 	UFUNCTION(Category = "Item")
@@ -36,39 +39,45 @@ public:
 
 	//Action function (what happens before actor is destroyed).
 	UFUNCTION(Category = "Item")
-		virtual void ItemAction(ABetaArcadeCharacter* Character, AActor* OtherActor) {};
+		virtual void ItemAction(ABetaArcadeCharacter* Character) PURE_VIRTUAL(AItemBase, );
+	
+	UFUNCTION(/*BlueprintImplementableEvent,*/ Category = "Item")
+		void ItemActionBP(class ABetaArcadeCharacter* Character) {}; //Blueprint Event Function. 
 
+	
+	
+	
+	//Item property to tell items what world they are in.
+		UPROPERTY(Transient)
+		class UWorld* World;
 
-	
-	
-	
-	
-	//Property for item ID number.
+	//Item property for item ID number.
 		UPROPERTY(VisibleAnywhere, /*BlueprintReadOnly,*/ Category = "Item")
 			int ItemID;
 
-	//Property for item mesh. 
+	//Item property for item mesh. 
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 			class UStaticMeshComponent* ItemMesh;
 
-	//Property for item Thumbnail. 
+
+	//Item property for item Thumbnail. 
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 			class UTexture2D* ItemThumbnail;
 
-	//Property For item name.
+	//Item property For item name.
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 			FText ItemName;
 	
-	//Property for collision component.
+	//Item property for collision component.
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 			UCapsuleComponent* PickUpCollision;
 		
-		/** Returns CapsuleComponent subobject **/
-	/*FORCEINLINE*/ class UCapsuleComponent* GetCollisionComponent() const { return PickUpCollision; }
-
-	//Hotbar that owns the items. 
-		UPROPERTY()
-		class UHotBarComponent* OwningHotBar;
 	
+
+	//Hotbar that 'owns' the items. 
+		UPROPERTY()
+		class UHotBarComponent* OwningHotbar;
+	
+
 
 };

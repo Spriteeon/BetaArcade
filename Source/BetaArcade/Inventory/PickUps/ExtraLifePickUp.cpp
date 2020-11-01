@@ -6,23 +6,22 @@
 
 AExtraLifePickUp::AExtraLifePickUp()
 {
-	////ItemID = 12;
-	//////UStaticMeshComponent* ItemMesh  = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("XtraLifeMesh"));
-	//////PickUpCollision = CreateDefaultSubobject<UCapsuleComponent>(TEXT("XtraLifeCollision"));
-	///////*UCapsuleComponent* PickUpCollision->InitCapsuleExtent(FVector(50.0f, 50.0f, 50.0f));*/
+	ItemID = 0;
+	
+	/* ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("XtraLifeMesh1"));
+	PickUpCollision = CreateDefaultSubobject<UCapsuleComponent>(TEXT("XtraLifeCollision1"));*/
+	/*PickUpCollision = InitCapsuleSize()*/
 	/////*RootComponent = ItemMesh;*/
 	////ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ExtraLifeMesh"));
 	/////*AExtraLifePickUp::ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ExtraLifeMesh"));*/
 	////this->SetRootComponent(ItemMesh);
 }
 
-void AExtraLifePickUp::ItemAction(ABetaArcadeCharacter* Character, AActor* OtherActor)
+void AExtraLifePickUp::ItemAction(class ABetaArcadeCharacter* Character)
 {
-	/*class ABetaArcadeCharacter* Character = Cast<ABetaArcadeCharacter>(OtherActor);*/
-
-	if (Character && Character->GetPlayerLives() < 3)
-	{
-		Character->AddPlayerLives(1);
-		Destroy();
-	}
+		if (Character && Character->GetPlayerLives() < 3)
+		{
+				Character->AddPlayerLives(1);
+				Destroy();
+		}
 }
