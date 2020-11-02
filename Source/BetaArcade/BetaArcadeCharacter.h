@@ -94,7 +94,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TEnumAsByte<CharacterState::State> characterState;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		TEnumAsByte<PowerState::State> currentPowerState;
+		TEnumAsByte<PowerState::State> powerState;
 
 	void BetaJump();
 	void BetaJumpStop();
