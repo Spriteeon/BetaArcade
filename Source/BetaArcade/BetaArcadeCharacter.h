@@ -4,7 +4,9 @@
 
 #include "Kismet/GameplayStatics.h"
 #include "CoreMinimal.h"
+#include "Camera/PlayerCameraManager.h"
 #include "GameFramework/Character.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "BetaArcadeCharacter.generated.h"
 
 UENUM(BlueprintType)
@@ -34,28 +36,31 @@ namespace PowerState
 	};
 }
 
-UCLASS(config=Game)
+UCLASS(config = Game)
 class ABetaArcadeCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
-	/** Camera boom positioning the camera behind the character */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	class USpringArmComponent* CameraBoom;
+		/** Camera boom positioning the camera behind the character */
+		UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+		class USpringArmComponent* CameraBoom;
 
 	/** Follow camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	class UCameraComponent* FollowCamera;
+		class UCameraComponent* FollowCamera;
 public:
 	ABetaArcadeCharacter();
 
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
-	float BaseTurnRate;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
+		float BaseTurnRate;
 
 	/** Base look up/down rate, in deg/sec. Other scaling may affect final rate. */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
-	float BaseLookUpRate;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
+		float BaseLookUpRate;
+
+	UPROPERTY(BlueprintReadWrite)
+		bool isReacting = false;
 
 protected:
 
@@ -68,14 +73,14 @@ protected:
 	/** Called for side to side input */
 	void MoveRight(float Value);
 
-	/** 
-	 * Called via input to turn at a given rate. 
+	/**
+	 * Called via input to turn at a given rate.
 	 * @param Rate	This is a normalized rate, i.e. 1.0 means 100% of desired turn rate
 	 */
 	void TurnAtRate(float Rate);
 
 	/**
-	 * Called via input to turn look up/down at a given rate. 
+	 * Called via input to turn look up/down at a given rate.
 	 * @param Rate	This is a normalized rate, i.e. 1.0 means 100% of desired turn rate
 	 */
 	void LookUpAtRate(float Rate);
@@ -86,30 +91,47 @@ protected:
 	/** Handler for when a touch input stops. */
 	void TouchStopped(ETouchIndex::Type FingerIndex, FVector Location);
 
-
+	// FRAN STUFF
 	// State control
 	void HandleState();
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	//PlayerState playerState = PlayerState::Idle;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TEnumAsByte<CharacterState::State> characterState;
+		TEnumAsByte<CharacterState::State> characterState;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TEnumAsByte<PowerState::State> powerState;
+		TEnumAsByte<PowerState::State> powerState;
+
+	UCharacterMovementComponent* playerMovement = GetCharacterMovement();
+	float playerSpeed = playerMovement->MaxWalkSpeed;
+	float initialPlayerSpeed = 0.0f;
 
 	void BetaJump();
 	void BetaJumpStop();
 	void Slide();
 	void StopSliding();
 
+	// Swarm stuff
+	void SwarmReaction() { isReacting = true; }
+	void SwarmReactionStop() { isReacting = false; }
+
 	// FRAN - Camera zoom control
+	//APlayerCameraManager* camera = GetCamera
 	void CameraZoomIn();
 	void CameraZoomOut();
 	UPROPERTY(EditAnywhere)
-		float cameraZoomValue = 0.0f;
+	float cameraZoomValue = 50.0f;
 	UPROPERTY(EditAnywhere)
-		float minCameraZoom = 0.0f;
+	float minCameraZoom = 0.0f;
 	UPROPERTY(EditAnywhere)
-		float maxCameraZoom = 0.0f;
+	float maxCameraZoom = 0.0f;
+	UPROPERTY(EditAnywhere)
+	float minCameraPitch = 0.0f;
+	UPROPERTY(EditAnywhere)
+	float maxCameraPitch = 0.0f;
+	UPROPERTY(EditAnywhere)
+	float minCameraYaw = 0.0f;
+	UPROPERTY(EditAnywhere)
+	float maxCameraYaw = 0.0f;
 
 	const int MAX_PLAYER_LIVES = 3;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
@@ -134,11 +156,13 @@ public:
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
-	/*FVector currentPosition;
-	FVector GetPlayerPosition();*/
+	// LIVES
+	int GetPlayerLives() { return playerLives; };	
+	void AddPlayerLives(int lives) { playerLives += lives; }; // Adds however many lives are passed in, to take away lives just pass in a negative
 
-	int GetPlayerLives() { return playerLives; };
-	// Adds however many lives are passed in, to take away lives just pass in a negative
-	void AddPlayerLives(int& lives) { playerLives += lives; };
+	bool GetSwarmReaction() { return isReacting; };
+
+	// SPEED
+	void ResetPlayerSpeed() { playerMovement->MaxWalkSpeed = initialPlayerSpeed; }; // Sets speed to original value
+	void SetPlayerSpeed(float speed) { playerMovement->MaxWalkSpeed = speed; };
 };
-
