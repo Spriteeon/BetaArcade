@@ -14,7 +14,8 @@ namespace CharacterState // Namespace because enum was throwing "Member ... is n
 {
 	enum State
 	{
-		Running		UMETA(DisplayName = "Running"),
+		None		UMETA(DisplayName = "None"),
+		//Running		UMETA(DisplayName = "Running"),
 		Jumping		UMETA(DisplayName = "Jumping"),
 		Vaulting	UMETA(DisplayName = "Vaulting"),
 		Sliding		UMETA(DisplayName = "Sliding"),
@@ -60,7 +61,7 @@ public:
 		float BaseLookUpRate;
 
 	UPROPERTY(BlueprintReadWrite)
-		bool isReacting = false;
+		bool swarmReacting = false;
 
 protected:
 
@@ -107,12 +108,15 @@ protected:
 
 	void BetaJump();
 	void BetaJumpStop();
+	void StartSlide();
 	void Slide();
 	void StopSliding();
 
+	FRotator currentRot;
+
 	// Swarm stuff
-	void SwarmReaction() { isReacting = true; }
-	void SwarmReactionStop() { isReacting = false; }
+	void SwarmReaction() { swarmReacting = true; }
+	void SwarmReactionStop() { swarmReacting = false; }
 
 	// FRAN - Camera zoom control
 	//APlayerCameraManager* camera = GetCamera
@@ -124,13 +128,13 @@ protected:
 	float minCameraZoom = 0.0f;
 	UPROPERTY(EditAnywhere)
 	float maxCameraZoom = 0.0f;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float minCameraPitch = 0.0f;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float maxCameraPitch = 0.0f;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float minCameraYaw = 0.0f;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float maxCameraYaw = 0.0f;
 
 	const int MAX_PLAYER_LIVES = 3;
@@ -160,7 +164,7 @@ public:
 	int GetPlayerLives() { return playerLives; };	
 	void AddPlayerLives(int lives) { playerLives += lives; }; // Adds however many lives are passed in, to take away lives just pass in a negative
 
-	bool GetSwarmReaction() { return isReacting; };
+	bool GetSwarmReaction() { return swarmReacting; };
 
 	// SPEED
 	void ResetPlayerSpeed() { playerMovement->MaxWalkSpeed = initialPlayerSpeed; }; // Sets speed to original value

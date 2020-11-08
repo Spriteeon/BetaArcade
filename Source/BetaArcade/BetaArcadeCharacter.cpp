@@ -55,7 +55,7 @@ ABetaArcadeCharacter::ABetaArcadeCharacter()
 	camera->ViewYawMin = minCameraYaw;*/
 
 	playerLives = MAX_PLAYER_LIVES;
-	characterState = CharacterState::Running;
+	characterState = CharacterState::None;
 	initialPlayerSpeed = playerMovement->MaxWalkSpeed; // Stores starting speed
 }
 
@@ -68,7 +68,7 @@ void ABetaArcadeCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 	check(PlayerInputComponent);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ABetaArcadeCharacter::BetaJump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ABetaArcadeCharacter::BetaJumpStop);
-	PlayerInputComponent->BindAction("Slide", IE_Pressed, this, &ABetaArcadeCharacter::Slide);
+	PlayerInputComponent->BindAction("Slide", IE_Pressed, this, &ABetaArcadeCharacter::StartSlide);
 	PlayerInputComponent->BindAction("Slide", IE_Released, this, &ABetaArcadeCharacter::StopSliding);
 	PlayerInputComponent->BindAction("Swarm", IE_Pressed, this, &ABetaArcadeCharacter::SwarmReaction);
 	PlayerInputComponent->BindAction("Swarm", IE_Released, this, &ABetaArcadeCharacter::SwarmReactionStop);
@@ -105,12 +105,13 @@ void ABetaArcadeCharacter::Tick(float DeltaTime)
 // FRAN - State control
 void ABetaArcadeCharacter::HandleState()
 {
+	if (constantRun)
+		MoveForward(1.0f);
+
 	switch (characterState)
 	{
-	case CharacterState::Running:
-		if (constantRun)
-			MoveForward(1.0f);
-		break;
+	/*case CharacterState::Running:
+		break;*/
 
 	case CharacterState::Jumping:
 		break;
@@ -128,23 +129,27 @@ void ABetaArcadeCharacter::HandleState()
 
 void ABetaArcadeCharacter::BetaJump()
 {
-	UE_LOG(LogTemp, Log, TEXT("Jump"));
-	characterState = CharacterState::Jumping;
-	Jump();
+	if (characterState == CharacterState::None)
+	{
+		UE_LOG(LogTemp, Log, TEXT("Jump"));
+		characterState = CharacterState::Jumping;
+		Jump();
+	}
 }
 
 void ABetaArcadeCharacter::BetaJumpStop()
 {
 	UE_LOG(LogTemp, Log, TEXT("JumpSTOP"));
-	characterState = CharacterState::Running;
+	characterState = CharacterState::None;
 	StopJumping();
 }
 
-void ABetaArcadeCharacter::Slide()
+void ABetaArcadeCharacter::StartSlide()
 {
-	if (characterState == CharacterState::Running)
+	if (characterState == CharacterState::None)
 	{
 		characterState = CharacterState::Sliding;
+		Slide();
 		UE_LOG(LogTemp, Log, TEXT("Slide"));
 	}
 	else
@@ -153,10 +158,19 @@ void ABetaArcadeCharacter::Slide()
 	}
 }
 
+void ABetaArcadeCharacter::Slide()
+{
+	currentRot = GetActorRotation();
+	FRotator slideRot = { 90, currentRot.Roll, currentRot.Yaw };
+	AddActorLocalRotation(slideRot, false, 0, ETeleportType::None);
+}
+
 void ABetaArcadeCharacter::StopSliding()
 {
 	UE_LOG(LogTemp, Log, TEXT("SlideSTOP"));
-	characterState = CharacterState::Running;
+	FRotator resetRot = { -90, currentRot.Roll, currentRot.Yaw };
+	AddActorLocalRotation(resetRot, false, 0, ETeleportType::None);
+	characterState = CharacterState::None;
 }
 
 void ABetaArcadeCharacter::OnResetVR()
@@ -208,7 +222,7 @@ void ABetaArcadeCharacter::MoveForward(float Value)
 		// get forward vector
 		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 		AddMovementInput(Direction, Value);
-		characterState = CharacterState::Running;
+		characterState = CharacterState::None;
 	}
 }
 
@@ -224,7 +238,7 @@ void ABetaArcadeCharacter::MoveRight(float Value)
 		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 		// add movement in that direction
 		AddMovementInput(Direction, Value);
-		characterState = CharacterState::Running;
+		characterState = CharacterState::None;
 	}
 }
 
