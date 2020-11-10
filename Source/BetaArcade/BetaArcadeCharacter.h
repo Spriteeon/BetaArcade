@@ -141,9 +141,12 @@ public:
 
 	/*FVector currentPosition;
 	FVector GetPlayerPosition();*/
+	
+	UFUNCTION(BlueprintCallable)
+		int GetPlayerLives() { return playerLives; };
 
-	int GetPlayerLives() { return playerLives; };
 	// Adds however many lives are passed in, to take away lives just pass in a negative
+	UFUNCTION(BlueprintCallable)
 	void AddPlayerLives(int lives) { playerLives += lives; };
 
 	bool GetSwarmReaction() { return isReacting; }
