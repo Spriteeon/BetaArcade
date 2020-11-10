@@ -8,7 +8,7 @@
 #include "BetaArcadeCharacter.generated.h"
 
 UENUM(BlueprintType)
-namespace PlayerState // Namespace because enum was throwing "Member ... is not a type name"
+namespace CharacterState // Namespace because enum was throwing "Member ... is not a type name"
 {
 	enum State
 	{
@@ -19,32 +19,43 @@ namespace PlayerState // Namespace because enum was throwing "Member ... is not 
 	};
 }
 
-UCLASS(config=Game)
+UENUM(BlueprintType)
+namespace PowerState
+{
+	enum State
+	{
+		None		UMETA(DisplayName = "None"),
+		SpeedBoost	UMETA(DisplayName = "SpeedBoost"),
+		ScoreBonus	UMETA(DisplayName = "ScoreBonus"),
+		ExtraLife	UMETA(DisplayName = "ExtraLife"),
+		LightBall	UMETA(DisplayName = "LightBall"),
+		FullLight	UMETA(DisplayName = "FullLight"),
+		SporeEffect	UMETA(DisplayName = "SporeEffect"),
+	};
+}
+
+UCLASS(config = Game)
 class ABetaArcadeCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
-	/** Camera boom positioning the camera behind the character */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	class USpringArmComponent* CameraBoom;
+		/** Camera boom positioning the camera behind the character */
+		UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+		class USpringArmComponent* CameraBoom;
 
 	/** Follow camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	class UCameraComponent* FollowCamera;
-
-	////BETH - Inventory Assignment.
-	//UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	//	class UHotBarComponent* Hotbar;
+		class UCameraComponent* FollowCamera;
 public:
 	ABetaArcadeCharacter();
 
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
-	float BaseTurnRate;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
+		float BaseTurnRate;
 
 	/** Base look up/down rate, in deg/sec. Other scaling may affect final rate. */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
-	float BaseLookUpRate;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
+		float BaseLookUpRate;
 
 protected:
 
@@ -57,14 +68,14 @@ protected:
 	/** Called for side to side input */
 	void MoveRight(float Value);
 
-	/** 
-	 * Called via input to turn at a given rate. 
+	/**
+	 * Called via input to turn at a given rate.
 	 * @param Rate	This is a normalized rate, i.e. 1.0 means 100% of desired turn rate
 	 */
 	void TurnAtRate(float Rate);
 
 	/**
-	 * Called via input to turn look up/down at a given rate. 
+	 * Called via input to turn look up/down at a given rate.
 	 * @param Rate	This is a normalized rate, i.e. 1.0 means 100% of desired turn rate
 	 */
 	void LookUpAtRate(float Rate);
@@ -80,10 +91,20 @@ protected:
 	void HandleState();
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	//PlayerState playerState = PlayerState::Idle;
-	TEnumAsByte<PlayerState::State> playerState;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TEnumAsByte<CharacterState::State> characterState;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TEnumAsByte<PowerState::State> currentPowerState;
 
+	void BetaJump();
+	void BetaJumpStop();
 	void Slide();
 	void StopSliding();
+
+	// Swarm stuff
+	bool isReacting = false;
+	void SwarmReaction() { isReacting = true; }
+	void SwarmReactionStop() { isReacting = false; }
 
 	// FRAN - Camera zoom control
 	void CameraZoomIn();
@@ -97,7 +118,7 @@ protected:
 
 	const int MAX_PLAYER_LIVES = 3;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-		int playerLives = 3;
+		int playerLives = 0;
 
 	// Constant run toggle for testing!
 	UPROPERTY(EditAnywhere)
@@ -120,15 +141,10 @@ public:
 
 	/*FVector currentPosition;
 	FVector GetPlayerPosition();*/
-	UFUNCTION(BlueprintCallable)
-	int GetPlayerLives() { return playerLives; };
 
-	UFUNCTION(BlueprintCallable)
+	int GetPlayerLives() { return playerLives; };
 	// Adds however many lives are passed in, to take away lives just pass in a negative
 	void AddPlayerLives(int lives) { playerLives += lives; };
 
-	////Beth's Item/Hotbar functions.
-	//UFUNCTION(BlueprintCallable, Category = "Items")
-	//	void OnItemAction(class AItemBase* Item);
+	bool GetSwarmReaction() { return isReacting; }
 };
-
