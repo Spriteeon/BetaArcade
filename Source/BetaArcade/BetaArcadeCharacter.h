@@ -32,9 +32,9 @@ class ABetaArcadeCharacter : public ACharacter
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FollowCamera;
 
-	//BETH - Inventory Assignment.
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-		class UHotBarComponent* Hotbar;
+	////BETH - Inventory Assignment.
+	//UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	//	class UHotBarComponent* Hotbar;
 public:
 	ABetaArcadeCharacter();
 
@@ -120,13 +120,15 @@ public:
 
 	/*FVector currentPosition;
 	FVector GetPlayerPosition();*/
-
+	UFUNCTION(BlueprintCallable)
 	int GetPlayerLives() { return playerLives; };
+
+	UFUNCTION(BlueprintCallable)
 	// Adds however many lives are passed in, to take away lives just pass in a negative
 	void AddPlayerLives(int lives) { playerLives += lives; };
 
-	//Beth's Item/Hotbar functions.
-	UFUNCTION(BlueprintCallable, Category = "Items")
-		void OnItemAction(class AItemBase* Item);
+	////Beth's Item/Hotbar functions.
+	//UFUNCTION(BlueprintCallable, Category = "Items")
+	//	void OnItemAction(class AItemBase* Item);
 };
 

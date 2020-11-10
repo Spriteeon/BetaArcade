@@ -56,8 +56,8 @@ ABetaArcadeCharacter::ABetaArcadeCharacter()
 
 	//BETH - Initialising Hotbar
 
-	Hotbar = CreateDefaultSubobject<UHotBarComponent>("HotBar");
-	Hotbar->NumSlots = 5;
+	/*Hotbar = CreateDefaultSubobject<UHotBarComponent>("HotBar");
+	Hotbar->NumSlots = 5;*/
 	
 }
 
@@ -104,14 +104,14 @@ void ABetaArcadeCharacter::Tick(float DeltaTime)
 
 //BETH - Item and Hotbar Stuff
 
-void ABetaArcadeCharacter::OnItemAction(class AItemBase* Item)
-{
-	if (Item)
-	{
-		Item->ItemAction(this);
-		Item->ItemActionBP(this); //Blueprint Event
-	}
-}
+//void ABetaArcadeCharacter::OnItemAction(class AItemBase* Item)
+//{
+//	if (Item)
+//	{
+//		Item->ItemAction(this);
+//		Item->ItemActionBP(this); //Blueprint Event
+//	}
+//}
 
 
 
