@@ -1,12 +1,12 @@
 // Copyright 1998-2018 Epic Games, Inc. All Rights Reserved.
 
 #pragma once
-
 #include "Kismet/GameplayStatics.h"
 #include "CoreMinimal.h"
 #include "Camera/PlayerCameraManager.h"
-#include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/Character.h"
+
 #include "BetaArcadeCharacter.generated.h"
 
 UENUM(BlueprintType)
@@ -39,16 +39,17 @@ namespace PowerState
 
 UCLASS(config = Game)
 class ABetaArcadeCharacter : public ACharacter
-{
+{	
 	GENERATED_BODY()
 
-		/** Camera boom positioning the camera behind the character */
-		UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-		class USpringArmComponent* CameraBoom;
+	/** Camera boom positioning the camera behind the character */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	class USpringArmComponent* CameraBoom;
 
 	/** Follow camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-		class UCameraComponent* FollowCamera;
+	class UCameraComponent* FollowCamera;
+
 public:
 	ABetaArcadeCharacter();
 
@@ -62,6 +63,15 @@ public:
 
 	UPROPERTY(BlueprintReadWrite)
 		bool swarmReacting = false;
+
+	UFUNCTION(BlueprintCallable)
+		void TurnCamera();
+
+	UFUNCTION(BlueprintCallable)
+		void LeftTurn();
+
+	UFUNCTION(BlueprintCallable)
+		void LeftTurnEnd();
 
 protected:
 
@@ -102,8 +112,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TEnumAsByte<PowerState::State> powerState;
 
-	UCharacterMovementComponent* playerMovement = GetCharacterMovement();
-	float playerSpeed = playerMovement->MaxWalkSpeed;
+	UPROPERTY()
+		UCharacterMovementComponent* playerMovement;
+	float playerSpeed = 0.0f;
 	float initialPlayerSpeed = 0.0f;
 
 	void BetaJump();
@@ -112,6 +123,7 @@ protected:
 	void Slide();
 	void StopSliding();
 
+	UPROPERTY()
 	FRotator currentRot;
 
 	// Swarm stuff
@@ -137,13 +149,18 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float maxCameraYaw = 0.0f;
 
+	UPROPERTY()
+		FTransform camBoomTransform;
+
 	const int MAX_PLAYER_LIVES = 3;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int playerLives = 0;
 
 	// Constant run toggle for testing!
 	UPROPERTY(EditAnywhere)
 		bool constantRun = false;
+
+	FVector Direction;
 
 protected:
 	// APawn interface
@@ -161,12 +178,16 @@ public:
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
 	// LIVES
-	int GetPlayerLives() { return playerLives; };	
+	UFUNCTION(BlueprintCallable)
+	int GetPlayerLives() { return playerLives; };
+	UFUNCTION(BlueprintCallable)
 	void AddPlayerLives(int lives) { playerLives += lives; }; // Adds however many lives are passed in, to take away lives just pass in a negative
 
 	bool GetSwarmReaction() { return swarmReacting; };
 
 	// SPEED
+	UFUNCTION(BlueprintCallable)
 	void ResetPlayerSpeed() { playerMovement->MaxWalkSpeed = initialPlayerSpeed; }; // Sets speed to original value
+	UFUNCTION(BlueprintCallable)
 	void SetPlayerSpeed(float speed) { playerMovement->MaxWalkSpeed = speed; };
 };

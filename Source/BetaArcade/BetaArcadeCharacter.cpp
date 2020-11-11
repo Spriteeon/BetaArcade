@@ -8,7 +8,6 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
-
 #include "Engine.h"
 #include "TimerManager.h"
 
@@ -39,7 +38,7 @@ ABetaArcadeCharacter::ABetaArcadeCharacter()
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(RootComponent);
 	CameraBoom->TargetArmLength = 300.0f; // The camera follows at this distance behind the character	
-	CameraBoom->bUsePawnControlRotation = true; // Rotate the arm based on the controller
+	CameraBoom->bUsePawnControlRotation = true; //Rotate the arm based on the controller -- FRAN: FALSE MAKES THE CAMERA FOLLOW DIRECTLY THE PLAYERS BACK, TRUE DOESNT CHANGE DEPENDING ON PLAYERS ROT
 
 	// Create a follow camera
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
@@ -56,7 +55,12 @@ ABetaArcadeCharacter::ABetaArcadeCharacter()
 
 	playerLives = MAX_PLAYER_LIVES;
 	characterState = CharacterState::None;
+
+	playerMovement = GetCharacterMovement();
+	playerSpeed = playerMovement->MaxWalkSpeed;
 	initialPlayerSpeed = playerMovement->MaxWalkSpeed; // Stores starting speed
+
+	Direction = GetActorForwardVector();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -173,6 +177,24 @@ void ABetaArcadeCharacter::StopSliding()
 	characterState = CharacterState::None;
 }
 
+void ABetaArcadeCharacter::TurnCamera() // Controls camera and player rotation when turning a corner
+{
+	CameraBoom->bUsePawnControlRotation = !CameraBoom->bUsePawnControlRotation; // true: camera doesnt rotate with player, false: follows players back
+	Direction = GetActorForwardVector();
+}
+
+void ABetaArcadeCharacter::LeftTurn()
+{
+	AddActorWorldRotation({ 0,-60,0 }, false, 0, ETeleportType::None);
+	Direction = GetActorForwardVector(); // true: camera doesnt rotate with player, false: follows players back
+	CameraBoom->SetWorldRotation({ 0,-60,0, 1 }, false, 0, ETeleportType::None);
+}
+
+void ABetaArcadeCharacter::LeftTurnEnd()
+{
+	CameraBoom->bUsePawnControlRotation = !CameraBoom->bUsePawnControlRotation; // true: camera doesnt rotate with player, false: follows players back
+}
+
 void ABetaArcadeCharacter::OnResetVR()
 {
 	UHeadMountedDisplayFunctionLibrary::ResetOrientationAndPosition();
@@ -220,7 +242,7 @@ void ABetaArcadeCharacter::MoveForward(float Value)
 		const FRotator YawRotation(0, Rotation.Yaw, 0);
 
 		// get forward vector
-		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+		//const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 		AddMovementInput(Direction, Value);
 		characterState = CharacterState::None;
 	}
@@ -235,9 +257,9 @@ void ABetaArcadeCharacter::MoveRight(float Value)
 		const FRotator YawRotation(0, Rotation.Yaw, 0);
 
 		// get right vector 
-		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+		const FVector RDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 		// add movement in that direction
-		AddMovementInput(Direction, Value);
+		AddMovementInput(RDirection, Value);
 		characterState = CharacterState::None;
 	}
 }
