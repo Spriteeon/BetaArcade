@@ -1,24 +1,27 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-
-#include "ExtraLifePickUp.h"
-#include "BetaArcadeCharacter.h"
-
-
+//
+//#include "ExtraLifePickUp.h"
+//#include "BetaArcadeCharacter.h"
+//
+//
 //AExtraLifePickUp::AExtraLifePickUp()
 //{
 //	ItemID = 0;
-//	UStaticMeshComponent* ItemMesh  = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("XtraLifeMesh"));
-//	PickUpCollision = CreateDefaultSubobject<UCapsuleComponent>(TEXT("XtraLifeCollision"));
-//	/*PickUpCollision->InitCapsuleExtent(FVector(50.0f, 50.0f, 50.0f));*/
-//	/*RootComponent = ItemMesh;*/
+//	
+//	/* ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("XtraLifeMesh1"));
+//	PickUpCollision = CreateDefaultSubobject<UCapsuleComponent>(TEXT("XtraLifeCollision1"));*/
+//	/*PickUpCollision = InitCapsuleSize()*/
+//	/////*RootComponent = ItemMesh;*/
+//	////ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ExtraLifeMesh"));
+//	/////*AExtraLifePickUp::ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ExtraLifeMesh"));*/
+//	////this->SetRootComponent(ItemMesh);
 //}
-void AExtraLifePickUp::ItemAction(ABetaArcadeCharacter* Character, AActor* OtherActor)
-{
-	/*class ABetaArcadeCharacter* Character = Cast<ABetaArcadeCharacter>(OtherActor);*/
-
-	if (Character && Character->GetPlayerLives() < 3)
-	{
-		Character->AddPlayerLives(1);
-		Destroy();
-	}
-}
+//
+//void AExtraLifePickUp::ItemAction(class ABetaArcadeCharacter* Character)
+//{
+//		if (Character && Character->GetPlayerLives() < 3)
+//		{
+//				Character->AddPlayerLives(1);
+//				Destroy();
+//		}
+//}
