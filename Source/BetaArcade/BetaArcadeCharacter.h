@@ -109,13 +109,12 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TEnumAsByte<CharacterState::State> characterState;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TEnumAsByte<PowerState::State> currentPowerState;
 
 	UPROPERTY()
 		UCharacterMovementComponent* playerMovement;
 	float playerSpeed = 0.0f;
 	float initialPlayerSpeed = 0.0f;
-
-	TEnumAsByte<PowerState::State> currentPowerState;
 
 	void BetaJump();
 	void BetaJumpStop();
