@@ -42,14 +42,13 @@ class ABetaArcadeCharacter : public ACharacter
 {	
 	GENERATED_BODY()
 
-	/** Camera boom positioning the camera behind the character */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	class USpringArmComponent* CameraBoom;
+		/** Camera boom positioning the camera behind the character */
+		UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+		class USpringArmComponent* CameraBoom;
 
 	/** Follow camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	class UCameraComponent* FollowCamera;
-
+		class UCameraComponent* FollowCamera;
 public:
 	ABetaArcadeCharacter();
 
@@ -110,12 +109,13 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TEnumAsByte<CharacterState::State> characterState;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		TEnumAsByte<PowerState::State> powerState;
 
 	UPROPERTY()
 		UCharacterMovementComponent* playerMovement;
 	float playerSpeed = 0.0f;
 	float initialPlayerSpeed = 0.0f;
+
+	TEnumAsByte<PowerState::State> currentPowerState;
 
 	void BetaJump();
 	void BetaJumpStop();
@@ -127,8 +127,9 @@ protected:
 	FRotator currentRot;
 
 	// Swarm stuff
-	void SwarmReaction() { swarmReacting = true; }
-	void SwarmReactionStop() { swarmReacting = false; }
+	bool isReacting = false;
+	void SwarmReaction() { isReacting = true; }
+	void SwarmReactionStop() { isReacting = false; }
 
 	// FRAN - Camera zoom control
 	//APlayerCameraManager* camera = GetCamera
