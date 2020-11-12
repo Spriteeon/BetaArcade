@@ -1,21 +1,21 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-//#pragma once
+#pragma once
 //
-//#include "CoreMinimal.h"
-//#include "GameFramework/Actor.h"
-//#include "BetaArcadeCharacter.h"
-//#include "Components/CapsuleComponent.h"
-//#include "ItemBase.generated.h"
+#include "CoreMinimal.h"
+#include "GameFramework/Actor.h"
+#include "BetaArcadeCharacter.h"
+#include "Components/CapsuleComponent.h"
+#include "ItemBase.generated.h"
 //
-//UCLASS(Abstract)
-//class BETAARCADE_API AItemBase : public AActor
-//{
-//	GENERATED_BODY()
+UCLASS(Abstract)
+class BETAARCADE_API AItemBase : public AActor
+{
+	GENERATED_BODY()
 //	
-//public:	
+public:	
 //	// Sets default values for this actor's properties
-//	AItemBase();
+	AItemBase();
 //	
 //	virtual class UWorld* GetWorld() const { return World; };
 //	
@@ -80,4 +80,4 @@
 //	
 //
 //
-//};
+};
