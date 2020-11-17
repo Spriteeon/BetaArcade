@@ -116,11 +116,17 @@ protected:
 	float playerSpeed = 0.0f;
 	float initialPlayerSpeed = 0.0f;
 
+	float time = 0.0f;
+	float endTime = 0.0f;
+
 	void BetaJump();
 	void BetaJumpStop();
 	void StartSlide();
 	void Slide();
 	void StopSliding();
+
+	UPROPERTY(EditAnywhere)
+	float slideTime = 0.0f; // How long the player slides for
 
 	UPROPERTY()
 	FRotator currentRot;
