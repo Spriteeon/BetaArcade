@@ -16,5 +16,8 @@ class BETAARCADE_API AExtraLifePickUp : public AItemBase
 
 protected:
 	virtual void ItemActionCPP(class ABetaArcadeCharacter* Character) override;
+
+public:
+	AExtraLifePickUp();
 	
 };

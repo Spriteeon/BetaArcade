@@ -31,7 +31,7 @@ public:
 protected:
 	
 	//Property for pick up mesh.
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(EditAnywhere, Category = "PickUp Properties")
 		UStaticMeshComponent* PickUpMesh;
 
 	//Property for pick up thumbnail.
