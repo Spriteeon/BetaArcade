@@ -12,4 +12,54 @@ ABetaArcadeGameMode::ABetaArcadeGameMode()
 	{
 		DefaultPawnClass = PlayerPawnBPClass.Class;
 	}
+
+}
+
+AActor* ABetaArcadeGameMode::SpawnStartTile()
+{
+	
+	UWorld* world = GetWorld();
+	if (world)
+	{
+		FActorSpawnParameters spawnParams;
+		spawnParams.Owner = this;
+
+		newTile = world->SpawnActor<AActor>(tileClass, nextTileLocation, nextTileRotation, spawnParams);
+		return newTile;
+	}
+	return NULL;
+}
+
+AActor* ABetaArcadeGameMode::SetTileTransform(AActor* tile)
+{
+
+	tile->SetActorLocationAndRotation(nextTileLocation, nextTileRotation);
+	//tile->SetActorLocation(nextTileLocation);
+	//tile->SetActorRotation(nextTileRotation);
+
+	return tile;
+
+}
+
+void ABetaArcadeGameMode::SetNewTransforms(FVector nextLocation, FRotator nextRotation)
+{
+
+	nextTileLocation = nextLocation;
+	nextTileRotation = nextRotation;
+
+}
+
+AActor* ABetaArcadeGameMode::SpawnNewTile(FVector spawnLocation, FRotator spawnRotation)
+{
+
+	UWorld* world = GetWorld();
+	if (world)
+	{
+		FActorSpawnParameters spawnParams;
+		spawnParams.Owner = this;
+
+		newTile = world->SpawnActor<AActor>(tileClass, spawnLocation, spawnRotation, spawnParams);
+		return newTile;
+	}
+	return NULL;
 }
