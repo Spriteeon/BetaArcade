@@ -108,7 +108,7 @@ protected:
 	//PlayerState playerState = PlayerState::Idle;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TEnumAsByte<CharacterState::State> characterState;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(BlueprintReadWrite)
 		TEnumAsByte<PowerState::State> currentPowerState;
 
 	UPROPERTY()
@@ -116,11 +116,23 @@ protected:
 	float playerSpeed = 0.0f;
 	float initialPlayerSpeed = 0.0f;
 
+	float time = 0.0f;
+	float endTime = 0.0f;
+
 	void BetaJump();
+	void JumpEndCheck();
 	void BetaJumpStop();
-	void StartSlide();
+	UPROPERTY(BlueprintReadWrite)
+	bool isJumping = false;
+
+	UFUNCTION(BlueprintCallable)
+	bool StartSlide();
 	void Slide();
+	UFUNCTION(BlueprintCallable)
 	void StopSliding();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float slideTime = 0.0f; // How long the player slides for
 
 	UPROPERTY()
 	FRotator currentRot;
