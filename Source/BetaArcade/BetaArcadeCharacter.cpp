@@ -72,7 +72,7 @@ void ABetaArcadeCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 	check(PlayerInputComponent);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ABetaArcadeCharacter::BetaJump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ABetaArcadeCharacter::BetaJumpStop);
-	PlayerInputComponent->BindAction("Slide", IE_Pressed, this, &ABetaArcadeCharacter::StartSlide);
+	//PlayerInputComponent->BindAction("Slide", IE_Pressed, this, &ABetaArcadeCharacter::StartSlide);
 	PlayerInputComponent->BindAction("Swarm", IE_Pressed, this, &ABetaArcadeCharacter::SwarmReaction);
 	PlayerInputComponent->BindAction("Swarm", IE_Released, this, &ABetaArcadeCharacter::SwarmReactionStop);
 
@@ -121,13 +121,14 @@ void ABetaArcadeCharacter::HandleState()
 		break;
 
 	case CharacterState::State::Jumping:
+		JumpEndCheck();
 		break;
 
 	case CharacterState::State::Vaulting:
 		break;
 
 	case CharacterState::State::Sliding:
-		Slide();
+		//Slide();
 		break;
 
 	default:
@@ -139,46 +140,61 @@ void ABetaArcadeCharacter::BetaJump()
 {
 	if (characterState == CharacterState::None)
 	{
+		isJumping = true;
 		UE_LOG(LogTemp, Log, TEXT("Jump"));
 		characterState = CharacterState::State::Jumping;
 		Jump();
 	}
 }
 
+void ABetaArcadeCharacter::JumpEndCheck()
+{
+	if (!isJumping)
+	{
+		characterState = CharacterState::State::None;
+	}
+}
+
 void ABetaArcadeCharacter::BetaJumpStop()
 {
 	UE_LOG(LogTemp, Log, TEXT("JumpSTOP"));
-	characterState = CharacterState::State::None;
 	StopJumping();
 }
 
-void ABetaArcadeCharacter::StartSlide()
+bool ABetaArcadeCharacter::StartSlide()
 {
 	if (characterState == CharacterState::State::None)
 	{
 		characterState = CharacterState::State::Sliding;
-		endTime = time + slideTime;
+		Slide();
+		//endTime = time + slideTime;
 
-		currentRot = GetActorRotation();
+		/*currentRot = GetActorRotation();
 		FRotator slideRot = { 90, currentRot.Roll, currentRot.Yaw };
-		AddActorLocalRotation(slideRot, false, 0, ETeleportType::None);
+		AddActorLocalRotation(slideRot, false, 0, ETeleportType::None);*/
 
 		UE_LOG(LogTemp, Log, TEXT("Slide"));
+		return true;
 	}
 	else
 	{
 		UE_LOG(LogTemp, Log, TEXT("Can't slide"));
+		return false;
 	}
 }
 
 void ABetaArcadeCharacter::Slide()
 {
-	UE_LOG(LogTemp, Log, TEXT("slide time check"));
-	if (time >= endTime)
-	{
-		//StopSliding();
-		UE_LOG(LogTemp, Log, TEXT("SLIDE TIME OVER"));
-	}
+	//UE_LOG(LogTemp, Log, TEXT("slide time check"));
+	//if (time >= endTime)
+	//{
+	//	//StopSliding();
+	//	UE_LOG(LogTemp, Log, TEXT("SLIDE TIME OVER"));
+	//}
+
+	currentRot = GetActorRotation();
+	FRotator slideRot = { 90, currentRot.Roll, currentRot.Yaw };
+	AddActorLocalRotation(slideRot, false, 0, ETeleportType::None);
 }
 
 void ABetaArcadeCharacter::StopSliding()
