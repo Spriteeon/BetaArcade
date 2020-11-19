@@ -103,7 +103,7 @@ void ABetaArcadeCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	time = GetWorld()->GetRealTimeSeconds();
+	//time = GetWorld()->GetRealTimeSeconds();
 	HandleState();
 }
 
@@ -138,7 +138,11 @@ void ABetaArcadeCharacter::HandleState()
 
 void ABetaArcadeCharacter::BetaJump()
 {
-	if (characterState == CharacterState::None)
+	if (canVault)
+	{
+		VaultControl();
+	}
+	else if (characterState == CharacterState::None)
 	{
 		isJumping = true;
 		UE_LOG(LogTemp, Log, TEXT("Jump"));
@@ -167,11 +171,6 @@ bool ABetaArcadeCharacter::StartSlide()
 	{
 		characterState = CharacterState::State::Sliding;
 		Slide();
-		//endTime = time + slideTime;
-
-		/*currentRot = GetActorRotation();
-		FRotator slideRot = { 90, currentRot.Roll, currentRot.Yaw };
-		AddActorLocalRotation(slideRot, false, 0, ETeleportType::None);*/
 
 		UE_LOG(LogTemp, Log, TEXT("Slide"));
 		return true;
@@ -185,13 +184,6 @@ bool ABetaArcadeCharacter::StartSlide()
 
 void ABetaArcadeCharacter::Slide()
 {
-	//UE_LOG(LogTemp, Log, TEXT("slide time check"));
-	//if (time >= endTime)
-	//{
-	//	//StopSliding();
-	//	UE_LOG(LogTemp, Log, TEXT("SLIDE TIME OVER"));
-	//}
-
 	currentRot = GetActorRotation();
 	FRotator slideRot = { 90, currentRot.Roll, currentRot.Yaw };
 	AddActorLocalRotation(slideRot, false, 0, ETeleportType::None);
@@ -201,6 +193,40 @@ void ABetaArcadeCharacter::StopSliding()
 {
 	UE_LOG(LogTemp, Log, TEXT("SlideSTOP"));
 	FRotator resetRot = { -90, currentRot.Roll, currentRot.Yaw };
+	AddActorLocalRotation(resetRot, false, 0, ETeleportType::None);
+	characterState = CharacterState::State::None;
+}
+
+bool ABetaArcadeCharacter::StartVault()
+{
+	if (characterState == CharacterState::State::None)
+	{
+		characterState = CharacterState::State::Vaulting;
+		Jump();
+		//Vault();
+
+		UE_LOG(LogTemp, Log, TEXT("Vault"));
+		return true;
+	}
+	else
+	{
+		UE_LOG(LogTemp, Log, TEXT("Can't vault"));
+		return false;
+	}
+}
+
+void ABetaArcadeCharacter::Vault()
+{
+	currentRot = GetActorRotation();
+	FRotator slideRot = { -90, currentRot.Roll, currentRot.Yaw };
+	AddActorLocalRotation(slideRot, false, 0, ETeleportType::None);	
+}
+
+void ABetaArcadeCharacter::StopVaulting()
+{
+	StopJumping();
+	UE_LOG(LogTemp, Log, TEXT("VaultSTOP"));
+	FRotator resetRot = { 90, currentRot.Roll, currentRot.Yaw };
 	AddActorLocalRotation(resetRot, false, 0, ETeleportType::None);
 	characterState = CharacterState::State::None;
 }
