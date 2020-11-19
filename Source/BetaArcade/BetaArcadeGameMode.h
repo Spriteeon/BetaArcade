@@ -10,7 +10,8 @@ UENUM(BlueprintType)
 enum class ETileType : uint8
 {
 	eBasic,
-	eCorner,
+	eRightCorner,
+	eLeftCorner,
 	eVault,
 	eSlide,
 	eJump
@@ -34,7 +35,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
 		TSubclassOf<class AActor> basicTileClass;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
-		TSubclassOf<class AActor> cornerTileClass;
+		TSubclassOf<class AActor> rightCornerTileClass;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
 		AActor* spawnedTile;

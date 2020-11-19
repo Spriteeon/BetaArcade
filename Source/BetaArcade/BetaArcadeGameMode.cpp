@@ -67,9 +67,9 @@ AActor* ABetaArcadeGameMode::SpawnNewTile(FVector spawnLocation, FRotator spawnR
 			spawnedTiles++;
 			return spawnedTile;
 		}
-		if (tileToSpawn == ETileType::eCorner)
+		if (tileToSpawn == ETileType::eRightCorner)
 		{
-			spawnedTile = world->SpawnActor<AActor>(cornerTileClass, spawnLocation, spawnRotation, spawnParams);
+			spawnedTile = world->SpawnActor<AActor>(rightCornerTileClass, spawnLocation, spawnRotation, spawnParams);
 			spawnedTiles++;
 			return spawnedTile;
 		}
@@ -85,7 +85,7 @@ ETileType ABetaArcadeGameMode::GetNextTileType()
 {
 	if (spawnedTiles % 10 == 0)
 	{
-		return ETileType::eCorner;
+		return ETileType::eRightCorner;
 	}
 	else
 	{
