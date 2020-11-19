@@ -13,6 +13,8 @@ ABetaArcadeGameMode::ABetaArcadeGameMode()
 		DefaultPawnClass = PlayerPawnBPClass.Class;
 	}
 
+	spawnedTiles = 0;
+
 }
 
 AActor* ABetaArcadeGameMode::SpawnStartTile()
@@ -24,8 +26,8 @@ AActor* ABetaArcadeGameMode::SpawnStartTile()
 		FActorSpawnParameters spawnParams;
 		spawnParams.Owner = this;
 
-		newTile = world->SpawnActor<AActor>(tileClass, nextTileLocation, nextTileRotation, spawnParams);
-		return newTile;
+		spawnedTile = world->SpawnActor<AActor>(basicTileClass, nextTileLocation, nextTileRotation, spawnParams);
+		return spawnedTile;
 	}
 	return NULL;
 }
@@ -55,11 +57,38 @@ AActor* ABetaArcadeGameMode::SpawnNewTile(FVector spawnLocation, FRotator spawnR
 	UWorld* world = GetWorld();
 	if (world)
 	{
+		tileToSpawn = GetNextTileType();
 		FActorSpawnParameters spawnParams;
 		spawnParams.Owner = this;
 
-		newTile = world->SpawnActor<AActor>(tileClass, spawnLocation, spawnRotation, spawnParams);
-		return newTile;
+		if (tileToSpawn == ETileType::eBasic)
+		{
+			spawnedTile = world->SpawnActor<AActor>(basicTileClass, spawnLocation, spawnRotation, spawnParams);
+			spawnedTiles++;
+			return spawnedTile;
+		}
+		if (tileToSpawn == ETileType::eCorner)
+		{
+			spawnedTile = world->SpawnActor<AActor>(cornerTileClass, spawnLocation, spawnRotation, spawnParams);
+			spawnedTiles++;
+			return spawnedTile;
+		}
+		else
+		{
+			return NULL;
+		}
 	}
 	return NULL;
+}
+
+ETileType ABetaArcadeGameMode::GetNextTileType()
+{
+	if (spawnedTiles % 10 == 0)
+	{
+		return ETileType::eCorner;
+	}
+	else
+	{
+		return ETileType::eBasic;
+	}
 }

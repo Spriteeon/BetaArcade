@@ -6,6 +6,16 @@
 #include "GameFramework/GameModeBase.h"
 #include "BetaArcadeGameMode.generated.h"
 
+UENUM(BlueprintType)
+enum class ETileType : uint8
+{
+	eBasic,
+	eCorner,
+	eVault,
+	eSlide,
+	eJump
+};
+
 UCLASS(minimalapi)
 class ABetaArcadeGameMode : public AGameModeBase
 {
@@ -19,10 +29,15 @@ public:
 	FTransform nextTileTransform;*/
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
-		const TSubclassOf<class AActor> tileClass;
+		ETileType tileToSpawn;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
-		AActor* newTile;
+		TSubclassOf<class AActor> basicTileClass;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
+		TSubclassOf<class AActor> cornerTileClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
+		AActor* spawnedTile;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = TileTransform)
 		FVector nextTileLocation = { 0.0f, 0.0f, 0.0f };
@@ -40,6 +55,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		AActor* SpawnNewTile(FVector spawnLocation, FRotator spawnRotation);
+
+	ETileType GetNextTileType();
+	int spawnedTiles;
 
 };
 
