@@ -54,7 +54,7 @@ ABetaArcadeCharacter::ABetaArcadeCharacter()
 	camera->ViewYawMin = minCameraYaw;*/
 
 	playerLives = MAX_PLAYER_LIVES;
-	characterState = CharacterState::None;
+	characterState = CharacterState::State::None;
 
 	playerMovement = GetCharacterMovement();
 	playerSpeed = playerMovement->MaxWalkSpeed;
@@ -72,8 +72,7 @@ void ABetaArcadeCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 	check(PlayerInputComponent);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ABetaArcadeCharacter::BetaJump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ABetaArcadeCharacter::BetaJumpStop);
-	PlayerInputComponent->BindAction("Slide", IE_Pressed, this, &ABetaArcadeCharacter::StartSlide);
-	PlayerInputComponent->BindAction("Slide", IE_Released, this, &ABetaArcadeCharacter::StopSliding);
+	//PlayerInputComponent->BindAction("Slide", IE_Pressed, this, &ABetaArcadeCharacter::StartSlide);
 	PlayerInputComponent->BindAction("Swarm", IE_Pressed, this, &ABetaArcadeCharacter::SwarmReaction);
 	PlayerInputComponent->BindAction("Swarm", IE_Released, this, &ABetaArcadeCharacter::SwarmReactionStop);
 
@@ -103,6 +102,8 @@ void ABetaArcadeCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 void ABetaArcadeCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	//time = GetWorld()->GetRealTimeSeconds();
 	HandleState();
 }
 
@@ -114,51 +115,70 @@ void ABetaArcadeCharacter::HandleState()
 
 	switch (characterState)
 	{
-	/*case CharacterState::Running:
-		break;*/
-
-	case CharacterState::Jumping:
-		break;
-
-	case CharacterState::Vaulting:
-		break;
-
-	case CharacterState::Sliding:
-		break;
-
-		/*case default:
+		/*case CharacterState::Running:
 			break;*/
+	case CharacterState::State::None:
+		break;
+
+	case CharacterState::State::Jumping:
+		JumpEndCheck();
+		break;
+
+	case CharacterState::State::Vaulting:
+		break;
+
+	case CharacterState::State::Sliding:
+		//Slide();
+		break;
+
+	default:
+		break;
 	}
 }
 
 void ABetaArcadeCharacter::BetaJump()
 {
-	if (characterState == CharacterState::None)
+	if (canVault)
 	{
+		VaultControl();
+	}
+	else if (characterState == CharacterState::None)
+	{
+		isJumping = true;
 		UE_LOG(LogTemp, Log, TEXT("Jump"));
-		characterState = CharacterState::Jumping;
+		characterState = CharacterState::State::Jumping;
 		Jump();
+	}
+}
+
+void ABetaArcadeCharacter::JumpEndCheck()
+{
+	if (!isJumping)
+	{
+		characterState = CharacterState::State::None;
 	}
 }
 
 void ABetaArcadeCharacter::BetaJumpStop()
 {
 	UE_LOG(LogTemp, Log, TEXT("JumpSTOP"));
-	characterState = CharacterState::None;
 	StopJumping();
 }
 
-void ABetaArcadeCharacter::StartSlide()
+bool ABetaArcadeCharacter::StartSlide()
 {
-	if (characterState == CharacterState::None)
+	if (characterState == CharacterState::State::None)
 	{
-		characterState = CharacterState::Sliding;
+		characterState = CharacterState::State::Sliding;
 		Slide();
+
 		UE_LOG(LogTemp, Log, TEXT("Slide"));
+		return true;
 	}
 	else
 	{
 		UE_LOG(LogTemp, Log, TEXT("Can't slide"));
+		return false;
 	}
 }
 
@@ -174,7 +194,41 @@ void ABetaArcadeCharacter::StopSliding()
 	UE_LOG(LogTemp, Log, TEXT("SlideSTOP"));
 	FRotator resetRot = { -90, currentRot.Roll, currentRot.Yaw };
 	AddActorLocalRotation(resetRot, false, 0, ETeleportType::None);
-	characterState = CharacterState::None;
+	characterState = CharacterState::State::None;
+}
+
+bool ABetaArcadeCharacter::StartVault()
+{
+	if (characterState == CharacterState::State::None)
+	{
+		characterState = CharacterState::State::Vaulting;
+		Jump();
+		//Vault();
+
+		UE_LOG(LogTemp, Log, TEXT("Vault"));
+		return true;
+	}
+	else
+	{
+		UE_LOG(LogTemp, Log, TEXT("Can't vault"));
+		return false;
+	}
+}
+
+void ABetaArcadeCharacter::Vault()
+{
+	currentRot = GetActorRotation();
+	FRotator slideRot = { -90, currentRot.Roll, currentRot.Yaw };
+	AddActorLocalRotation(slideRot, false, 0, ETeleportType::None);	
+}
+
+void ABetaArcadeCharacter::StopVaulting()
+{
+	StopJumping();
+	UE_LOG(LogTemp, Log, TEXT("VaultSTOP"));
+	FRotator resetRot = { 90, currentRot.Roll, currentRot.Yaw };
+	AddActorLocalRotation(resetRot, false, 0, ETeleportType::None);
+	characterState = CharacterState::State::None;
 }
 
 void ABetaArcadeCharacter::TurnCamera() // Controls camera and player rotation when turning a corner
@@ -185,9 +239,8 @@ void ABetaArcadeCharacter::TurnCamera() // Controls camera and player rotation w
 
 void ABetaArcadeCharacter::LeftTurn()
 {
-	AddActorWorldRotation({ 0,-60,0 }, false, 0, ETeleportType::None);
-	Direction = GetActorForwardVector(); // true: camera doesnt rotate with player, false: follows players back
-	CameraBoom->SetWorldRotation({ 0,-60,0, 1 }, false, 0, ETeleportType::None);
+	SetActorRelativeRotation({ 0,-60,0 }, false, 0, ETeleportType::None);
+	Direction = GetActorForwardVector();
 }
 
 void ABetaArcadeCharacter::LeftTurnEnd()
@@ -224,13 +277,13 @@ void ABetaArcadeCharacter::CameraZoomOut()
 void ABetaArcadeCharacter::TurnAtRate(float Rate)
 {
 	// calculate delta for this frame from the rate information
-	//AddControllerYawInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());
+	AddControllerYawInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());
 }
 
 void ABetaArcadeCharacter::LookUpAtRate(float Rate)
 {
 	// calculate delta for this frame from the rate information
-	//AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
+	AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
 }
 
 void ABetaArcadeCharacter::MoveForward(float Value)
@@ -244,7 +297,6 @@ void ABetaArcadeCharacter::MoveForward(float Value)
 		// get forward vector
 		//const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 		AddMovementInput(Direction, Value);
-		characterState = CharacterState::None;
 	}
 }
 
@@ -260,7 +312,6 @@ void ABetaArcadeCharacter::MoveRight(float Value)
 		const FVector RDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 		// add movement in that direction
 		AddMovementInput(RDirection, Value);
-		characterState = CharacterState::None;
 	}
 }
 
