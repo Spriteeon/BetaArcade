@@ -108,7 +108,7 @@ ETileType ABetaArcadeGameMode::GetNextTileType()
 			return ETileType::eRightCorner;
 		}
 	}
-	else if (spawnedTiles % 2 == 0) //Every 2 Tiles not including the 10th
+	else if (tileToSpawn == ETileType::eBasic || tileToSpawn == ETileType::eLeftCorner || tileToSpawn == ETileType::eRightCorner)
 	{
 		return ETileType::eJump;
 	}
