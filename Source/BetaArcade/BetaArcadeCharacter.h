@@ -116,14 +116,13 @@ protected:
 	float playerSpeed = 0.0f;
 	float initialPlayerSpeed = 0.0f;
 
-	float time = 0.0f;
-	float endTime = 0.0f;
-
 	void BetaJump();
 	void JumpEndCheck();
 	void BetaJumpStop();
 	UPROPERTY(BlueprintReadWrite)
 	bool isJumping = false;
+	UPROPERTY(BlueprintReadWrite)
+	bool canVault = false;
 
 	UFUNCTION(BlueprintCallable)
 	bool StartSlide();
@@ -131,8 +130,19 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void StopSliding();
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void VaultControl();
+	UFUNCTION(BlueprintCallable)
+	bool StartVault();
+	UFUNCTION(BlueprintCallable)
+	void Vault();
+	UFUNCTION(BlueprintCallable)
+	void StopVaulting();
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float slideTime = 0.0f; // How long the player slides for
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float vaultTime = 0.0f; // How long the player vaults for
 
 	UPROPERTY()
 	FRotator currentRot;
