@@ -68,15 +68,21 @@ AActor* ABetaArcadeGameMode::SpawnNewTile(FVector spawnLocation, FRotator spawnR
 			spawnedTiles++;
 			return spawnedTile;
 		}
-		if (tileToSpawn == ETileType::eRightCorner)
+		else if (tileToSpawn == ETileType::eRightCorner)
 		{
 			spawnedTile = world->SpawnActor<AActor>(rightCornerTileClass, spawnLocation, spawnRotation, spawnParams);
 			spawnedTiles++;
 			return spawnedTile;
 		}
-		if (tileToSpawn == ETileType::eLeftCorner)
+		else if (tileToSpawn == ETileType::eLeftCorner)
 		{
 			spawnedTile = world->SpawnActor<AActor>(leftCornerTileClass, spawnLocation, spawnRotation, spawnParams);
+			spawnedTiles++;
+			return spawnedTile;
+		}
+		else if (tileToSpawn == ETileType::eJump)
+		{
+			spawnedTile = world->SpawnActor<AActor>(jumpTileClass, spawnLocation, spawnRotation, spawnParams);
 			spawnedTiles++;
 			return spawnedTile;
 		}
@@ -90,7 +96,7 @@ AActor* ABetaArcadeGameMode::SpawnNewTile(FVector spawnLocation, FRotator spawnR
 
 ETileType ABetaArcadeGameMode::GetNextTileType()
 {
-	if (spawnedTiles % 10 == 0)
+	if (spawnedTiles % 10 == 0) //Every 10 Tiles
 	{
 		leftRight = FMath::RandRange(0, 9);
 		if (leftRight <= 4) //Left
@@ -101,6 +107,10 @@ ETileType ABetaArcadeGameMode::GetNextTileType()
 		{
 			return ETileType::eRightCorner;
 		}
+	}
+	else if (spawnedTiles % 2 == 0) //Every 2 Tiles not including the 10th
+	{
+		return ETileType::eJump;
 	}
 	else
 	{

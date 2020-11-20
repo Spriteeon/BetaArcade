@@ -39,6 +39,8 @@ public:
 		TSubclassOf<class AActor> rightCornerTileClass;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
 		TSubclassOf<class AActor> leftCornerTileClass;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
+		TSubclassOf<class AActor> jumpTileClass;
 
 	int leftRight;
 
