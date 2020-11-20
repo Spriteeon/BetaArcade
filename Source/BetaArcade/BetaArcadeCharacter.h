@@ -183,6 +183,7 @@ protected:
 		bool constantRun = false;
 
 	FVector Direction;
+	FVector currentPos;
 
 protected:
 	// APawn interface
