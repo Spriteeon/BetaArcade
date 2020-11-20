@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+#include "Math.h"
 #include "BetaArcadeGameMode.generated.h"
 
 UENUM(BlueprintType)
@@ -36,6 +37,10 @@ public:
 		TSubclassOf<class AActor> basicTileClass;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
 		TSubclassOf<class AActor> rightCornerTileClass;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
+		TSubclassOf<class AActor> leftCornerTileClass;
+
+	int leftRight;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
 		AActor* spawnedTile;

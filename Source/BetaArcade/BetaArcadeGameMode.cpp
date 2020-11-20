@@ -2,6 +2,7 @@
 
 #include "BetaArcadeGameMode.h"
 #include "BetaArcadeCharacter.h"
+#include "Math.h"
 #include "UObject/ConstructorHelpers.h"
 
 ABetaArcadeGameMode::ABetaArcadeGameMode()
@@ -73,6 +74,12 @@ AActor* ABetaArcadeGameMode::SpawnNewTile(FVector spawnLocation, FRotator spawnR
 			spawnedTiles++;
 			return spawnedTile;
 		}
+		if (tileToSpawn == ETileType::eLeftCorner)
+		{
+			spawnedTile = world->SpawnActor<AActor>(leftCornerTileClass, spawnLocation, spawnRotation, spawnParams);
+			spawnedTiles++;
+			return spawnedTile;
+		}
 		else
 		{
 			return NULL;
@@ -85,7 +92,15 @@ ETileType ABetaArcadeGameMode::GetNextTileType()
 {
 	if (spawnedTiles % 10 == 0)
 	{
-		return ETileType::eRightCorner;
+		leftRight = FMath::RandRange(0, 9);
+		if (leftRight <= 4) //Left
+		{
+			return ETileType::eLeftCorner;
+		}
+		else //Right
+		{
+			return ETileType::eRightCorner;
+		}
 	}
 	else
 	{
