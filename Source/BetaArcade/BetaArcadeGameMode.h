@@ -14,6 +14,8 @@ enum class ETileType : uint8
 	eBasic,
 	eRightCorner,
 	eLeftCorner,
+
+	//Obstacles
 	eVault,
 	eSlide,
 	eJump
@@ -51,8 +53,9 @@ public:
 	int randomModule;
 	int obstacleSpawn;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
-		AActor* spawnedTile;
+	
+	AActor* spawnedTile;
+	ETileType lastObstacleTile = ETileType::eNone;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = TileTransform)
 		FVector nextTileLocation = { 0.0f, 0.0f, 0.0f };
