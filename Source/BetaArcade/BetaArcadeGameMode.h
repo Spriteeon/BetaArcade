@@ -19,8 +19,7 @@ enum class ETileType : uint8
 	eVault,
 	eSlide,
 	eJump,
-	eLeftCliff,
-	eRightCliff
+	eCliff
 	
 };
 
