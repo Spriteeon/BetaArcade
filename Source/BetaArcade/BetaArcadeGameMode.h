@@ -18,7 +18,10 @@ enum class ETileType : uint8
 	//Obstacles
 	eVault,
 	eSlide,
-	eJump
+	eJump,
+	eLeftCliff,
+	eRightCliff
+	
 };
 
 UCLASS(minimalapi)
@@ -48,6 +51,10 @@ public:
 		TSubclassOf<class AActor> slideTileClass;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
 		TSubclassOf<class AActor> vaultTileClass;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
+		TSubclassOf<class AActor> leftCliffTileClass;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
+		TSubclassOf<class AActor> rightCliffTileClass;
 
 	int leftRight;
 	int randomModule;
