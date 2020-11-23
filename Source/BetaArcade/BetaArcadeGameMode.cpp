@@ -2,6 +2,7 @@
 
 #include "BetaArcadeGameMode.h"
 #include "BetaArcadeCharacter.h"
+#include "Math.h"
 #include "UObject/ConstructorHelpers.h"
 
 ABetaArcadeGameMode::ABetaArcadeGameMode()
@@ -67,9 +68,33 @@ AActor* ABetaArcadeGameMode::SpawnNewTile(FVector spawnLocation, FRotator spawnR
 			spawnedTiles++;
 			return spawnedTile;
 		}
-		if (tileToSpawn == ETileType::eRightCorner)
+		else if (tileToSpawn == ETileType::eRightCorner)
 		{
 			spawnedTile = world->SpawnActor<AActor>(rightCornerTileClass, spawnLocation, spawnRotation, spawnParams);
+			spawnedTiles++;
+			return spawnedTile;
+		}
+		else if (tileToSpawn == ETileType::eLeftCorner)
+		{
+			spawnedTile = world->SpawnActor<AActor>(leftCornerTileClass, spawnLocation, spawnRotation, spawnParams);
+			spawnedTiles++;
+			return spawnedTile;
+		}
+		else if (tileToSpawn == ETileType::eVault)
+		{
+			spawnedTile = world->SpawnActor<AActor>(vaultTileClass, spawnLocation, spawnRotation, spawnParams);
+			spawnedTiles++;
+			return spawnedTile;
+		}
+		else if (tileToSpawn == ETileType::eSlide)
+		{
+			spawnedTile = world->SpawnActor<AActor>(slideTileClass, spawnLocation, spawnRotation, spawnParams);
+			spawnedTiles++;
+			return spawnedTile;
+		}
+		else if (tileToSpawn == ETileType::eJump)
+		{
+			spawnedTile = world->SpawnActor<AActor>(jumpTileClass, spawnLocation, spawnRotation, spawnParams);
 			spawnedTiles++;
 			return spawnedTile;
 		}
@@ -83,9 +108,46 @@ AActor* ABetaArcadeGameMode::SpawnNewTile(FVector spawnLocation, FRotator spawnR
 
 ETileType ABetaArcadeGameMode::GetNextTileType()
 {
-	if (spawnedTiles % 10 == 0)
+	if (spawnedTiles % 10 == 0) //Every 10 Tiles
 	{
-		return ETileType::eRightCorner;
+		leftRight = FMath::RandRange(0, 9);
+		if (leftRight <= 4) //Left
+		{
+			return ETileType::eLeftCorner;
+		}
+		else //Right
+		{
+			return ETileType::eRightCorner;
+		}
+	}
+	else if (tileToSpawn == ETileType::eBasic || tileToSpawn == ETileType::eLeftCorner || tileToSpawn == ETileType::eRightCorner)
+	{
+		obstacleSpawn = FMath::RandRange(0, 9);
+		if (obstacleSpawn <= 4)
+		{
+			randomModule = FMath::RandRange(0, 2);
+			if (randomModule == 0) //Vault
+			{
+				return ETileType::eVault;
+			}
+			else if (randomModule == 1) //Slide
+			{
+				return ETileType::eSlide;
+			}
+			else if (randomModule == 2) //Jump
+			{
+				return ETileType::eJump;
+			}
+			else
+			{
+				//ERROR
+				return ETileType::eNone;
+			}
+		}
+		else
+		{
+			return ETileType::eBasic;
+		}
 	}
 	else
 	{

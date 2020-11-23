@@ -4,11 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+#include "Math.h"
 #include "BetaArcadeGameMode.generated.h"
 
 UENUM(BlueprintType)
 enum class ETileType : uint8
 {
+	eNone,
 	eBasic,
 	eRightCorner,
 	eLeftCorner,
@@ -36,6 +38,18 @@ public:
 		TSubclassOf<class AActor> basicTileClass;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
 		TSubclassOf<class AActor> rightCornerTileClass;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
+		TSubclassOf<class AActor> leftCornerTileClass;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
+		TSubclassOf<class AActor> jumpTileClass;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
+		TSubclassOf<class AActor> slideTileClass;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
+		TSubclassOf<class AActor> vaultTileClass;
+
+	int leftRight;
+	int randomModule;
+	int obstacleSpawn;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
 		AActor* spawnedTile;

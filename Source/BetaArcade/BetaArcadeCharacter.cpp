@@ -185,15 +185,15 @@ bool ABetaArcadeCharacter::StartSlide()
 void ABetaArcadeCharacter::Slide()
 {
 	currentRot = GetActorRotation();
-	FRotator slideRot = { 90, currentRot.Roll, currentRot.Yaw };
-	AddActorLocalRotation(slideRot, false, 0, ETeleportType::None);
+	FRotator slideRot = { 90, 0, 0 };
+	SetActorRelativeRotation(slideRot, false, 0, ETeleportType::None);
 }
 
 void ABetaArcadeCharacter::StopSliding()
 {
 	UE_LOG(LogTemp, Log, TEXT("SlideSTOP"));
-	FRotator resetRot = { -90, currentRot.Roll, currentRot.Yaw };
-	AddActorLocalRotation(resetRot, false, 0, ETeleportType::None);
+	FRotator resetRot = { 0, 0, 0 };
+	SetActorRelativeRotation(resetRot, false, 0, ETeleportType::None);
 	characterState = CharacterState::State::None;
 }
 
@@ -218,16 +218,16 @@ bool ABetaArcadeCharacter::StartVault()
 void ABetaArcadeCharacter::Vault()
 {
 	currentRot = GetActorRotation();
-	FRotator slideRot = { -90, currentRot.Roll, currentRot.Yaw };
-	AddActorLocalRotation(slideRot, false, 0, ETeleportType::None);	
+	FRotator vaultRot = { -90, 0, 0 };
+	SetActorRelativeRotation(vaultRot, false, 0, ETeleportType::None);
 }
 
 void ABetaArcadeCharacter::StopVaulting()
 {
 	StopJumping();
 	UE_LOG(LogTemp, Log, TEXT("VaultSTOP"));
-	FRotator resetRot = { 90, currentRot.Roll, currentRot.Yaw };
-	AddActorLocalRotation(resetRot, false, 0, ETeleportType::None);
+	FRotator resetRot = { 0,0,0 };
+	SetActorRelativeRotation(resetRot, false, 0, ETeleportType::None);
 	characterState = CharacterState::State::None;
 }
 
@@ -302,25 +302,26 @@ void ABetaArcadeCharacter::MoveForward(float Value)
 
 void ABetaArcadeCharacter::MoveRight(float Value)
 {
-	if ((Controller != NULL) && (Value != 0.0f))
+	if (characterState == CharacterState::State::None)
 	{
-		// find out which way is right
-		const FRotator Rotation = Controller->GetControlRotation();
-		const FRotator YawRotation(0, Rotation.Yaw, 0);
+		if ((Controller != NULL) && (Value != 0.0f))
+		{
+			// find out which way is right
+			const FRotator Rotation = Controller->GetControlRotation();
+			const FRotator YawRotation(0, Rotation.Yaw, 0);
 
-		// get right vector 
-		const FVector RDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-		// add movement in that direction
-		AddMovementInput(RDirection, Value);
+			// get right vector 
+			const FVector RDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+			// add movement in that direction
+			AddMovementInput(RDirection, Value);
+		}
 	}
 }
 
 // Called when the game starts or when spawned
 void ABetaArcadeCharacter::BeginPlay()
 {
-
 	Super::BeginPlay();
 
 	//GetWorldTimerManager().SetTimer(MemberTimerHandle, this, &ABetaArcadeCharacter::TrackPlayerPosition, 1.0f, true, 0.0f);
-
 }
