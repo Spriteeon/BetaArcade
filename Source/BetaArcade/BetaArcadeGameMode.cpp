@@ -139,7 +139,7 @@ ETileType ABetaArcadeGameMode::GetNextTileType()
 	else if (tileToSpawn == ETileType::eBasic || tileToSpawn == ETileType::eLeftCorner || tileToSpawn == ETileType::eRightCorner)
 	{
 		obstacleSpawn = FMath::RandRange(0, 99);
-		if (obstacleSpawn <= 49)
+		if (obstacleSpawn <= 70)
 		{
 			//Spawn an Obstacle Tile
 			randomModule = FMath::RandRange(4, 7);
