@@ -4,17 +4,23 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+#include "Math.h"
 #include "BetaArcadeGameMode.generated.h"
 
 UENUM(BlueprintType)
 enum class ETileType : uint8
 {
+	eNone,
 	eBasic,
 	eRightCorner,
 	eLeftCorner,
+
+	//Obstacles
 	eVault,
 	eSlide,
-	eJump
+	eJump,
+	eCliff
+	
 };
 
 UCLASS(minimalapi)
@@ -36,9 +42,26 @@ public:
 		TSubclassOf<class AActor> basicTileClass;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
 		TSubclassOf<class AActor> rightCornerTileClass;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
-		AActor* spawnedTile;
+		TSubclassOf<class AActor> leftCornerTileClass;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
+		TSubclassOf<class AActor> jumpTileClass;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
+		TSubclassOf<class AActor> slideTileClass;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
+		TSubclassOf<class AActor> vaultTileClass;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
+		TSubclassOf<class AActor> leftCliffTileClass;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
+		TSubclassOf<class AActor> rightCliffTileClass;
+
+	int leftRight;
+	int randomModule;
+	int obstacleSpawn;
+
+	
+	AActor* spawnedTile;
+	ETileType lastObstacleTile = ETileType::eNone;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = TileTransform)
 		FVector nextTileLocation = { 0.0f, 0.0f, 0.0f };
