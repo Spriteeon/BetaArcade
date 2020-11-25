@@ -11,6 +11,7 @@
 #include "Engine.h"
 #include "TimerManager.h"
 #include "PickUps+Hotbar/PickUpBase.h"
+#include "PickUps+Hotbar/HotbarComp.h"
 
 //////////////////////////////////////////////////////////////////////////
 // ABetaArcadeCharacter
@@ -62,6 +63,11 @@ ABetaArcadeCharacter::ABetaArcadeCharacter()
 	initialPlayerSpeed = playerMovement->MaxWalkSpeed; // Stores starting speed
 
 	Direction = GetActorForwardVector();
+
+
+	//BETH - Hotbar component initialisation.
+	Hotbar = CreateDefaultSubobject<UHotbarComp>("Hotbar");
+	Hotbar->NumSlots = 5;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -108,6 +114,8 @@ void ABetaArcadeCharacter::Tick(float DeltaTime)
 	HandleState();
 }
 
+
+//BETH - Use Pick Up.
 void ABetaArcadeCharacter::UsePickUp(APickUpBase* PickUp)
 {
 	if (PickUp)

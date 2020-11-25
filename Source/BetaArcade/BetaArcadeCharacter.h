@@ -185,6 +185,9 @@ protected:
 	FVector Direction;
 	FVector currentPos;
 
+	//BETH- Creating player inventory.
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+		class UHotbarComp* Hotbar;
 protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
