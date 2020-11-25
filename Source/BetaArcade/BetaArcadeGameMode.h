@@ -14,9 +14,13 @@ enum class ETileType : uint8
 	eBasic,
 	eRightCorner,
 	eLeftCorner,
+
+	//Obstacles
 	eVault,
 	eSlide,
-	eJump
+	eJump,
+	eCliff
+	
 };
 
 UCLASS(minimalapi)
@@ -46,13 +50,18 @@ public:
 		TSubclassOf<class AActor> slideTileClass;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
 		TSubclassOf<class AActor> vaultTileClass;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
+		TSubclassOf<class AActor> leftCliffTileClass;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
+		TSubclassOf<class AActor> rightCliffTileClass;
 
 	int leftRight;
 	int randomModule;
 	int obstacleSpawn;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
-		AActor* spawnedTile;
+	
+	AActor* spawnedTile;
+	ETileType lastObstacleTile = ETileType::eNone;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = TileTransform)
 		FVector nextTileLocation = { 0.0f, 0.0f, 0.0f };

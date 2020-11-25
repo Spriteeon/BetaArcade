@@ -62,45 +62,61 @@ AActor* ABetaArcadeGameMode::SpawnNewTile(FVector spawnLocation, FRotator spawnR
 		FActorSpawnParameters spawnParams;
 		spawnParams.Owner = this;
 
-		if (tileToSpawn == ETileType::eBasic)
+		switch (tileToSpawn)
 		{
+		case ETileType::eBasic:
 			spawnedTile = world->SpawnActor<AActor>(basicTileClass, spawnLocation, spawnRotation, spawnParams);
 			spawnedTiles++;
 			return spawnedTile;
-		}
-		else if (tileToSpawn == ETileType::eRightCorner)
-		{
+			break;
+		case ETileType::eRightCorner:
 			spawnedTile = world->SpawnActor<AActor>(rightCornerTileClass, spawnLocation, spawnRotation, spawnParams);
 			spawnedTiles++;
 			return spawnedTile;
-		}
-		else if (tileToSpawn == ETileType::eLeftCorner)
-		{
+			break;
+		case ETileType::eLeftCorner:
 			spawnedTile = world->SpawnActor<AActor>(leftCornerTileClass, spawnLocation, spawnRotation, spawnParams);
 			spawnedTiles++;
 			return spawnedTile;
-		}
-		else if (tileToSpawn == ETileType::eVault)
-		{
+			break;
+
+		//Obstacles
+		case ETileType::eVault:
 			spawnedTile = world->SpawnActor<AActor>(vaultTileClass, spawnLocation, spawnRotation, spawnParams);
 			spawnedTiles++;
+			lastObstacleTile = ETileType::eVault;
 			return spawnedTile;
-		}
-		else if (tileToSpawn == ETileType::eSlide)
-		{
+			break;
+		case ETileType::eSlide:
 			spawnedTile = world->SpawnActor<AActor>(slideTileClass, spawnLocation, spawnRotation, spawnParams);
 			spawnedTiles++;
+			lastObstacleTile = ETileType::eSlide;
 			return spawnedTile;
-		}
-		else if (tileToSpawn == ETileType::eJump)
-		{
+			break;
+		case ETileType::eJump:
 			spawnedTile = world->SpawnActor<AActor>(jumpTileClass, spawnLocation, spawnRotation, spawnParams);
 			spawnedTiles++;
+			lastObstacleTile = ETileType::eJump;
 			return spawnedTile;
-		}
-		else
-		{
+			break;
+		case ETileType::eCliff:
+			leftRight = FMath::RandRange(0, 9);
+			if (leftRight <= 4) //Left
+			{
+				spawnedTile = world->SpawnActor<AActor>(leftCliffTileClass, spawnLocation, spawnRotation, spawnParams);
+			}
+			else //Right
+			{
+				spawnedTile = world->SpawnActor<AActor>(rightCliffTileClass, spawnLocation, spawnRotation, spawnParams);
+			}
+			spawnedTiles++;
+			lastObstacleTile = ETileType::eCliff;
+			return spawnedTile;
+			break;
+		default:
 			return NULL;
+			break;
+
 		}
 	}
 	return NULL;
@@ -122,26 +138,37 @@ ETileType ABetaArcadeGameMode::GetNextTileType()
 	}
 	else if (tileToSpawn == ETileType::eBasic || tileToSpawn == ETileType::eLeftCorner || tileToSpawn == ETileType::eRightCorner)
 	{
-		obstacleSpawn = FMath::RandRange(0, 9);
-		if (obstacleSpawn <= 4)
+		obstacleSpawn = FMath::RandRange(0, 99);
+		if (obstacleSpawn <= 70)
 		{
-			randomModule = FMath::RandRange(0, 2);
-			if (randomModule == 0) //Vault
+			//Spawn an Obstacle Tile
+			randomModule = FMath::RandRange(4, 7);
+			if (lastObstacleTile == ETileType(randomModule)) //To never get the same obstacle twice in a row
 			{
+				randomModule++;
+				if (randomModule > 7)
+				{
+					randomModule = 4;
+				}
+			}
+			switch (randomModule)
+			{
+			case 4: //Vault
 				return ETileType::eVault;
-			}
-			else if (randomModule == 1) //Slide
-			{
+				break;
+			case 5: //Slide
 				return ETileType::eSlide;
-			}
-			else if (randomModule == 2) //Jump
-			{
+				break;
+			case 6: //Jump
 				return ETileType::eJump;
-			}
-			else
-			{
+				break;
+			case 7: //Cliff
+				return ETileType::eCliff;
+				break;
+			default:
 				//ERROR
 				return ETileType::eNone;
+				break;
 			}
 		}
 		else
