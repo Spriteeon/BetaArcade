@@ -213,4 +213,8 @@ public:
 	void ResetPlayerSpeed() { playerMovement->MaxWalkSpeed = initialPlayerSpeed; }; // Sets speed to original value
 	UFUNCTION(BlueprintCallable)
 	void SetPlayerSpeed(float speed) { playerMovement->MaxWalkSpeed = speed; };
+
+	//PickUp Stuff -Beth
+	UFUNCTION(BlueprintCallable, category = "PickUps")
+		void UsePickUp(class APickUpBase* PickUp);
 };

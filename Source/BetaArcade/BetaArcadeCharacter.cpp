@@ -10,6 +10,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Engine.h"
 #include "TimerManager.h"
+#include "PickUps+Hotbar/PickUpBase.h"
 
 //////////////////////////////////////////////////////////////////////////
 // ABetaArcadeCharacter
@@ -105,6 +106,14 @@ void ABetaArcadeCharacter::Tick(float DeltaTime)
 
 	//time = GetWorld()->GetRealTimeSeconds();
 	HandleState();
+}
+
+void ABetaArcadeCharacter::UsePickUp(APickUpBase* PickUp)
+{
+	if (PickUp)
+	{
+		PickUp->ItemAction(this);
+	}
 }
 
 // FRAN - State control
