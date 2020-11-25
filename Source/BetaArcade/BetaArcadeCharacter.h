@@ -3,7 +3,6 @@
 #pragma once
 #include "Kismet/GameplayStatics.h"
 #include "CoreMinimal.h"
-#include "Camera/PlayerCameraManager.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Character.h"
 
@@ -42,35 +41,27 @@ class ABetaArcadeCharacter : public ACharacter
 {	
 	GENERATED_BODY()
 
-		/** Camera boom positioning the camera behind the character */
-		UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	/** Camera boom positioning the camera behind the character */
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Camera, meta = (AllowPrivateAccess = "true"))
 		class USpringArmComponent* CameraBoom;
 
 	/** Follow camera */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-		class UCameraComponent* FollowCamera;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Camera, meta = (AllowPrivateAccess = "true"))
+		class UCameraComponent* PlayerCamera;
 public:
 	ABetaArcadeCharacter();
 
-	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
-		float BaseTurnRate;
-
-	/** Base look up/down rate, in deg/sec. Other scaling may affect final rate. */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
-		float BaseLookUpRate;
-
 	UPROPERTY(BlueprintReadWrite)
 		bool swarmReacting = false;
-
-	UFUNCTION(BlueprintCallable)
-		void TurnCamera();
+	UPROPERTY(BlueprintReadWrite)
+		FRotator currentCamRotation = { 0,0,0 };
+	UPROPERTY(BlueprintReadWrite)
+		FRotator currentPlayerRotation = { 0,0,0 };
 
 	UFUNCTION(BlueprintCallable)
 		void LeftTurn();
-
 	UFUNCTION(BlueprintCallable)
-		void LeftTurnEnd();
+		void RightTurn();
 
 protected:
 
@@ -83,17 +74,22 @@ protected:
 	/** Called for side to side input */
 	void MoveRight(float Value);
 
-	/**
-	 * Called via input to turn at a given rate.
-	 * @param Rate	This is a normalized rate, i.e. 1.0 means 100% of desired turn rate
-	 */
-	void TurnAtRate(float Rate);
+	bool hasCameraRotated = false;
+	
+	UPROPERTY()
+	FRotator currentRot;
 
-	/**
-	 * Called via input to turn look up/down at a given rate.
-	 * @param Rate	This is a normalized rate, i.e. 1.0 means 100% of desired turn rate
-	 */
-	void LookUpAtRate(float Rate);
+	///**
+	// * Called via input to turn at a given rate.
+	// * @param Rate	This is a normalized rate, i.e. 1.0 means 100% of desired turn rate
+	// */
+	//void TurnAtRate(float Rate);
+
+	///**
+	// * Called via input to turn look up/down at a given rate.
+	// * @param Rate	This is a normalized rate, i.e. 1.0 means 100% of desired turn rate
+	// */
+	//void LookUpAtRate(float Rate);
 
 	/** Handler for when a touch input begins. */
 	void TouchStarted(ETouchIndex::Type FingerIndex, FVector Location);
@@ -144,35 +140,32 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float vaultTime = 0.0f; // How long the player vaults for
 
-	UPROPERTY()
-	FRotator currentRot;
-
 	// Swarm stuff
 	bool isReacting = false;
 	void SwarmReaction() { isReacting = true; }
 	void SwarmReactionStop() { isReacting = false; }
 
-	// FRAN - Camera zoom control
-	//APlayerCameraManager* camera = GetCamera
-	void CameraZoomIn();
-	void CameraZoomOut();
-	UPROPERTY(EditAnywhere)
-	float cameraZoomValue = 50.0f;
-	UPROPERTY(EditAnywhere)
-	float minCameraZoom = 0.0f;
-	UPROPERTY(EditAnywhere)
-	float maxCameraZoom = 0.0f;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float minCameraPitch = 0.0f;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float maxCameraPitch = 0.0f;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float minCameraYaw = 0.0f;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float maxCameraYaw = 0.0f;
+	//// FRAN - Camera zoom control
+	////APlayerCameraManager* camera = GetCamera
+	//void CameraZoomIn();
+	//void CameraZoomOut();
+	//UPROPERTY(EditAnywhere)
+	//float cameraZoomValue = 50.0f;
+	//UPROPERTY(EditAnywhere)
+	//float minCameraZoom = 0.0f;
+	//UPROPERTY(EditAnywhere)
+	//float maxCameraZoom = 0.0f;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	//float minCameraPitch = 0.0f;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	//float maxCameraPitch = 0.0f;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	//float minCameraYaw = 0.0f;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	//float maxCameraYaw = 0.0f;
 
-	UPROPERTY()
-		FTransform camBoomTransform;
+	//UPROPERTY()
+	//	FTransform camBoomTransform;
 
 	const int MAX_PLAYER_LIVES = 3;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -195,10 +188,10 @@ protected:
 public:
 	virtual void Tick(float DeltaTime) override;
 
-	/** Returns CameraBoom subobject **/
-	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
-	/** Returns FollowCamera subobject **/
-	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+	///** Returns CameraBoom subobject **/
+	//FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
+	///** Returns FollowCamera subobject **/
+	//FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
 	// LIVES
 	UFUNCTION(BlueprintCallable)
