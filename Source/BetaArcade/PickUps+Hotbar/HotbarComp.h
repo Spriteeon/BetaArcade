@@ -21,6 +21,7 @@ public:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
+
 	bool AddPickUp(class APickUpBase* PickUp);
 	bool RemovePickUp(class APickUpBase* PickUp);
 

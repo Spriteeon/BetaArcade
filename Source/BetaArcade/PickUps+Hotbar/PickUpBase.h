@@ -7,7 +7,7 @@
 #include "PickUpBase.generated.h"
 
 
-UCLASS()
+UCLASS(Abstract, BlueprintType, Blueprintable, DefaultToInstanced)
 class BETAARCADE_API APickUpBase : public AActor
 {
 	GENERATED_BODY()
