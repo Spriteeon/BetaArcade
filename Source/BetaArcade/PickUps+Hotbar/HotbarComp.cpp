@@ -18,10 +18,10 @@ void UHotbarComp::BeginPlay()
 
 	// if giving default items at start of game, uncomment below.
 
-	/*for (auto& PickUp : DefaultPickUps)
+	for (auto& PickUp : DefaultPickUps)
 	{
 		AddPickUp(PickUp);
-	}*/
+	}
 	
 }
 
