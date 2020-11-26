@@ -35,7 +35,7 @@ bool UHotbarComp::AddPickUp(APickUpBase* PickUp)
 	
 	
 	PickUp->OwningComp = this;
-	PickUp->World = GetWorld();
+	/*PickUp->World = GetWorld();*/
 	PickUps.Add(PickUp);
 
 	OnHotbarUpdated.Broadcast();
@@ -48,7 +48,7 @@ bool UHotbarComp::RemovePickUp(APickUpBase* PickUp)
 	if (PickUp)
 	{
 		PickUp->OwningComp = nullptr;
-		PickUp->World = nullptr;
+		/*PickUp->World = nullptr;*/
 		PickUps.RemoveSingle(PickUp);
 		OnHotbarUpdated.Broadcast();
 		return true;

@@ -13,6 +13,7 @@ ASpeedBoost::ASpeedBoost()
 
 void ASpeedBoost::ItemAction(class ABetaArcadeCharacter* Character)
 {
+	
 	if (Character != NULL)
 	{
 		Character->SetPlayerSpeed(10000);
