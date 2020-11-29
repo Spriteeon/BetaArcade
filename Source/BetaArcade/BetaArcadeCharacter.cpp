@@ -63,8 +63,6 @@ ABetaArcadeCharacter::ABetaArcadeCharacter()
 	characterState = CharacterState::State::None;
 
 	playerMovement = GetCharacterMovement();
-	playerSpeed = playerMovement->MaxWalkSpeed;
-	initialPlayerSpeed = playerMovement->MaxWalkSpeed; // Stores starting speed
 	currentCamRotation = { -10,0,0 }; 
 	currentCamPosition = CameraBoom->GetComponentLocation();
 
@@ -214,15 +212,20 @@ bool ABetaArcadeCharacter::StartSlide()
 
 void ABetaArcadeCharacter::Slide()
 {	
+	SetPlayerSpeed(2700);
 	SetActorRelativeRotation(currentPlayerRotation, false, 0, ETeleportType::None);
 }
 
 void ABetaArcadeCharacter::StopSliding()
 {
 	UE_LOG(LogTemp, Log, TEXT("SlideSTOP"));
+
 	FRotator resetRot = { 90,0,0 };
 	currentPlayerRotation -= resetRot;
+
+	ResetPlayerSpeed();
 	SetActorRelativeRotation(currentPlayerRotation, false, 0, ETeleportType::None);
+
 	characterState = CharacterState::State::None;
 }
 
@@ -368,4 +371,7 @@ void ABetaArcadeCharacter::MoveRight(float Value)
 void ABetaArcadeCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	playerSpeed = playerMovement->MaxWalkSpeed;
+	initialPlayerSpeed = playerMovement->MaxWalkSpeed; // Stores starting speed
 }
