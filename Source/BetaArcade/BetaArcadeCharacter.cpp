@@ -17,31 +17,11 @@ ABetaArcadeCharacter::ABetaArcadeCharacter()
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
 
-	// set our turn rates for input
-	//BaseTurnRate = 45.f;
-	//BaseLookUpRate = 45.f;
-
-	// Don't rotate when the controller rotates. Let that just affect the camera.
-	/*bUseControllerRotationPitch = false;
-	bUseControllerRotationYaw = false;
-	bUseControllerRotationRoll = false;*/
-
 	// Configure character movement
 	GetCharacterMovement()->bOrientRotationToMovement = true; // Character moves in the direction of input...	
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f); // ...at this rotation rate
 	GetCharacterMovement()->JumpZVelocity = 600.f;
-	GetCharacterMovement()->AirControl = 0.2f;
-
-	//// Create a camera boom (pulls in towards the player if there is a collision)
-	//CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
-	//CameraBoom->SetupAttachment(RootComponent);
-	//CameraBoom->TargetArmLength = 300.0f; // The camera follows at this distance behind the character	
-	//CameraBoom->bUsePawnControlRotation = true; //Rotate the arm based on the controller -- FRAN: FALSE MAKES THE CAMERA FOLLOW DIRECTLY THE PLAYERS BACK, TRUE DOESNT CHANGE DEPENDING ON PLAYERS ROT
-
-	//// Create a follow camera
-	//FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
-	//FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
-	//FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
+	GetCharacterMovement()->AirControl = 0.2f;	
 
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(RootComponent);
@@ -50,9 +30,6 @@ ABetaArcadeCharacter::ABetaArcadeCharacter()
 
 	PlayerCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("PlayerCamera"));
 	PlayerCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
-
-	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
-	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
 
 	/*camera->ViewPitchMax = maxCameraPitch;
 	camera->ViewPitchMin = minCameraPitch;
@@ -78,7 +55,6 @@ void ABetaArcadeCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 	check(PlayerInputComponent);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ABetaArcadeCharacter::BetaJump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ABetaArcadeCharacter::BetaJumpStop);
-	//PlayerInputComponent->BindAction("Slide", IE_Pressed, this, &ABetaArcadeCharacter::StartSlide);
 	PlayerInputComponent->BindAction("Swarm", IE_Pressed, this, &ABetaArcadeCharacter::SwarmReaction);
 	PlayerInputComponent->BindAction("Swarm", IE_Released, this, &ABetaArcadeCharacter::SwarmReactionStop);
 	PlayerInputComponent->BindAction("FlipCamera", IE_Pressed, this, &ABetaArcadeCharacter::CameraFlipControl);
@@ -110,7 +86,6 @@ void ABetaArcadeCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	//time = GetWorld()->GetRealTimeSeconds();
 	HandleState();
 }
 
@@ -122,8 +97,6 @@ void ABetaArcadeCharacter::HandleState()
 
 	switch (characterState)
 	{
-		/*case CharacterState::Running:
-			break;*/
 	case CharacterState::State::None:
 		break;
 
@@ -212,7 +185,7 @@ bool ABetaArcadeCharacter::StartSlide()
 
 void ABetaArcadeCharacter::Slide()
 {	
-	SetPlayerSpeed(2700);
+	SetPlayerSpeed(playerSpeed * 0.7);
 	SetActorRelativeRotation(currentPlayerRotation, false, 0, ETeleportType::None);
 }
 
