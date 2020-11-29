@@ -65,7 +65,8 @@ ABetaArcadeCharacter::ABetaArcadeCharacter()
 	playerMovement = GetCharacterMovement();
 	playerSpeed = playerMovement->MaxWalkSpeed;
 	initialPlayerSpeed = playerMovement->MaxWalkSpeed; // Stores starting speed
-	currentCamRotation = { -10,0,0 };
+	currentCamRotation = { -10,0,0 }; 
+	currentCamPosition = CameraBoom->GetComponentLocation();
 
 	Direction = GetActorForwardVector();
 }
@@ -82,6 +83,7 @@ void ABetaArcadeCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 	//PlayerInputComponent->BindAction("Slide", IE_Pressed, this, &ABetaArcadeCharacter::StartSlide);
 	PlayerInputComponent->BindAction("Swarm", IE_Pressed, this, &ABetaArcadeCharacter::SwarmReaction);
 	PlayerInputComponent->BindAction("Swarm", IE_Released, this, &ABetaArcadeCharacter::SwarmReactionStop);
+	PlayerInputComponent->BindAction("FlipCamera", IE_Pressed, this, &ABetaArcadeCharacter::CameraFlipControl);
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &ABetaArcadeCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &ABetaArcadeCharacter::MoveRight);
@@ -132,15 +134,33 @@ void ABetaArcadeCharacter::HandleState()
 		break;
 
 	case CharacterState::State::Vaulting:
+		Vault();
 		break;
 
 	case CharacterState::State::Sliding:
-		//Slide();
+		Slide();
 		break;
 
 	default:
 		break;
 	}
+}
+
+void ABetaArcadeCharacter::CameraFlipControl()
+{
+	if (!isCameraBackwards) // camera is currently facing forward
+	{
+		currentCamRotation += cameraFlipRotation;
+		currentCamPosition -= camZoomPos;
+	}
+	else
+	{
+		currentCamRotation -= cameraFlipRotation;
+		currentCamPosition += camZoomPos;
+	}
+
+	CameraFlip();
+	isCameraBackwards = !isCameraBackwards;
 }
 
 void ABetaArcadeCharacter::BetaJump()
@@ -177,7 +197,10 @@ bool ABetaArcadeCharacter::StartSlide()
 	if (characterState == CharacterState::State::None)
 	{
 		characterState = CharacterState::State::Sliding;
-		Slide();
+		
+		currentRot = GetActorRotation();
+		FRotator slideRot = { 90, 0, 0 };
+		currentPlayerRotation += slideRot;
 
 		UE_LOG(LogTemp, Log, TEXT("Slide"));
 		return true;
@@ -190,17 +213,16 @@ bool ABetaArcadeCharacter::StartSlide()
 }
 
 void ABetaArcadeCharacter::Slide()
-{
-	currentRot = GetActorRotation();
-	FRotator slideRot = { 90, 0, 0 };
-	SetActorRelativeRotation(slideRot, false, 0, ETeleportType::None);
+{	
+	SetActorRelativeRotation(currentPlayerRotation, false, 0, ETeleportType::None);
 }
 
 void ABetaArcadeCharacter::StopSliding()
 {
 	UE_LOG(LogTemp, Log, TEXT("SlideSTOP"));
-	FRotator resetRot = { 0, 0, 0 };
-	SetActorRelativeRotation(resetRot, false, 0, ETeleportType::None);
+	FRotator resetRot = { 90,0,0 };
+	currentPlayerRotation -= resetRot;
+	SetActorRelativeRotation(currentPlayerRotation, false, 0, ETeleportType::None);
 	characterState = CharacterState::State::None;
 }
 
@@ -210,7 +232,11 @@ bool ABetaArcadeCharacter::StartVault()
 	{
 		characterState = CharacterState::State::Vaulting;
 		Jump();
-		//Vault();
+
+		currentRot = GetActorRotation();
+		FRotator vaultRot = { -90, 0, 0 };
+		currentPlayerRotation += vaultRot;
+		Vault();
 
 		UE_LOG(LogTemp, Log, TEXT("Vault"));
 		return true;
@@ -224,16 +250,15 @@ bool ABetaArcadeCharacter::StartVault()
 
 void ABetaArcadeCharacter::Vault()
 {
-	currentRot = GetActorRotation();
-	FRotator vaultRot = { -90, 0, 0 };
-	SetActorRelativeRotation(vaultRot, false, 0, ETeleportType::None);
+	SetActorRelativeRotation(currentPlayerRotation, false, 0, ETeleportType::None);
 }
 
 void ABetaArcadeCharacter::StopVaulting()
 {
 	StopJumping();
 	UE_LOG(LogTemp, Log, TEXT("VaultSTOP"));
-	FRotator resetRot = { 0,0,0 };
+	FRotator resetRot = { -90,0,0 };
+	currentPlayerRotation -= resetRot;
 	SetActorRelativeRotation(resetRot, false, 0, ETeleportType::None);
 	characterState = CharacterState::State::None;
 }
@@ -243,8 +268,7 @@ void ABetaArcadeCharacter::LeftTurn()
 	currentCamRotation += { 0, -60, 0 };
 	currentPlayerRotation += {0, -60, 0};
 
-	//SetActorRelativeRotation(currentPlayerRotation, false, 0, ETeleportType::None);
-	SetActorRotation(FMath::Lerp(GetActorRotation(), currentPlayerRotation, 0.5f));
+	SetActorRotation(FMath::Lerp(GetActorRotation(), currentPlayerRotation, 0.7f));
 	Direction = GetActorForwardVector();
 }
 
@@ -253,16 +277,9 @@ void ABetaArcadeCharacter::RightTurn()
 	currentCamRotation += { 0, 60, 0 };
 	currentPlayerRotation += {0, 60, 0};
 
-	//SetActorRelativeRotation(currentPlayerRotation, false, 0, ETeleportType::None);
-	SetActorRotation(FMath::Lerp(GetActorRotation(), currentPlayerRotation, 0.5f));
+	SetActorRotation(FMath::Lerp(GetActorRotation(), currentPlayerRotation, 0.7f));
 	Direction = GetActorForwardVector();
 }
-
-//
-//void ABetaArcadeCharacter::LeftTurnEnd()
-//{
-//	CameraBoom->bUsePawnControlRotation = !CameraBoom->bUsePawnControlRotation; // true: camera doesnt rotate with player, false: follows players back
-//}
 
 void ABetaArcadeCharacter::OnResetVR()
 {
@@ -310,11 +327,11 @@ void ABetaArcadeCharacter::MoveForward(float Value)
 		const FRotator Rotation = Controller->GetControlRotation();
 		const FRotator YawRotation(0, Rotation.Yaw, 0);
 
-		// get forward vector
-		//const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 		AddMovementInput(Direction, Value);
 	}
 }
+
+
 
 void ABetaArcadeCharacter::MoveRight(float Value)
 {
@@ -325,24 +342,14 @@ void ABetaArcadeCharacter::MoveRight(float Value)
 	{
 		if ((Controller != NULL) && (Value != 0.0f))
 		{
-			//// find out which way is right
-			//const FRotator Rotation = Controller->GetControlRotation();
-			//const FRotator YawRotation(0, Rotation.Yaw, 0);
-
-			//// get right vector 
-			//const FVector RDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-			//// add movement in that direction
-			//AddMovementInput(RDirection, Value);
 			if (Value < 0) // A
 			{
 				Left += currentPlayerRotation;
-				//SetActorRelativeRotation(Left, false, 0, ETeleportType::None);
 				SetActorRotation(FMath::Lerp(GetActorRotation(), Left, 0.5f));
 			}
 			else if (Value > 0)
 			{
 				Right += currentPlayerRotation;
-				//SetActorRelativeRotation(Right, false, 0, ETeleportType::None);
 				SetActorRotation(FMath::Lerp(GetActorRotation(), Right, 0.5f));
 			}
 			Direction = GetActorForwardVector();
@@ -351,7 +358,6 @@ void ABetaArcadeCharacter::MoveRight(float Value)
 
 		if (Value == 0)
 		{
-			//SetActorRelativeRotation(currentPlayerRotation, false, 0, ETeleportType::None);
 			SetActorRotation(FMath::Lerp(GetActorRotation(), currentPlayerRotation, 0.5f));
 			Direction = GetActorForwardVector();
 		}
@@ -362,6 +368,4 @@ void ABetaArcadeCharacter::MoveRight(float Value)
 void ABetaArcadeCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
-	//GetWorldTimerManager().SetTimer(MemberTimerHandle, this, &ABetaArcadeCharacter::TrackPlayerPosition, 1.0f, true, 0.0f);
 }

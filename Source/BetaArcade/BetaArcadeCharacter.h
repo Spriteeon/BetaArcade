@@ -14,7 +14,6 @@ namespace CharacterState // Namespace because enum was throwing "Member ... is n
 	enum State
 	{
 		None		UMETA(DisplayName = "None"),
-		//Running		UMETA(DisplayName = "Running"),
 		Jumping		UMETA(DisplayName = "Jumping"),
 		Vaulting	UMETA(DisplayName = "Vaulting"),
 		Sliding		UMETA(DisplayName = "Sliding"),
@@ -51,17 +50,19 @@ class ABetaArcadeCharacter : public ACharacter
 public:
 	ABetaArcadeCharacter();
 
-	UPROPERTY(BlueprintReadWrite)
-		bool swarmReacting = false;
-	UPROPERTY(BlueprintReadWrite)
-		FRotator currentCamRotation = { 0,0,0 };
-	UPROPERTY(BlueprintReadWrite)
-		FRotator currentPlayerRotation = { 0,0,0 };
-
 	UFUNCTION(BlueprintCallable)
 		void LeftTurn();
 	UFUNCTION(BlueprintCallable)
 		void RightTurn();
+
+	UPROPERTY(BlueprintReadWrite)
+		FVector currentCamPosition = { 0,0,0 };
+	UPROPERTY(BlueprintReadWrite)
+		FRotator currentCamRotation = { 0,0,0 };
+	UPROPERTY(BlueprintReadWrite)
+		FRotator currentPlayerRotation = { 0,0,0 };
+	UPROPERTY(BlueprintReadWrite)
+		bool swarmReacting = false;
 
 protected:
 
@@ -73,23 +74,10 @@ protected:
 
 	/** Called for side to side input */
 	void MoveRight(float Value);
-
-	bool hasCameraRotated = false;
 	
-	UPROPERTY()
 	FRotator currentRot;
-
-	///**
-	// * Called via input to turn at a given rate.
-	// * @param Rate	This is a normalized rate, i.e. 1.0 means 100% of desired turn rate
-	// */
-	//void TurnAtRate(float Rate);
-
-	///**
-	// * Called via input to turn look up/down at a given rate.
-	// * @param Rate	This is a normalized rate, i.e. 1.0 means 100% of desired turn rate
-	// */
-	//void LookUpAtRate(float Rate);
+	FVector Direction;
+	FVector currentPos;
 
 	/** Handler for when a touch input begins. */
 	void TouchStarted(ETouchIndex::Type FingerIndex, FVector Location);
@@ -98,10 +86,6 @@ protected:
 	void TouchStopped(ETouchIndex::Type FingerIndex, FVector Location);
 
 	// FRAN STUFF
-	// State control
-	void HandleState();
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	//PlayerState playerState = PlayerState::Idle;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TEnumAsByte<CharacterState::State> characterState;
 	UPROPERTY(BlueprintReadWrite)
@@ -112,38 +96,10 @@ protected:
 	float playerSpeed = 0.0f;
 	float initialPlayerSpeed = 0.0f;
 
-	void BetaJump();
-	void JumpEndCheck();
-	void BetaJumpStop();
-	UPROPERTY(BlueprintReadWrite)
-	bool isJumping = false;
-	UPROPERTY(BlueprintReadWrite)
-	bool canVault = false;
-
-	UFUNCTION(BlueprintCallable)
-	bool StartSlide();
-	void Slide();
-	UFUNCTION(BlueprintCallable)
-	void StopSliding();
-
-	UFUNCTION(BlueprintImplementableEvent)
-	void VaultControl();
-	UFUNCTION(BlueprintCallable)
-	bool StartVault();
-	UFUNCTION(BlueprintCallable)
-	void Vault();
-	UFUNCTION(BlueprintCallable)
-	void StopVaulting();
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float slideTime = 0.0f; // How long the player slides for
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float vaultTime = 0.0f; // How long the player vaults for
-
-	// Swarm stuff
-	bool isReacting = false;
-	void SwarmReaction() { isReacting = true; }
-	void SwarmReactionStop() { isReacting = false; }
 
 	//// FRAN - Camera zoom control
 	////APlayerCameraManager* camera = GetCamera
@@ -175,8 +131,22 @@ protected:
 	UPROPERTY(EditAnywhere)
 		bool constantRun = false;
 
-	FVector Direction;
-	FVector currentPos;
+	bool hasCameraRotated = false;
+	UPROPERTY(BlueprintReadWrite)
+	bool isCameraBackwards = false;
+	UPROPERTY(BlueprintReadWrite)
+	bool isCameraZoomed = false; 
+	UPROPERTY(EditAnywhere)
+	FRotator cameraFlipRotation = { 15,180,0 };
+	UPROPERTY(EditAnywhere)
+	FVector camZoomPos = { 360,-30,-100 };
+
+	// Swarm stuff
+	bool isReacting = false;
+	UPROPERTY(BlueprintReadWrite)
+		bool isJumping = false;
+	UPROPERTY(BlueprintReadWrite)
+		bool canVault = false;
 
 protected:
 	// APawn interface
@@ -185,13 +155,36 @@ protected:
 
 	virtual void BeginPlay() override;
 
+	// State control
+	void HandleState();
+	void CameraFlipControl();
+	UFUNCTION(BlueprintImplementableEvent)
+		void CameraFlip();
+
+	void BetaJump();
+	void JumpEndCheck();
+	void BetaJumpStop();
+
+	UFUNCTION(BlueprintCallable)
+		bool StartSlide();
+	void Slide();
+	UFUNCTION(BlueprintCallable)
+		void StopSliding();
+
+	UFUNCTION(BlueprintImplementableEvent)
+		void VaultControl();
+	UFUNCTION(BlueprintCallable)
+		bool StartVault();
+	UFUNCTION(BlueprintCallable)
+		void Vault();
+	UFUNCTION(BlueprintCallable)
+		void StopVaulting();
+
+	void SwarmReaction() { isReacting = true; }
+	void SwarmReactionStop() { isReacting = false; }
+
 public:
 	virtual void Tick(float DeltaTime) override;
-
-	///** Returns CameraBoom subobject **/
-	//FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
-	///** Returns FollowCamera subobject **/
-	//FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
 	// LIVES
 	UFUNCTION(BlueprintCallable)
