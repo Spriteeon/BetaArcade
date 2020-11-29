@@ -67,7 +67,7 @@ ABetaArcadeCharacter::ABetaArcadeCharacter()
 
 	//BETH - Hotbar component initialisation.
 	Hotbar = CreateDefaultSubobject<UHotbarComp>("Hotbar");
-	Hotbar->NumSlots = 5;
+	/*Hotbar->NumSlots = 5;*/
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -120,7 +120,9 @@ void ABetaArcadeCharacter::UsePickUp(APickUpBase* PickUp)
 {
 	if (PickUp)
 	{
-		PickUp->ItemAction(this);
+		Hotbar->AddPickUp(PickUp);
+		/*PickUp->ItemAction(this);*/
+		/*UE_LOG(LogTemp, Log, TEXT("ItemActionExecuted"));*/
 	}
 }
 

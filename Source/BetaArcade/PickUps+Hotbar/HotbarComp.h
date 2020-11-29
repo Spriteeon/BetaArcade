@@ -18,26 +18,31 @@ public:
 	// Sets default values for this component's properties
 	UHotbarComp();
 	
+	
+	UPROPERTY(VisibleAnywhere)
+	TArray<class APickUpBase*> PickUps;
+	
+	
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
 
-	bool AddPickUp(class APickUpBase* PickUp);
-	bool RemovePickUp(class APickUpBase* PickUp);
+	
 
-	UPROPERTY(EditAnywhere, Instanced)
-	TArray<class APickUpBase*> DefaultPickUps;
+	
 
-	UPROPERTY(EditAnywhere)
-		int32 NumSlots = 0;
+	
+
+	/*UPROPERTY(EditAnywhere)
+		int NumSlots = 0;*/
 
 	UPROPERTY(BlueprintAssignable)
 	FOnHotbarUpdated OnHotbarUpdated;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	TArray<class APickUpBase*> PickUps;
+	bool AddPickUp(class APickUpBase* Item);
+	void RemovePickUp(class ApickUpBase* Item);
 
-
+	
 	
 
 		

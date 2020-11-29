@@ -7,7 +7,7 @@
 // Sets default values for this component's properties
 UHotbarComp::UHotbarComp()
 {
-	NumSlots = 5;
+	/*NumSlots = 5;*/
 }
 
 
@@ -27,36 +27,28 @@ void UHotbarComp::BeginPlay()
 	
 }
 
-bool UHotbarComp::AddPickUp(APickUpBase* PickUp)
+bool UHotbarComp::AddPickUp(APickUpBase* Item)
 {
-	
-	if (PickUps.Num() >= NumSlots || !PickUp)
+	PickUps.Add(Item);
+	for (APickUpBase* PickUp : PickUps)
 	{
-		return false;
-	}
-	
-	
-	PickUp->OwningComp = this;
-	/*PickUp->World = GetWorld();*/
-	PickUps.Add(PickUp);
-
-	OnHotbarUpdated.Broadcast();
-	
-	return true;
-}
-
-bool UHotbarComp::RemovePickUp(APickUpBase* PickUp)
-{
-	if (PickUp)
-	{
-		PickUp->OwningComp = nullptr;
-		/*PickUp->World = nullptr;*/
-		PickUps.RemoveSingle(PickUp);
-		OnHotbarUpdated.Broadcast();
-		return true;
+		UE_LOG(LogTemp, Log, TEXT("PickUp: %s"), *PickUp->GetName());
+		
 	}
 	return false;
+
+	OnHotbarUpdated.Broadcast();
 }
+
+
+
+
+
+
+
+
+
+
 
 
 

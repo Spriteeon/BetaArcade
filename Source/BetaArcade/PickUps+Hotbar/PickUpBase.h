@@ -17,14 +17,18 @@ public:
 	// Sets default values for this actor's properties
 	APickUpBase();
 
+	/*UPROPERTY(Transient)
+		class UWorld* World;*/
 	
+	//virtual class UWorld* GetWorld() const { return World; };
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "PickUp Properties")
 		class UTexture2D* Thumbnail;
 protected:
 
 
 public:	
-
+	/*class ABetaArcadeCharacter;*/
 
 	virtual void ItemAction(class ABetaArcadeCharacter* Character) {};
 
@@ -39,9 +43,8 @@ public:
 	
 	
 	
-	/*virtual class UWorld* GetWorld() const { return World; };
+	
 
-	UPROPERTY(Transient)
-		class UWorld* World;*/
+	
 
 };

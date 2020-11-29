@@ -19,6 +19,7 @@ public:
 	
 	ASpeedBoost();
 
+	/*ASpeedBoost* speedboost;*/
 
 	virtual void ItemAction(class ABetaArcadeCharacter* Character) override;
 	
