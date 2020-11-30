@@ -185,9 +185,7 @@ protected:
 	FVector Direction;
 	FVector currentPos;
 
-	//BETH- Creating player inventory.
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-		class UHotbarComp* Hotbar;
+	
 protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -210,7 +208,9 @@ public:
 	void AddPlayerLives(int lives) { playerLives += lives; }; // Adds however many lives are passed in, to take away lives just pass in a negative
 
 	bool GetSwarmReaction() { return swarmReacting; };
-
+	
+	
+	
 	// SPEED
 	UFUNCTION(BlueprintCallable)
 	void ResetPlayerSpeed() { playerMovement->MaxWalkSpeed = initialPlayerSpeed; }; // Sets speed to original value
@@ -220,4 +220,8 @@ public:
 	//PickUp Stuff -Beth
 	UFUNCTION(BlueprintCallable, category = "PickUps")
 		void UsePickUp(class APickUpBase* PickUp);
+	
+	//BETH- Creating player inventory.
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+		class UHotbarComp* Hotbar;
 };

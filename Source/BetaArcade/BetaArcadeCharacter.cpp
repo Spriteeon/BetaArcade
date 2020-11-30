@@ -67,7 +67,8 @@ ABetaArcadeCharacter::ABetaArcadeCharacter()
 
 	//BETH - Hotbar component initialisation.
 	Hotbar = CreateDefaultSubobject<UHotbarComp>("Hotbar");
-	/*Hotbar->NumSlots = 5;*/
+ 	/*Hotbar->NumSlots = 5;*/
+	/*PickUp->OwningComp = Hotbar;*/
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -118,11 +119,15 @@ void ABetaArcadeCharacter::Tick(float DeltaTime)
 //BETH - Use Pick Up.
 void ABetaArcadeCharacter::UsePickUp(APickUpBase* PickUp)
 {
-	if (PickUp)
+	if (PickUp != NULL && PickUp->PickUpID == 1)
 	{
 		Hotbar->AddPickUp(PickUp);
 		/*PickUp->ItemAction(this);*/
 		/*UE_LOG(LogTemp, Log, TEXT("ItemActionExecuted"));*/
+	}
+	else if (PickUp != NULL && PickUp->PickUpID == 2)
+	{
+		PickUp->ItemAction(this);
 	}
 }
 

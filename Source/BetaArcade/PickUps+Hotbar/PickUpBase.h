@@ -32,8 +32,14 @@ public:
 
 	virtual void ItemAction(class ABetaArcadeCharacter* Character) {};
 
+	UFUNCTION(BlueprintCallable)
+	virtual void UseFromHotbar(class ABetaArcadeCharacter* Character) {};
+
 	UPROPERTY()
 		class UHotbarComp* OwningComp;
+
+	UPROPERTY(VisibleAnywhere)
+		int PickUpID = 0;
 	
 	
 	

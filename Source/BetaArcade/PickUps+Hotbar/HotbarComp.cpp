@@ -4,40 +4,51 @@
 #include "HotbarComp.h"
 #include "PickUpBase.h"
 
+
 // Sets default values for this component's properties
 UHotbarComp::UHotbarComp()
 {
-	/*NumSlots = 5;*/
+	NumSlots = 5;
 }
 
 
 // Called when the game starts
-void UHotbarComp::BeginPlay()
+void UHotbarComp::BeginPlay(class APickUpBase* PickUp)
 {
 	Super::BeginPlay();
+	/*PickUp->OwningComp = this;*/
+}
 
-	// if giving default items at start of game, uncomment below.
-
-	//for (auto& PickUp : DefaultPickUps)
-	//{
-	//	AddPickUp(PickUp);
-	//}
-
-	
+void UHotbarComp::UseHotbarItem(class APickUpBase* PickUp)
+{
 	
 }
 
-bool UHotbarComp::AddPickUp(APickUpBase* Item)
+bool UHotbarComp::AddPickUp(class APickUpBase* PickUp)
 {
-	PickUps.Add(Item);
-	for (APickUpBase* PickUp : PickUps)
+	
+	/*TSharedPtr<class UHotbarComp> MysharedPointer = mysharedReference;*/
+	/*this->GetOwner();*/
+	/*if(this->GetOwner() == !NULL)*/
+	/*AActor* test = this->GetOwner();*/
+
+	PickUps.Add(PickUp);
+	PickUp->SetActorHiddenInGame(true);
+	
+	/*for (APickUpBase* PickUp : PickUps)
 	{
 		UE_LOG(LogTemp, Log, TEXT("PickUp: %s"), *PickUp->GetName());
 		
-	}
+	}*/
 	return false;
 
+	//Update UI.
 	OnHotbarUpdated.Broadcast();
+}
+
+void UHotbarComp::RemovePickUp(class APickUpBase* PickUp)
+{
+	PickUps.Remove(PickUp);
 }
 
 

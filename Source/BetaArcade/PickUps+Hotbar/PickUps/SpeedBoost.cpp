@@ -2,13 +2,14 @@
 
 
 #include "SpeedBoost.h"
-#include "PickUps+Hotbar/HotbarComp.h"
 #include "BetaArcadeCharacter.h"
+#include "PickUps+Hotbar/HotbarComp.h"
+
 
 
 ASpeedBoost::ASpeedBoost()
 {
-
+	PickUpID = 1;
 }
 
 
@@ -16,6 +17,7 @@ void ASpeedBoost::ItemAction(class ABetaArcadeCharacter* Character)
 {
 	
 	OwningComp->AddPickUp(this);
+	/*AddPickUp(this);*/
 	/*OwningComp->AddPickUp(this);*/
 		
 			
@@ -31,4 +33,14 @@ void ASpeedBoost::ItemAction(class ABetaArcadeCharacter* Character)
 	//	UE_LOG(LogTemp, Log, TEXT("Speed boost active"));
 	//	/*Destroy();*/
 	//}
+}
+void ASpeedBoost::UseFromHotbar(class ABetaArcadeCharacter* Character)
+{
+	if (Character != NULL)
+	{
+		Character->SetPlayerSpeed(50000);
+		/*OwningComp->RemovePickUp(this);*/
+		UE_LOG(LogTemp, Log, TEXT("Speed boost active"));
+		/*Destroy();*/
+	}
 }
