@@ -178,6 +178,11 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int playerLives = 0;
 
+
+	const int MAX_LIGHT_CAPACITY = 100;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int lightCapacity = 0;
+
 	// Constant run toggle for testing!
 	UPROPERTY(EditAnywhere)
 		bool constantRun = false;
@@ -217,11 +222,18 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetPlayerSpeed(float speed) { playerMovement->MaxWalkSpeed = speed; };
 
-	//PickUp Stuff -Beth
-	UFUNCTION(BlueprintCallable, category = "PickUps")
+	//BETH - PICKUPS & HOTBAR 
+	UFUNCTION(BlueprintCallable)
 		void UsePickUp(class APickUpBase* PickUp);
+	UFUNCTION(BlueprintCallable)
+		int GetLightAmount() { return lightCapacity; };
 	
-	//BETH- Creating player inventory.
+	UFUNCTION(BlueprintCallable, category = "PickUps")
+		void AddLightAmount(int lightamount) { lightCapacity += lightamount; };
+
+	bool LightMetreFull();
+	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 		class UHotbarComp* Hotbar;
+
 };

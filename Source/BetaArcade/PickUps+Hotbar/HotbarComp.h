@@ -19,7 +19,7 @@ public:
 	UHotbarComp();
 	
 	// Called when the game starts
-	virtual void BeginPlay(class APickUpBase* PickUp);
+	virtual void BeginPlay();
 
 	//Hotbar Capacity.
 	UPROPERTY(EditAnywhere)

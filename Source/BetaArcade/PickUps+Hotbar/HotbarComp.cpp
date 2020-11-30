@@ -13,7 +13,7 @@ UHotbarComp::UHotbarComp()
 
 
 // Called when the game starts
-void UHotbarComp::BeginPlay(class APickUpBase* PickUp)
+void UHotbarComp::BeginPlay()
 {
 	Super::BeginPlay();
 	/*PickUp->OwningComp = this;*/

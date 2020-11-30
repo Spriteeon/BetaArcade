@@ -125,10 +125,23 @@ void ABetaArcadeCharacter::UsePickUp(APickUpBase* PickUp)
 		/*PickUp->ItemAction(this);*/
 		/*UE_LOG(LogTemp, Log, TEXT("ItemActionExecuted"));*/
 	}
-	else if (PickUp != NULL && PickUp->PickUpID == 2)
+	else if (PickUp != NULL && PickUp->PickUpID >= 2)
 	{
 		PickUp->ItemAction(this);
 	}
+}
+
+bool ABetaArcadeCharacter::LightMetreFull()
+{
+	if (lightCapacity >= 100)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+	
 }
 
 // FRAN - State control
