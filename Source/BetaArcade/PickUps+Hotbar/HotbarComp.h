@@ -30,7 +30,7 @@ public:
 	FOnHotbarUpdated OnHotbarUpdated;
 
 	//PickUp array. 
-	//UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadOnly)
 	TArray<class APickUpBase*> PickUps;
 	
 	UFUNCTION(BlueprintCallable)
