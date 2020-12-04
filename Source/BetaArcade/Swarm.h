@@ -12,18 +12,19 @@ class BETAARCADE_API ASwarm : public AActor
 	GENERATED_BODY()
 
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(BlueprintReadWrite)
 	ABetaArcadeCharacter* player;
 
-	UPROPERTY(BlueprintReadWrite)
-	bool isSuccess = false;
-	UPROPERTY(BlueprintReadWrite)
-	bool inArea = false;
+	FKey qteKey;
+	FString qteText;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	float slowTime = 0.0f;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	float slowSpeed = 0.0f;
+
+	UPROPERTY(BlueprintReadWrite)
+	bool isSuccess = false;
 	
 public:	
 	// Sets default values for this actor's properties
@@ -33,7 +34,9 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
+		void ChooseKey();
+	UFUNCTION(BlueprintCallable)
 	bool CheckSuccess();
 	UFUNCTION(BlueprintCallable)
 	void Failed();

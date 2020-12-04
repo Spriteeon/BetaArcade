@@ -18,22 +18,38 @@ void ASwarm::BeginPlay()
 	Super::BeginPlay();
 }
 
+void ASwarm::ChooseKey()
+{
+	int randKey = rand() % 3;
+
+	switch (randKey)
+	{
+	case 0: 
+		qteKey = EKeys::Q;
+		qteText = "Q";
+		break;
+
+	case 1:
+		qteKey = EKeys::W;
+		qteText = "W";
+		break;
+
+	case 2:
+		qteKey = EKeys::E;
+		qteText = "E";
+		break;
+
+	default:
+		break;
+	}
+
+	player->GetSwarmKey(qteKey, qteText);
+}
+
 // Called every frame
 void ASwarm::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	if (inArea)
-	{
-		if (!isSuccess) // Player hasn't pressed button yet
-		{
-			UE_LOG(LogTemp, Log, TEXT("SWARM ATTACK"));
-			if (CheckSuccess())
-			{
-				UE_LOG(LogTemp, Log, TEXT("SUCCESS"));
-			}
-		}
-	}
 }
 
 bool ASwarm::CheckSuccess()
