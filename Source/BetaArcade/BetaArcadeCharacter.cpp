@@ -346,7 +346,7 @@ void ABetaArcadeCharacter::MoveForward(float Value)
 void ABetaArcadeCharacter::MoveRight(float Value)
 {
 	FRotator Left = { 0,-30,0 };
-	FRotator Right = FRotator{ 0,30,0 };
+	FRotator Right = { 0,30,0 };
 
 	if (characterState == CharacterState::State::None)
 	{
