@@ -52,7 +52,7 @@ ABetaArcadeCharacter::ABetaArcadeCharacter()
 	Hotbar = CreateDefaultSubobject<UHotbarComp>("Hotbar");
  	Hotbar->NumSlots = 5;
 	/*PickUp->OwningComp = Hotbar;*/
-	playerScore = 0;
+	playerScore = 0.f;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -89,6 +89,7 @@ void ABetaArcadeCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 void ABetaArcadeCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	AddPointsToScore(1);
 
 	HandleState();
 }
