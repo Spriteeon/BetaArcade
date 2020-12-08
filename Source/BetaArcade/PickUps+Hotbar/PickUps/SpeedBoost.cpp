@@ -10,6 +10,7 @@
 ASpeedBoost::ASpeedBoost()
 {
 	PickUpID = 1;
+	pointsValue = 50;
 }
 
 
@@ -41,6 +42,7 @@ void ASpeedBoost::UseFromHotbar(class ABetaArcadeCharacter* Character)
 		Character->SetPlayerSpeed(50000);
 		/*OwningComp->RemovePickUp(this);*/
 		UE_LOG(LogTemp, Log, TEXT("Speed boost active"));
+		Character->AddPointsToScore(pointsValue);
 		/*Destroy();*/
 		Character->Hotbar->RemovePickUp(this);
 	}

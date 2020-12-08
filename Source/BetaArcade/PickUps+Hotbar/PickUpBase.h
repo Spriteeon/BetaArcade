@@ -41,7 +41,8 @@ public:
 	UPROPERTY(VisibleAnywhere)
 		int PickUpID = 0;
 	
-	
+	UPROPERTY()
+		int pointsValue = 0;
 	
 	
 	

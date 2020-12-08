@@ -52,6 +52,7 @@ ABetaArcadeCharacter::ABetaArcadeCharacter()
 	Hotbar = CreateDefaultSubobject<UHotbarComp>("Hotbar");
  	Hotbar->NumSlots = 5;
 	/*PickUp->OwningComp = Hotbar;*/
+	playerScore = 0;
 }
 
 //////////////////////////////////////////////////////////////////////////
