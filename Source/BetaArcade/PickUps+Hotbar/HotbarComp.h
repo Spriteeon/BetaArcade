@@ -33,8 +33,8 @@ public:
 	UPROPERTY(BlueprintReadOnly)
 	TArray<class APickUpBase*> PickUps;
 	
-	UFUNCTION(BlueprintCallable)
-	void UseHotbarItem(class APickUpBase* PickUp);
+	/*UFUNCTION(BlueprintCallable)
+	void UseHotbarItem(class APickUpBase* PickUp);*/
 
 	/*UHotbarComp* get_this(UHotbarComp)
 	{
@@ -44,6 +44,8 @@ public:
 
 	//Add and Remove from hotbar Functions. 
 	bool AddPickUp(class APickUpBase* PickUp);
+	
+	
 	void RemovePickUp(class APickUpBase* PickUp);
 
 };

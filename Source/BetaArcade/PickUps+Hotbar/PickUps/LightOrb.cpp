@@ -12,7 +12,7 @@ ALightOrb::ALightOrb()
 
 void ALightOrb::ItemAction(class ABetaArcadeCharacter* Character)
 {
-	if (Character && Character->GetLightAmount() < 150)
+	if (Character && Character->GetLightAmount() < 100)
 	{
 		Character->AddLightAmount(10);
 

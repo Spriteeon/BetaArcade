@@ -8,7 +8,6 @@
 // Sets default values for this component's properties
 UHotbarComp::UHotbarComp()
 {
-	NumSlots = 5;
 }
 
 
@@ -19,36 +18,26 @@ void UHotbarComp::BeginPlay()
 	/*PickUp->OwningComp = this;*/
 }
 
-void UHotbarComp::UseHotbarItem(class APickUpBase* PickUp)
-{
-	
-}
 
 bool UHotbarComp::AddPickUp(class APickUpBase* PickUp)
 {
-	
-	/*TSharedPtr<class UHotbarComp> MysharedPointer = mysharedReference;*/
-	/*this->GetOwner();*/
-	/*if(this->GetOwner() == !NULL)*/
-	/*AActor* test = this->GetOwner();*/
-
-	PickUps.Add(PickUp);
-	PickUp->SetActorHiddenInGame(true);
-	
-	/*for (APickUpBase* PickUp : PickUps)
+	if (PickUps.Num() >= NumSlots || !PickUp)
 	{
-		UE_LOG(LogTemp, Log, TEXT("PickUp: %s"), *PickUp->GetName());
-		
-	}*/
-	return false;
+		return false;
+	}
+	else
+	{
+		PickUps.Add(PickUp);
+		OnHotbarUpdated.Broadcast();
 
-	//Update UI.
-	OnHotbarUpdated.Broadcast();
+		return true;
+	}
 }
 
 void UHotbarComp::RemovePickUp(class APickUpBase* PickUp)
 {
-	PickUps.Remove(PickUp);
+		PickUps.RemoveSingle(PickUp);
+		OnHotbarUpdated.Broadcast();
 }
 
 

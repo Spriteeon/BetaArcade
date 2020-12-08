@@ -50,7 +50,7 @@ ABetaArcadeCharacter::ABetaArcadeCharacter()
 
 	//BETH - Hotbar component initialisation.
 	Hotbar = CreateDefaultSubobject<UHotbarComp>("Hotbar");
- 	/*Hotbar->NumSlots = 5;*/
+ 	Hotbar->NumSlots = 5;
 	/*PickUp->OwningComp = Hotbar;*/
 }
 
@@ -98,8 +98,6 @@ void ABetaArcadeCharacter::UsePickUp(APickUpBase* PickUp)
 	if (PickUp != NULL && PickUp->PickUpID == 1)
 	{
 		Hotbar->AddPickUp(PickUp);
-		/*PickUp->ItemAction(this);*/
-		/*UE_LOG(LogTemp, Log, TEXT("ItemActionExecuted"));*/
 	}
 	else if (PickUp != NULL && PickUp->PickUpID >= 2)
 	{
