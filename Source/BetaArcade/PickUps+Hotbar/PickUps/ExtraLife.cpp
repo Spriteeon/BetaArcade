@@ -10,6 +10,7 @@
 AExtraLife::AExtraLife()
 {
 	PickUpID = 2;
+	pointsValue = 30;
 }
 
 
@@ -18,7 +19,7 @@ void AExtraLife::ItemAction(class ABetaArcadeCharacter* Character)
 	if (Character && Character->GetPlayerLives() < 5)
 	{
 		Character->AddPlayerLives(1);
-
+		Character->AddPointsToScore(pointsValue);
 		UE_LOG(LogTemp, Log, TEXT("Added life"));
 		/*Destroy();*/
 	}

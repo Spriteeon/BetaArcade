@@ -7,12 +7,13 @@
 ALightOrb::ALightOrb()
 {
 	PickUpID = 3;
+	pointsValue = 20;
 }
 
 
 void ALightOrb::ItemAction(class ABetaArcadeCharacter* Character)
 {
-	if (Character && Character->GetLightAmount() < 150)
+	if (Character && Character->GetLightAmount() < 100)
 	{
 		Character->AddLightAmount(10);
 

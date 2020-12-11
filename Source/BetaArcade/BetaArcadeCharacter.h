@@ -67,6 +67,9 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 		FKey keyPressed;
 
+	UPROPERTY(BlueprintReadOnly)
+		FVector playerDirection = { 0,0,0 };
+
 protected:
 
 	/** Resets HMD orientation in VR. */
@@ -124,10 +127,14 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int playerLives = 0;
 
-
+	//Light bar- BETH
 	const int MAX_LIGHT_CAPACITY = 100;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int lightCapacity = 0;
+
+	//Points system - BETH
+	UPROPERTY()
+		int playerScore = 0;
 
 	// Constant run toggle for testing!
 	UPROPERTY(EditAnywhere)
@@ -206,7 +213,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetPlayerSpeed(float speed) { playerMovement->MaxWalkSpeed = speed; };
 
-	//BETH - PICKUPS & HOTBAR 
+	//BETH - 
+	
+	//PICKUPS & HOTBAR 
 	UFUNCTION(BlueprintCallable)
 		void UsePickUp(class APickUpBase* PickUp);
 	UFUNCTION(BlueprintCallable)
@@ -219,5 +228,12 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 		class UHotbarComp* Hotbar;
+
+	//Points
+	UFUNCTION(BlueprintCallable)
+		int GetPlayerScore() { return playerScore; };
+	
+	UFUNCTION(BlueprintCallable)
+		void AddPointsToScore(int points) { playerScore += points; };
 
 };

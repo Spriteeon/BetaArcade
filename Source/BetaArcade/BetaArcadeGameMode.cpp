@@ -124,7 +124,7 @@ AActor* ABetaArcadeGameMode::SpawnNewTile(FVector spawnLocation, FRotator spawnR
 
 ETileType ABetaArcadeGameMode::GetNextTileType()
 {
-	if (spawnedTiles % 10 == 0) //Every 10 Tiles
+	if (spawnedTiles % 20 == 0) //Every 10 Tiles
 	{
 		leftRight = FMath::RandRange(0, 9);
 		if (leftRight <= 4) //Left

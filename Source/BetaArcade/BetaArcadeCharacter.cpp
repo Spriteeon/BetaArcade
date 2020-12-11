@@ -46,12 +46,13 @@ ABetaArcadeCharacter::ABetaArcadeCharacter()
 	currentCamPosition = CameraBoom->GetComponentLocation();
 
 	Direction = GetActorForwardVector();
-
+	playerDirection = GetActorForwardVector();
 
 	//BETH - Hotbar component initialisation.
 	Hotbar = CreateDefaultSubobject<UHotbarComp>("Hotbar");
- 	/*Hotbar->NumSlots = 5;*/
+ 	Hotbar->NumSlots = 5;
 	/*PickUp->OwningComp = Hotbar;*/
+	playerScore = 0.f;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -88,6 +89,7 @@ void ABetaArcadeCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 void ABetaArcadeCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	AddPointsToScore(1);
 
 	HandleState();
 }
@@ -98,8 +100,6 @@ void ABetaArcadeCharacter::UsePickUp(APickUpBase* PickUp)
 	if (PickUp != NULL && PickUp->PickUpID == 1)
 	{
 		Hotbar->AddPickUp(PickUp);
-		/*PickUp->ItemAction(this);*/
-		/*UE_LOG(LogTemp, Log, TEXT("ItemActionExecuted"));*/
 	}
 	else if (PickUp != NULL && PickUp->PickUpID >= 2)
 	{
@@ -290,6 +290,7 @@ void ABetaArcadeCharacter::LeftTurn()
 
 	SetActorRotation(FMath::Lerp(GetActorRotation(), currentPlayerRotation, 0.7f));
 	Direction = GetActorForwardVector();
+	playerDirection = GetActorForwardVector();
 }
 
 void ABetaArcadeCharacter::RightTurn()
@@ -299,6 +300,7 @@ void ABetaArcadeCharacter::RightTurn()
 
 	SetActorRotation(FMath::Lerp(GetActorRotation(), currentPlayerRotation, 0.7f));
 	Direction = GetActorForwardVector();
+	playerDirection = GetActorForwardVector();
 }
 
 void ABetaArcadeCharacter::OnResetVR()
