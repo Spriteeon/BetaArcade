@@ -23,6 +23,13 @@ bool UHotbarComp::AddPickUp(class APickUpBase* PickUp)
 {
 	if (PickUps.Num() >= NumSlots || !PickUp)
 	{
+		/*for(int i = 0; i < PickUps.Size; i++)
+			
+			if (PickUps[i] = PickUp)
+			{
+				return false;
+			}*/
+		
 		return false;
 	}
 	else
