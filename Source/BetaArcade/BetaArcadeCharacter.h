@@ -67,6 +67,9 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 		FKey keyPressed;
 
+	UPROPERTY(BlueprintReadOnly)
+		FVector playerDirection = { 0,0,0 };
+
 protected:
 
 	/** Resets HMD orientation in VR. */

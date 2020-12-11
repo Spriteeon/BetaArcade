@@ -46,7 +46,7 @@ ABetaArcadeCharacter::ABetaArcadeCharacter()
 	currentCamPosition = CameraBoom->GetComponentLocation();
 
 	Direction = GetActorForwardVector();
-
+	playerDirection = GetActorForwardVector();
 
 	//BETH - Hotbar component initialisation.
 	Hotbar = CreateDefaultSubobject<UHotbarComp>("Hotbar");
@@ -290,6 +290,7 @@ void ABetaArcadeCharacter::LeftTurn()
 
 	SetActorRotation(FMath::Lerp(GetActorRotation(), currentPlayerRotation, 0.7f));
 	Direction = GetActorForwardVector();
+	playerDirection = GetActorForwardVector();
 }
 
 void ABetaArcadeCharacter::RightTurn()
@@ -299,6 +300,7 @@ void ABetaArcadeCharacter::RightTurn()
 
 	SetActorRotation(FMath::Lerp(GetActorRotation(), currentPlayerRotation, 0.7f));
 	Direction = GetActorForwardVector();
+	playerDirection = GetActorForwardVector();
 }
 
 void ABetaArcadeCharacter::OnResetVR()
