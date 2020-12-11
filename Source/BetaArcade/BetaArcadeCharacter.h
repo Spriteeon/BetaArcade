@@ -64,6 +64,9 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 		bool swarmReacting = false;
 
+	UPROPERTY(BlueprintReadWrite)
+		FKey keyPressed;
+
 protected:
 
 	/** Resets HMD orientation in VR. */
@@ -78,12 +81,6 @@ protected:
 	FRotator currentRot;
 	FVector Direction;
 	FVector currentPos;
-
-	/** Handler for when a touch input begins. */
-	void TouchStarted(ETouchIndex::Type FingerIndex, FVector Location);
-
-	/** Handler for when a touch input stops. */
-	void TouchStopped(ETouchIndex::Type FingerIndex, FVector Location);
 
 	// FRAN STUFF
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -146,13 +143,15 @@ protected:
 	UPROPERTY(EditAnywhere)
 	FVector camZoomPos = { 360,-30,-100 };
 
-	// Swarm stuff
-	bool isReacting = false;
 	UPROPERTY(BlueprintReadWrite)
 		bool isJumping = false;
 	UPROPERTY(BlueprintReadWrite)
 		bool canVault = false;
 
+	UPROPERTY(BlueprintReadWrite)
+		FKey currentSwarmKey;
+	UPROPERTY(BlueprintReadWrite)
+		FString qteText;
 	
 protected:
 	// APawn interface
@@ -186,8 +185,7 @@ protected:
 	UFUNCTION(BlueprintCallable)
 		void StopVaulting();
 
-	void SwarmReaction() { isReacting = true; }
-	void SwarmReactionStop() { isReacting = false; }
+	void DodgeCheck(FKey keyPressed);
 
 public:
 	virtual void Tick(float DeltaTime) override;
@@ -198,10 +196,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void AddPlayerLives(int lives) { playerLives += lives; }; // Adds however many lives are passed in, to take away lives just pass in a negative
 
-	bool GetSwarmReaction() { return swarmReacting; };
-	
-	
-	
+	bool GetSwarmReaction() { return swarmReacting; };	
+	UFUNCTION(BlueprintCallable)
+		void GetSwarmKey(FKey key, FString text) { currentSwarmKey = key; qteText = text; };
+		
 	// SPEED
 	UFUNCTION(BlueprintCallable)
 	void ResetPlayerSpeed() { playerMovement->MaxWalkSpeed = initialPlayerSpeed; }; // Sets speed to original value

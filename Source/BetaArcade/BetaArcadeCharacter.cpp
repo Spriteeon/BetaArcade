@@ -63,9 +63,8 @@ void ABetaArcadeCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 	check(PlayerInputComponent);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ABetaArcadeCharacter::BetaJump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ABetaArcadeCharacter::BetaJumpStop);
-	PlayerInputComponent->BindAction("Swarm", IE_Pressed, this, &ABetaArcadeCharacter::SwarmReaction);
-	PlayerInputComponent->BindAction("Swarm", IE_Released, this, &ABetaArcadeCharacter::SwarmReactionStop);
 	PlayerInputComponent->BindAction("FlipCamera", IE_Pressed, this, &ABetaArcadeCharacter::CameraFlipControl);
+	PlayerInputComponent->BindAction("Dodge", IE_Pressed, this, &ABetaArcadeCharacter::DodgeCheck);
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &ABetaArcadeCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &ABetaArcadeCharacter::MoveRight);
@@ -82,10 +81,6 @@ void ABetaArcadeCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 	PlayerInputComponent->BindAction("CameraZoomOut", IE_Pressed, this, &ABetaArcadeCharacter::CameraZoomOut);
 	PlayerInputComponent->BindAction("CameraZoomOut", IE_Released, this, &ABetaArcadeCharacter::CameraZoomOut);*/
 
-	// handle touch devices
-	PlayerInputComponent->BindTouch(IE_Pressed, this, &ABetaArcadeCharacter::TouchStarted);
-	PlayerInputComponent->BindTouch(IE_Released, this, &ABetaArcadeCharacter::TouchStopped);
-
 	// VR headset functionality
 	PlayerInputComponent->BindAction("ResetVR", IE_Pressed, this, &ABetaArcadeCharacter::OnResetVR);
 }
@@ -96,7 +91,6 @@ void ABetaArcadeCharacter::Tick(float DeltaTime)
 
 	HandleState();
 }
-
 
 //BETH - Use Pick Up.
 void ABetaArcadeCharacter::UsePickUp(APickUpBase* PickUp)
@@ -276,6 +270,19 @@ void ABetaArcadeCharacter::StopVaulting()
 	characterState = CharacterState::State::None;
 }
 
+void ABetaArcadeCharacter::DodgeCheck(FKey keyPressed)
+{
+	if (keyPressed == currentSwarmKey)
+	{
+		swarmReacting = true;
+	}
+	else
+	{
+		swarmReacting = false;
+	}
+
+}
+
 void ABetaArcadeCharacter::LeftTurn()
 {
 	currentCamRotation += { 0, -60, 0 };
@@ -297,14 +304,6 @@ void ABetaArcadeCharacter::RightTurn()
 void ABetaArcadeCharacter::OnResetVR()
 {
 	UHeadMountedDisplayFunctionLibrary::ResetOrientationAndPosition();
-}
-
-void ABetaArcadeCharacter::TouchStarted(ETouchIndex::Type FingerIndex, FVector Location)
-{
-}
-
-void ABetaArcadeCharacter::TouchStopped(ETouchIndex::Type FingerIndex, FVector Location)
-{
 }
 
 //// FRAN - CAMERA ZOOM
@@ -344,12 +343,10 @@ void ABetaArcadeCharacter::MoveForward(float Value)
 	}
 }
 
-
-
 void ABetaArcadeCharacter::MoveRight(float Value)
 {
 	FRotator Left = { 0,-30,0 };
-	FRotator Right = FRotator{ 0,30,0 };
+	FRotator Right = { 0,30,0 };
 
 	if (characterState == CharacterState::State::None)
 	{
