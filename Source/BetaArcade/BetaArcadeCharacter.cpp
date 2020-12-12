@@ -33,6 +33,11 @@ ABetaArcadeCharacter::ABetaArcadeCharacter()
 	PlayerCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("PlayerCamera"));
 	PlayerCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 
+	MonsterBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("MonsterBoom"));
+	MonsterBoom->SetupAttachment(RootComponent);
+	MonsterBoom->TargetArmLength = 1000.0f;
+	MonsterBoom->bUsePawnControlRotation = true;
+
 	/*camera->ViewPitchMax = maxCameraPitch;
 	camera->ViewPitchMin = minCameraPitch;
 	camera->ViewYawMax = maxCameraYaw;
@@ -44,6 +49,7 @@ ABetaArcadeCharacter::ABetaArcadeCharacter()
 	playerMovement = GetCharacterMovement();
 	currentCamRotation = { -10,0,0 }; 
 	currentCamPosition = CameraBoom->GetComponentLocation();
+	currentMonsterRotation = { 0,0,0 };
 
 	Direction = GetActorForwardVector();
 	playerDirection = GetActorForwardVector();
@@ -287,6 +293,7 @@ void ABetaArcadeCharacter::LeftTurn()
 {
 	currentCamRotation += { 0, -60, 0 };
 	currentPlayerRotation += {0, -60, 0};
+	currentMonsterRotation += {0, -60, 0};
 
 	SetActorRotation(FMath::Lerp(GetActorRotation(), currentPlayerRotation, 0.7f));
 	Direction = GetActorForwardVector();
@@ -297,6 +304,7 @@ void ABetaArcadeCharacter::RightTurn()
 {
 	currentCamRotation += { 0, 60, 0 };
 	currentPlayerRotation += {0, 60, 0};
+	currentMonsterRotation += {0, 60, 0};
 
 	SetActorRotation(FMath::Lerp(GetActorRotation(), currentPlayerRotation, 0.7f));
 	Direction = GetActorForwardVector();

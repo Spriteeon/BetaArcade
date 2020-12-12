@@ -47,6 +47,9 @@ class ABetaArcadeCharacter : public ACharacter
 	/** Follow camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Camera, meta = (AllowPrivateAccess = "true"))
 		class UCameraComponent* PlayerCamera;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+		class USpringArmComponent* MonsterBoom;
 public:
 	ABetaArcadeCharacter();
 
@@ -55,6 +58,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void RightTurn();
 
+	UPROPERTY(BlueprintReadWrite)
+		FRotator currentMonsterRotation = { 0,0,0 };
 	UPROPERTY(BlueprintReadWrite)
 		FVector currentCamPosition = { 0,0,0 };
 	UPROPERTY(BlueprintReadWrite)
