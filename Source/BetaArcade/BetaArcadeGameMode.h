@@ -10,16 +10,14 @@
 UENUM(BlueprintType)
 enum class ETileType : uint8
 {
-	eNone,
 	eBasic,
 	eRightCorner,
 	eLeftCorner,
-
-	//Obstacles
 	eVault,
 	eSlide,
 	eJump,
-	eCliff
+	eRightCliff,
+	eLeftCliff,
 	
 };
 
@@ -61,7 +59,10 @@ public:
 
 	
 	AActor* spawnedTile;
-	ETileType lastObstacleTile = ETileType::eNone;
+	ETileType lastObstacleTile = ETileType::eBasic;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	ETileType eSpawnedTile = ETileType::eBasic;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = TileTransform)
 		FVector nextTileLocation = { 0.0f, 0.0f, 0.0f };
@@ -82,6 +83,7 @@ public:
 
 	ETileType GetNextTileType();
 	int spawnedTiles;
+	int cliffRand;
 
 };
 

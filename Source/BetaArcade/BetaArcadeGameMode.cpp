@@ -65,16 +65,19 @@ AActor* ABetaArcadeGameMode::SpawnNewTile(FVector spawnLocation, FRotator spawnR
 		switch (tileToSpawn)
 		{
 		case ETileType::eBasic:
+			eSpawnedTile = ETileType::eBasic;
 			spawnedTile = world->SpawnActor<AActor>(basicTileClass, spawnLocation, spawnRotation, spawnParams);
 			spawnedTiles++;
 			return spawnedTile;
 			break;
 		case ETileType::eRightCorner:
+			eSpawnedTile = ETileType::eRightCorner;
 			spawnedTile = world->SpawnActor<AActor>(rightCornerTileClass, spawnLocation, spawnRotation, spawnParams);
 			spawnedTiles++;
 			return spawnedTile;
 			break;
 		case ETileType::eLeftCorner:
+			eSpawnedTile = ETileType::eLeftCorner;
 			spawnedTile = world->SpawnActor<AActor>(leftCornerTileClass, spawnLocation, spawnRotation, spawnParams);
 			spawnedTiles++;
 			return spawnedTile;
@@ -82,41 +85,43 @@ AActor* ABetaArcadeGameMode::SpawnNewTile(FVector spawnLocation, FRotator spawnR
 
 		//Obstacles
 		case ETileType::eVault:
+			eSpawnedTile = ETileType::eVault;
 			spawnedTile = world->SpawnActor<AActor>(vaultTileClass, spawnLocation, spawnRotation, spawnParams);
 			spawnedTiles++;
 			lastObstacleTile = ETileType::eVault;
 			return spawnedTile;
 			break;
 		case ETileType::eSlide:
+			eSpawnedTile = ETileType::eSlide;
 			spawnedTile = world->SpawnActor<AActor>(slideTileClass, spawnLocation, spawnRotation, spawnParams);
 			spawnedTiles++;
 			lastObstacleTile = ETileType::eSlide;
 			return spawnedTile;
 			break;
 		case ETileType::eJump:
+			eSpawnedTile = ETileType::eJump;
 			spawnedTile = world->SpawnActor<AActor>(jumpTileClass, spawnLocation, spawnRotation, spawnParams);
 			spawnedTiles++;
 			lastObstacleTile = ETileType::eJump;
 			return spawnedTile;
 			break;
-		case ETileType::eCliff:
-			leftRight = FMath::RandRange(0, 9);
-			if (leftRight <= 4) //Left
-			{
-				spawnedTile = world->SpawnActor<AActor>(leftCliffTileClass, spawnLocation, spawnRotation, spawnParams);
-			}
-			else //Right
-			{
-				spawnedTile = world->SpawnActor<AActor>(rightCliffTileClass, spawnLocation, spawnRotation, spawnParams);
-			}
+		case ETileType::eLeftCliff:
+			eSpawnedTile = ETileType::eLeftCliff;
+			spawnedTile = world->SpawnActor<AActor>(leftCliffTileClass, spawnLocation, spawnRotation, spawnParams);
 			spawnedTiles++;
-			lastObstacleTile = ETileType::eCliff;
+			lastObstacleTile = ETileType::eLeftCliff;
+			return spawnedTile;
+			break;
+		case ETileType::eRightCliff:
+			eSpawnedTile = ETileType::eRightCliff;
+			spawnedTile = world->SpawnActor<AActor>(rightCliffTileClass, spawnLocation, spawnRotation, spawnParams);
+			spawnedTiles++;
+			lastObstacleTile = ETileType::eRightCliff;
 			return spawnedTile;
 			break;
 		default:
 			return NULL;
 			break;
-
 		}
 	}
 	return NULL;
@@ -163,11 +168,19 @@ ETileType ABetaArcadeGameMode::GetNextTileType()
 				return ETileType::eJump;
 				break;
 			case 7: //Cliff
-				return ETileType::eCliff;
+				cliffRand = FMath::RandRange(0, 9);
+				if (cliffRand <= 4)
+				{
+					return ETileType::eLeftCliff;
+				}
+				else
+				{
+					return ETileType::eRightCliff;
+				}
 				break;
 			default:
 				//ERROR
-				return ETileType::eNone;
+				return ETileType::eBasic;
 				break;
 			}
 		}
