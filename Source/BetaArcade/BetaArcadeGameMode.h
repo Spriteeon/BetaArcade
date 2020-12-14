@@ -18,7 +18,14 @@ enum class ETileType : uint8
 	eJump,
 	eRightCliff,
 	eLeftCliff,
-	
+};
+
+UENUM(BlueprintType)
+enum class ELevelType : uint8
+{
+	eNone,
+	eMainLevel,
+	eTutorial,
 };
 
 UCLASS(minimalapi)
@@ -35,6 +42,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
 		ETileType tileToSpawn;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
+		ELevelType currentLevel;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
 		TSubclassOf<class AActor> basicTileClass;
@@ -57,9 +67,8 @@ public:
 	int randomModule;
 	int obstacleSpawn;
 
-	
 	AActor* spawnedTile;
-	ETileType lastObstacleTile = ETileType::eBasic;
+	ETileType elastObstacleTile = ETileType::eBasic;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	ETileType eSpawnedTile = ETileType::eBasic;
@@ -79,11 +88,17 @@ public:
 		void SetNewTransforms(FVector nextLocation, FRotator nextRotation);
 
 	UFUNCTION(BlueprintCallable)
-		AActor* SpawnNewTile(FVector spawnLocation, FRotator spawnRotation);
+		AActor* SpawnRandomTile(FVector spawnLocation, FRotator spawnRotation);
 
 	ETileType GetNextTileType();
 	int spawnedTiles;
 	int cliffRand;
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+		void SetUpMainLevel();
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+		void SetUpTutorial();
 
 };
 

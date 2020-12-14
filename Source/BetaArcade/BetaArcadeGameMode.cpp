@@ -52,7 +52,7 @@ void ABetaArcadeGameMode::SetNewTransforms(FVector nextLocation, FRotator nextRo
 
 }
 
-AActor* ABetaArcadeGameMode::SpawnNewTile(FVector spawnLocation, FRotator spawnRotation)
+AActor* ABetaArcadeGameMode::SpawnRandomTile(FVector spawnLocation, FRotator spawnRotation)
 {
 
 	UWorld* world = GetWorld();
@@ -88,35 +88,35 @@ AActor* ABetaArcadeGameMode::SpawnNewTile(FVector spawnLocation, FRotator spawnR
 			eSpawnedTile = ETileType::eVault;
 			spawnedTile = world->SpawnActor<AActor>(vaultTileClass, spawnLocation, spawnRotation, spawnParams);
 			spawnedTiles++;
-			lastObstacleTile = ETileType::eVault;
+			elastObstacleTile = ETileType::eVault;
 			return spawnedTile;
 			break;
 		case ETileType::eSlide:
 			eSpawnedTile = ETileType::eSlide;
 			spawnedTile = world->SpawnActor<AActor>(slideTileClass, spawnLocation, spawnRotation, spawnParams);
 			spawnedTiles++;
-			lastObstacleTile = ETileType::eSlide;
+			elastObstacleTile = ETileType::eSlide;
 			return spawnedTile;
 			break;
 		case ETileType::eJump:
 			eSpawnedTile = ETileType::eJump;
 			spawnedTile = world->SpawnActor<AActor>(jumpTileClass, spawnLocation, spawnRotation, spawnParams);
 			spawnedTiles++;
-			lastObstacleTile = ETileType::eJump;
+			elastObstacleTile = ETileType::eJump;
 			return spawnedTile;
 			break;
 		case ETileType::eLeftCliff:
 			eSpawnedTile = ETileType::eLeftCliff;
 			spawnedTile = world->SpawnActor<AActor>(leftCliffTileClass, spawnLocation, spawnRotation, spawnParams);
 			spawnedTiles++;
-			lastObstacleTile = ETileType::eLeftCliff;
+			elastObstacleTile = ETileType::eLeftCliff;
 			return spawnedTile;
 			break;
 		case ETileType::eRightCliff:
 			eSpawnedTile = ETileType::eRightCliff;
 			spawnedTile = world->SpawnActor<AActor>(rightCliffTileClass, spawnLocation, spawnRotation, spawnParams);
 			spawnedTiles++;
-			lastObstacleTile = ETileType::eRightCliff;
+			elastObstacleTile = ETileType::eRightCliff;
 			return spawnedTile;
 			break;
 		default:
@@ -148,7 +148,7 @@ ETileType ABetaArcadeGameMode::GetNextTileType()
 		{
 			//Spawn an Obstacle Tile
 			randomModule = FMath::RandRange(3, 6);
-			if (lastObstacleTile == ETileType(randomModule)) //To never get the same obstacle twice in a row
+			if (elastObstacleTile == ETileType(randomModule)) //To never get the same obstacle twice in a row
 			{
 				randomModule++;
 				if (randomModule > 6)
