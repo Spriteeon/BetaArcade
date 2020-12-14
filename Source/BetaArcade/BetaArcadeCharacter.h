@@ -230,15 +230,20 @@ public:
 		void AddLightAmount(int lightamount) { lightCapacity += lightamount; };
 
 	bool LightMetreFull();
+	bool PointsMultiplierActive();
+	
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 		class UHotbarComp* Hotbar;
 
 	//Points
+	UPROPERTY(BlueprintReadWrite)
+		int scoreMultiplier = 1;
+	
 	UFUNCTION(BlueprintCallable)
 		int GetPlayerScore() { return playerScore; };
 	
 	UFUNCTION(BlueprintCallable)
-		void AddPointsToScore(int points) { playerScore += points; };
+		void AddPointsToScore(int points) { playerScore += (points * scoreMultiplier); };
 
 };

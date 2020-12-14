@@ -95,7 +95,7 @@ void ABetaArcadeCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 void ABetaArcadeCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	AddPointsToScore(1);
+	AddPointsToScore(1 * scoreMultiplier);
 
 	HandleState();
 }
@@ -125,6 +125,12 @@ bool ABetaArcadeCharacter::LightMetreFull()
 	}
 	
 }
+
+bool ABetaArcadeCharacter::PointsMultiplierActive()
+{
+	return false;
+}
+
 
 // FRAN - State control
 void ABetaArcadeCharacter::HandleState()

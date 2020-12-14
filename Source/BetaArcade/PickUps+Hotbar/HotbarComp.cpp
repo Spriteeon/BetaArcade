@@ -5,6 +5,7 @@
 #include "PickUpBase.h"
 
 
+
 // Sets default values for this component's properties
 UHotbarComp::UHotbarComp()
 {
@@ -15,21 +16,30 @@ UHotbarComp::UHotbarComp()
 void UHotbarComp::BeginPlay()
 {
 	Super::BeginPlay();
-	/*PickUp->OwningComp = this;*/
+	
 }
 
-
+//Add PickUp to hotbar
 bool UHotbarComp::AddPickUp(class APickUpBase* PickUp)
 {
+
+	//Checks to see if pick up of that type is already in hotbar.
+	for(int i = 0; i < PickUps.Num(); ++i)
+	{
+		if (PickUps.Find(PickUp))
+		{
+			UE_LOG(LogTemp, Log, TEXT("Already got one!"));  
+			return false;
+			
+		}
+	}
+	
+	
+	//If pick up is not already in hotbar, checks to see if there is an available slot.
 	if (PickUps.Num() >= NumSlots || !PickUp)
 	{
-		/*for(int i = 0; i < PickUps.Size; i++)
-			
-			if (PickUps[i] = PickUp)
-			{
-				return false;
-			}*/
 		
+		UE_LOG(LogTemp, Log, TEXT("Hotbar Full!"));
 		return false;
 	}
 	else
@@ -41,6 +51,7 @@ bool UHotbarComp::AddPickUp(class APickUpBase* PickUp)
 	}
 }
 
+//Remove pick up from hotbar
 void UHotbarComp::RemovePickUp(class APickUpBase* PickUp)
 {
 		PickUps.RemoveSingle(PickUp);
