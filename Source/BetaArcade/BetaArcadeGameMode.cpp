@@ -147,27 +147,27 @@ ETileType ABetaArcadeGameMode::GetNextTileType()
 		if (obstacleSpawn <= 70)
 		{
 			//Spawn an Obstacle Tile
-			randomModule = FMath::RandRange(4, 7);
+			randomModule = FMath::RandRange(3, 6);
 			if (lastObstacleTile == ETileType(randomModule)) //To never get the same obstacle twice in a row
 			{
 				randomModule++;
-				if (randomModule > 7)
+				if (randomModule > 6)
 				{
 					randomModule = 4;
 				}
 			}
 			switch (randomModule)
 			{
-			case 4: //Vault
+			case 3: //Vault
 				return ETileType::eVault;
 				break;
-			case 5: //Slide
+			case 4: //Slide
 				return ETileType::eSlide;
 				break;
-			case 6: //Jump
+			case 5: //Jump
 				return ETileType::eJump;
 				break;
-			case 7: //Cliff
+			case 6: //Cliff
 				cliffRand = FMath::RandRange(0, 9);
 				if (cliffRand <= 4)
 				{
