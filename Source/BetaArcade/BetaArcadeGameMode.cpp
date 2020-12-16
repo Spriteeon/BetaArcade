@@ -105,6 +105,13 @@ AActor* ABetaArcadeGameMode::SpawnRandomTile(FVector spawnLocation, FRotator spa
 			elastObstacleTile = ETileType::eJump;
 			return spawnedTile;
 			break;
+		case ETileType::eSwarm:
+			eSpawnedTile = ETileType::eSwarm;
+			spawnedTile = world->SpawnActor<AActor>(swarmTileClass, spawnLocation, spawnRotation, spawnParams);
+			spawnedTiles++;
+			elastObstacleTile = ETileType::eSwarm;
+			return spawnedTile;
+			break;
 		case ETileType::eLeftCliff:
 			eSpawnedTile = ETileType::eLeftCliff;
 			spawnedTile = world->SpawnActor<AActor>(leftCliffTileClass, spawnLocation, spawnRotation, spawnParams);
@@ -147,11 +154,11 @@ ETileType ABetaArcadeGameMode::GetNextTileType()
 		if (obstacleSpawn <= 70)
 		{
 			//Spawn an Obstacle Tile
-			randomModule = FMath::RandRange(3, 6);
+			randomModule = FMath::RandRange(3, 7);
 			if (elastObstacleTile == ETileType(randomModule)) //To never get the same obstacle twice in a row
 			{
 				randomModule++;
-				if (randomModule > 6)
+				if (randomModule > 7)
 				{
 					randomModule = 4;
 				}
@@ -167,7 +174,10 @@ ETileType ABetaArcadeGameMode::GetNextTileType()
 			case 5: //Jump
 				return ETileType::eJump;
 				break;
-			case 6: //Cliff
+			case 6: //Swarm
+				return ETileType::eSwarm;
+				break;
+			case 7: //Cliff
 				cliffRand = FMath::RandRange(0, 9);
 				if (cliffRand <= 4)
 				{

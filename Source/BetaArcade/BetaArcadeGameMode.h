@@ -16,16 +16,9 @@ enum class ETileType : uint8
 	eVault,
 	eSlide,
 	eJump,
+	eSwarm,
 	eRightCliff,
 	eLeftCliff,
-};
-
-UENUM(BlueprintType)
-enum class ELevelType : uint8
-{
-	eNone,
-	eMainLevel,
-	eTutorial,
 };
 
 UCLASS(minimalapi)
@@ -44,9 +37,6 @@ public:
 		ETileType tileToSpawn;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
-		ELevelType currentLevel = ELevelType::eMainLevel;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
 		TSubclassOf<class AActor> basicTileClass;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
 		TSubclassOf<class AActor> rightCornerTileClass;
@@ -58,6 +48,8 @@ public:
 		TSubclassOf<class AActor> slideTileClass;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
 		TSubclassOf<class AActor> vaultTileClass;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
+		TSubclassOf<class AActor> swarmTileClass;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
 		TSubclassOf<class AActor> leftCliffTileClass;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
@@ -96,9 +88,6 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 		void SetUpMainLevel();
-
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
-		void SetUpTutorial();
 
 };
 
