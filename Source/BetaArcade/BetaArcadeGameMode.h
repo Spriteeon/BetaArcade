@@ -44,7 +44,7 @@ public:
 		ETileType tileToSpawn;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
-		ELevelType currentLevel;
+		ELevelType currentLevel = ELevelType::eMainLevel;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
 		TSubclassOf<class AActor> basicTileClass;
