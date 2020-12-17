@@ -71,18 +71,18 @@ AActor* ABetaArcadeGameMode::SpawnRandomTile(FVector spawnLocation, FRotator spa
 			return spawnedTile;
 			break;
 		case ETileType::eRightCorner:
-			/*eSpawnedTile = ETileType::eRightCorner;
-			spawnedTile = world->SpawnActor<AActor>(rightCornerTileClass, spawnLocation, spawnRotation, spawnParams);*/
-			eSpawnedTile = ETileType::eBasic;
-			spawnedTile = world->SpawnActor<AActor>(basicTileClass, spawnLocation, spawnRotation, spawnParams);
+			eSpawnedTile = ETileType::eRightCorner;
+			spawnedTile = world->SpawnActor<AActor>(rightCornerTileClass, spawnLocation, spawnRotation, spawnParams);
+			/*eSpawnedTile = ETileType::eBasic;
+			spawnedTile = world->SpawnActor<AActor>(basicTileClass, spawnLocation, spawnRotation, spawnParams);*/
 			spawnedTiles++;
 			return spawnedTile;
 			break;
 		case ETileType::eLeftCorner:
-			/*eSpawnedTile = ETileType::eLeftCorner;
-			spawnedTile = world->SpawnActor<AActor>(leftCornerTileClass, spawnLocation, spawnRotation, spawnParams);*/
-			eSpawnedTile = ETileType::eBasic;
-			spawnedTile = world->SpawnActor<AActor>(basicTileClass, spawnLocation, spawnRotation, spawnParams);
+			eSpawnedTile = ETileType::eLeftCorner;
+			spawnedTile = world->SpawnActor<AActor>(leftCornerTileClass, spawnLocation, spawnRotation, spawnParams);
+			/*eSpawnedTile = ETileType::eBasic;
+			spawnedTile = world->SpawnActor<AActor>(basicTileClass, spawnLocation, spawnRotation, spawnParams);*/
 			spawnedTiles++;
 			return spawnedTile;
 			break;
