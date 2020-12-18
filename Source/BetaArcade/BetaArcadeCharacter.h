@@ -53,10 +53,10 @@ class ABetaArcadeCharacter : public ACharacter
 public:
 	ABetaArcadeCharacter();
 
-	UFUNCTION(BlueprintCallable)
+	/*UFUNCTION(BlueprintCallable)
 		void LeftTurn();
 	UFUNCTION(BlueprintCallable)
-		void RightTurn();
+		void RightTurn();*/
 
 	UPROPERTY(BlueprintReadWrite)
 		FRotator currentMonsterRotation = { 0,0,0 };
@@ -98,8 +98,8 @@ protected:
 
 	UPROPERTY()
 		UCharacterMovementComponent* playerMovement;
-	float playerSpeed = 0.0f;
-	float initialPlayerSpeed = 0.0f;
+	UPROPERTY(BlueprintReadWrite)
+	float initialMapSpeed = 0.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float slideTime = 0.0f; // How long the player slides for
@@ -199,6 +199,9 @@ protected:
 
 	void DodgeCheck(FKey playerKeyPressed);
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void GetMapSpeed();
+
 public:
 	virtual void Tick(float DeltaTime) override;
 
@@ -214,7 +217,7 @@ public:
 		
 	// SPEED
 	UFUNCTION(BlueprintCallable)
-	void ResetPlayerSpeed() { playerMovement->MaxWalkSpeed = initialPlayerSpeed; }; // Sets speed to original value
+		void ResetPlayerSpeed() { SetPlayerSpeed(initialMapSpeed);	}; // Sets speed to original value
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 		void SetPlayerSpeed(float speed);
 

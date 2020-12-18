@@ -228,7 +228,7 @@ bool ABetaArcadeCharacter::StartSlide()
 
 void ABetaArcadeCharacter::Slide()
 {	
-	SetPlayerSpeed(playerSpeed * 0.7);
+	SetPlayerSpeed(initialMapSpeed * 0.7);
 	SetActorRelativeRotation(currentPlayerRotation, false, 0, ETeleportType::None);
 }
 
@@ -295,27 +295,27 @@ void ABetaArcadeCharacter::DodgeCheck(FKey playerKeyPressed)
 
 }
 
-void ABetaArcadeCharacter::LeftTurn()
-{
-	currentCamRotation += { 0, -60, 0 };
-	currentPlayerRotation += {0, -60, 0};
-	currentMonsterRotation += {0, -60, 0};
-
-	SetActorRotation(FMath::Lerp(GetActorRotation(), currentPlayerRotation, 0.7f));
-	Direction = GetActorForwardVector();
-	playerDirection = GetActorForwardVector();
-}
-
-void ABetaArcadeCharacter::RightTurn()
-{
-	currentCamRotation += { 0, 60, 0 };
-	currentPlayerRotation += {0, 60, 0};
-	currentMonsterRotation += {0, 60, 0};
-
-	SetActorRotation(FMath::Lerp(GetActorRotation(), currentPlayerRotation, 0.7f));
-	Direction = GetActorForwardVector();
-	playerDirection = GetActorForwardVector();
-}
+//void ABetaArcadeCharacter::LeftTurn()
+//{
+//	currentCamRotation += { 0, -60, 0 };
+//	currentPlayerRotation += {0, -60, 0};
+//	currentMonsterRotation += {0, -60, 0};
+//
+//	SetActorRotation(FMath::Lerp(GetActorRotation(), currentPlayerRotation, 0.7f));
+//	Direction = GetActorForwardVector();
+//	playerDirection = GetActorForwardVector();
+//}
+//
+//void ABetaArcadeCharacter::RightTurn()
+//{
+//	currentCamRotation += { 0, 60, 0 };
+//	currentPlayerRotation += {0, 60, 0};
+//	currentMonsterRotation += {0, 60, 0};
+//
+//	SetActorRotation(FMath::Lerp(GetActorRotation(), currentPlayerRotation, 0.7f));
+//	Direction = GetActorForwardVector();
+//	playerDirection = GetActorForwardVector();
+//}
 
 void ABetaArcadeCharacter::OnResetVR()
 {
@@ -395,6 +395,5 @@ void ABetaArcadeCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	playerSpeed = playerMovement->MaxWalkSpeed;
-	initialPlayerSpeed = playerMovement->MaxWalkSpeed; // Stores starting speed
+	GetMapSpeed(); // Stores starting speed
 }
