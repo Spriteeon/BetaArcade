@@ -70,7 +70,7 @@ public:
 		bool swarmReacting = false;
 
 	UPROPERTY(BlueprintReadWrite)
-		FKey keyPressed;
+		FKey playerKeyPressed;
 
 	UPROPERTY(BlueprintReadOnly)
 		FVector playerDirection = { 0,0,0 };
@@ -197,7 +197,7 @@ protected:
 	UFUNCTION(BlueprintCallable)
 		void StopVaulting();
 
-	void DodgeCheck(FKey keyPressed);
+	void DodgeCheck(FKey playerKeyPressed);
 
 public:
 	virtual void Tick(float DeltaTime) override;

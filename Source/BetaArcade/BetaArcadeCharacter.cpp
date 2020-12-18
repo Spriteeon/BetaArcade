@@ -282,9 +282,9 @@ void ABetaArcadeCharacter::StopVaulting()
 	characterState = CharacterState::State::None;
 }
 
-void ABetaArcadeCharacter::DodgeCheck(FKey keyPressed)
+void ABetaArcadeCharacter::DodgeCheck(FKey playerKeyPressed)
 {
-	if (keyPressed == currentSwarmKey)
+	if (playerKeyPressed == currentSwarmKey)
 	{
 		swarmReacting = true;
 	}
