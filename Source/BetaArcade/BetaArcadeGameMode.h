@@ -11,14 +11,12 @@ UENUM(BlueprintType)
 enum class ETileType : uint8
 {
 	eBasic,
-	eRightCorner,
-	eLeftCorner,
 	eVault,
 	eSlide,
 	eJump,
 	eSwarm,
-	eRightCliff,
-	eLeftCliff,
+	eCliff,
+	eCorner,
 };
 
 UCLASS(minimalapi)
@@ -59,6 +57,14 @@ public:
 	int randomModule;
 	int obstacleSpawn;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Speed)
+		float mapSpeed = 4000.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Speed)
+		FVector mapDirection = { -1.0f, 0.0f,0.0f };
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Speed)
+		FVector mapSpeedVector = { 0.0f, 0.0f,0.0f };
+
 	AActor* spawnedTile;
 	ETileType elastObstacleTile = ETileType::eBasic;
 
@@ -72,6 +78,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		AActor* SpawnStartTile();
+
+	UFUNCTION(BlueprintCallable)
+		AActor* SpawnCornerTile(FVector spawnLocation, FRotator spawnRotation);
 
 	UFUNCTION(BlueprintCallable)
 		AActor* SetTileTransform(AActor* tile);
@@ -88,9 +97,6 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 		void SetUpMainLevel();
-
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
-		void CornerTurned();
 
 };
 
