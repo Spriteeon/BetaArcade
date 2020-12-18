@@ -215,8 +215,8 @@ public:
 	// SPEED
 	UFUNCTION(BlueprintCallable)
 	void ResetPlayerSpeed() { playerMovement->MaxWalkSpeed = initialPlayerSpeed; }; // Sets speed to original value
-	UFUNCTION(BlueprintCallable)
-	void SetPlayerSpeed(float speed) { playerMovement->MaxWalkSpeed = speed; };
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+		void SetPlayerSpeed(float speed);
 
 	//BETH - 
 	
