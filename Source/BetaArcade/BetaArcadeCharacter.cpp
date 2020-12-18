@@ -100,6 +100,14 @@ void ABetaArcadeCharacter::Tick(float DeltaTime)
 	HandleState();
 }
 
+void ABetaArcadeCharacter::MovePlayerToMiddle()
+{
+	//LookAtMiddle();
+	//SetActorRotation(FMath::Lerp(GetActorRotation(), GetActorRotation() + FRotator(0,30,0), 1.0f));
+	SetActorLocation((FMath::Lerp(GetActorLocation(), FVector(GetActorLocation().X, 0, GetActorLocation().Z), 1.0f)), false, 0, ETeleportType::None);
+	
+}
+
 //BETH - Use Pick Up.
 void ABetaArcadeCharacter::UsePickUp(APickUpBase* PickUp)
 {
@@ -135,8 +143,8 @@ bool ABetaArcadeCharacter::PointsMultiplierActive()
 // FRAN - State control
 void ABetaArcadeCharacter::HandleState()
 {
-	if (constantRun)
-		MoveForward(1.0f);
+	/*if (constantRun)
+		MoveForward(1.0f);*/
 
 	switch (characterState)
 	{
@@ -361,25 +369,36 @@ void ABetaArcadeCharacter::MoveForward(float Value)
 
 void ABetaArcadeCharacter::MoveRight(float Value)
 {
-	FRotator Left = { 0,-30,0 };
-	FRotator Right = { 0,30,0 };
+	FRotator Left = { 0,-50,0 };
+	FRotator Right = { 0,50,0 };
+
+	FVector leftMove = { 0,-20,0 };
+	FVector rightMove = { 0,20,0 };
 
 	if (characterState == CharacterState::State::None)
 	{
 		if ((Controller != NULL) && (Value != 0.0f))
 		{
+			FVector pos = GetActorLocation();
 			if (Value < 0) // A
 			{
 				Left += currentPlayerRotation;
-				SetActorRotation(FMath::Lerp(GetActorRotation(), Left, 0.5f));
+				leftMove += pos;
+				SetActorRotation(FMath::Lerp(GetActorRotation(), Left, 0.6f));
+				SetActorLocation(leftMove, false, 0, ETeleportType::None);
+				//SetActorLocation(FMath::Lerp(GetActorLocation(), leftMove, 1.0f), false, 0, ETeleportType::None);
+				//floor->SetActorLocation(FVector(GetActorLocation().X, GetActorLocation().Y, floor->GetActorLocation().Z));
 			}
 			else if (Value > 0)
 			{
 				Right += currentPlayerRotation;
-				SetActorRotation(FMath::Lerp(GetActorRotation(), Right, 0.5f));
+				rightMove += pos;
+				SetActorRotation(FMath::Lerp(GetActorRotation(), Right, 0.6f));
+				SetActorLocation(rightMove, false, 0, ETeleportType::None);
+				//SetActorLocation(FMath::Lerp(GetActorLocation(), rightMove, 1.0f), false, 0, ETeleportType::None);
+				//floor->SetActorLocation(FVector(GetActorLocation().X, GetActorLocation().Y, floor->GetActorLocation().Z));
 			}
 			Direction = GetActorForwardVector();
-			MoveForward(1);
 		}
 
 		if (Value == 0)
@@ -396,4 +415,5 @@ void ABetaArcadeCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	GetMapSpeed(); // Stores starting speed
+	initialPos = GetActorLocation();
 }

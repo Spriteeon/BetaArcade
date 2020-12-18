@@ -88,13 +88,17 @@ protected:
 	
 	FRotator currentRot;
 	FVector Direction;
-	FVector currentPos;
+	UPROPERTY(BlueprintReadWrite)
+	FVector initialPos;
 
 	// FRAN STUFF
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TEnumAsByte<CharacterState::State> characterState;
 	UPROPERTY(BlueprintReadWrite)
 		TEnumAsByte<PowerState::State> currentPowerState;
+
+	UPROPERTY(EditAnywhere)
+		AActor* floor;
 
 	UPROPERTY()
 		UCharacterMovementComponent* playerMovement;
@@ -204,6 +208,11 @@ protected:
 
 public:
 	virtual void Tick(float DeltaTime) override;
+
+	UFUNCTION(BlueprintCallable)
+		void MovePlayerToMiddle();
+	UFUNCTION(BlueprintImplementableEvent)
+		void LookAtMiddle();
 
 	// LIVES
 	UFUNCTION(BlueprintCallable)
