@@ -35,6 +35,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	virtual void UseFromHotbar(class ABetaArcadeCharacter* Character) {};
 
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+		void UseFromHotbarBP(class ABetaArcadeCharacter* Character);
+
 	UPROPERTY()
 		class UHotbarComp* OwningComp;
 

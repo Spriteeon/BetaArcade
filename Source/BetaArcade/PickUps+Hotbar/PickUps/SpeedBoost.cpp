@@ -40,7 +40,7 @@ void ASpeedBoost::UseFromHotbar(class ABetaArcadeCharacter* Character)
 	if (Character != NULL)
 	{
 
-		Character->SetPlayerSpeed(50000);
+		Character->SetPlayerSpeed(5000);
 		Character->scoreMultiplier = 2;
 		UE_LOG(LogTemp, Log, TEXT("Speed boost active"));
 		/*Character->AddPointsToScore(++pointsValue);*/
