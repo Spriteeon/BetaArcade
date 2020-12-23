@@ -58,6 +58,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void RightTurn();*/
 
+	UPROPERTY(BlueprintReadOnly)
+		FVector playerDirection = { 0,0,0 };
 	UPROPERTY(BlueprintReadWrite)
 		FRotator currentMonsterRotation = { 0,0,0 };
 	UPROPERTY(BlueprintReadWrite)
@@ -66,14 +68,14 @@ public:
 		FRotator currentCamRotation = { 0,0,0 };
 	UPROPERTY(BlueprintReadWrite)
 		FRotator currentPlayerRotation = { 0,0,0 };
-	UPROPERTY(BlueprintReadWrite)
-		bool swarmReacting = false;
 
 	UPROPERTY(BlueprintReadWrite)
 		FKey playerKeyPressed;
 
-	UPROPERTY(BlueprintReadOnly)
-		FVector playerDirection = { 0,0,0 };
+	UPROPERTY(BlueprintReadWrite)
+		bool swarmReacting = false;
+	UPROPERTY(BlueprintReadWrite)
+		bool canMove = true;
 
 protected:
 

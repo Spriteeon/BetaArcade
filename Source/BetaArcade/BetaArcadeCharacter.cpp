@@ -376,7 +376,7 @@ void ABetaArcadeCharacter::MoveRight(float Value)
 	FVector leftMove = { 0,-20,0 };
 	FVector rightMove = { 0,20,0 };
 
-	if (characterState == CharacterState::State::None)
+	if ((characterState == CharacterState::State::None) && (canMove))
 	{
 		if ((Controller != NULL) && (Value != 0.0f))
 		{
