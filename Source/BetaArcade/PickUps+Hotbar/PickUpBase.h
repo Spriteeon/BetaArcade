@@ -47,6 +47,5 @@ public:
 	UPROPERTY(EditAnywhere)
 		int pointsValue = 0;
 	
-	
 
 };

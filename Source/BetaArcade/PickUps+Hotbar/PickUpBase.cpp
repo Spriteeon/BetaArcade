@@ -11,17 +11,4 @@ APickUpBase::APickUpBase()
 
 }
 
-//// Called when the game starts or when spawned
-//void APickUpBase::BeginPlay()
-//{
-//	Super::BeginPlay();
-//	
-//}
-//
-//// Called every frame
-//void APickUpBase::Tick(float DeltaTime)
-//{
-//	Super::Tick(DeltaTime);
-//
-//}
 

@@ -9,14 +9,14 @@
 
 AExtraLife::AExtraLife()
 {
-	PickUpID = 2;
+	PickUpID = 5;
 	pointsValue = 30;
 }
 
 
 void AExtraLife::ItemAction(class ABetaArcadeCharacter* Character)
 {
-	if (Character && Character->GetPlayerLives() < 5)
+	if (Character && Character->GetPlayerLives() < 3)
 	{
 		Character->AddPlayerLives(1);
 		Character->AddPointsToScore(pointsValue);

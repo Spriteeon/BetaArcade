@@ -111,11 +111,12 @@ void ABetaArcadeCharacter::MovePlayerToMiddle()
 //BETH - Use Pick Up.
 void ABetaArcadeCharacter::UsePickUp(APickUpBase* PickUp)
 {
-	if (PickUp != NULL && PickUp->PickUpID == 1)
+	//If id is less than or equal to 3, add to hotbar.
+	if (PickUp != NULL && PickUp->PickUpID <= 3)
 	{
 		Hotbar->AddPickUp(PickUp);
 	}
-	else if (PickUp != NULL && PickUp->PickUpID >= 2)
+	else if (PickUp != NULL && PickUp->PickUpID >= 4)
 	{
 		PickUp->ItemAction(this);
 	}

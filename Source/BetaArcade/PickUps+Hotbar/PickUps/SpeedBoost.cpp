@@ -9,8 +9,9 @@
 
 ASpeedBoost::ASpeedBoost()
 {
-	PickUpID = 1;
+	PickUpID = 3;
 	pointsValue = 100;
+	/*AllPickUps.Add(this);*/
 }
 
 
@@ -40,7 +41,7 @@ void ASpeedBoost::UseFromHotbar(class ABetaArcadeCharacter* Character)
 	if (Character != NULL)
 	{
 
-		Character->SetPlayerSpeed(5000);
+		Character->SetPlayerSpeed(8000);
 		Character->scoreMultiplier = 2;
 		UE_LOG(LogTemp, Log, TEXT("Speed boost active"));
 		/*Character->AddPointsToScore(++pointsValue);*/

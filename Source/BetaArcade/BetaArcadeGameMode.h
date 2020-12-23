@@ -98,6 +98,8 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 		void SetUpMainLevel();
 
+	
+
 };
 
 
