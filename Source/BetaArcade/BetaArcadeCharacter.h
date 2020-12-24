@@ -74,7 +74,7 @@ public:
 
 	UPROPERTY(BlueprintReadWrite)
 		bool swarmReacting = false;
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 		bool canMove = true;
 
 protected:
@@ -211,7 +211,7 @@ protected:
 public:
 	virtual void Tick(float DeltaTime) override;
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 		void MovePlayerToMiddle();
 	UFUNCTION(BlueprintImplementableEvent)
 		void LookAtMiddle();

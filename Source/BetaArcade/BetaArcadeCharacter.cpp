@@ -100,13 +100,13 @@ void ABetaArcadeCharacter::Tick(float DeltaTime)
 	HandleState();
 }
 
-void ABetaArcadeCharacter::MovePlayerToMiddle()
-{
-	//LookAtMiddle();
-	//SetActorRotation(FMath::Lerp(GetActorRotation(), GetActorRotation() + FRotator(0,30,0), 1.0f));
-	SetActorLocation((FMath::Lerp(GetActorLocation(), FVector(GetActorLocation().X, 0, GetActorLocation().Z), 1.0f)), false, 0, ETeleportType::None);
-	
-}
+//void ABetaArcadeCharacter::MovePlayerToMiddle()
+//{
+//	//LookAtMiddle();
+//	//SetActorRotation(FMath::Lerp(GetActorRotation(), GetActorRotation() + FRotator(0,30,0), 1.0f));
+//	//SetActorLocation((FMath::Lerp(GetActorLocation(), FVector(GetActorLocation().X, 0, GetActorLocation().Z), 0.5f)), false, 0, ETeleportType::None);
+//	
+//}
 
 //BETH - Use Pick Up.
 void ABetaArcadeCharacter::UsePickUp(APickUpBase* PickUp)
@@ -192,7 +192,7 @@ void ABetaArcadeCharacter::BetaJump()
 	{
 		VaultControl();
 	}
-	else if (characterState == CharacterState::None)
+	else if ((characterState == CharacterState::None) && (canMove))
 	{
 		isJumping = true;
 		UE_LOG(LogTemp, Log, TEXT("Jump"));
@@ -387,8 +387,6 @@ void ABetaArcadeCharacter::MoveRight(float Value)
 				leftMove += pos;
 				SetActorRotation(FMath::Lerp(GetActorRotation(), Left, 0.6f));
 				SetActorLocation(leftMove, false, 0, ETeleportType::None);
-				//SetActorLocation(FMath::Lerp(GetActorLocation(), leftMove, 1.0f), false, 0, ETeleportType::None);
-				//floor->SetActorLocation(FVector(GetActorLocation().X, GetActorLocation().Y, floor->GetActorLocation().Z));
 			}
 			else if (Value > 0)
 			{
@@ -396,8 +394,6 @@ void ABetaArcadeCharacter::MoveRight(float Value)
 				rightMove += pos;
 				SetActorRotation(FMath::Lerp(GetActorRotation(), Right, 0.6f));
 				SetActorLocation(rightMove, false, 0, ETeleportType::None);
-				//SetActorLocation(FMath::Lerp(GetActorLocation(), rightMove, 1.0f), false, 0, ETeleportType::None);
-				//floor->SetActorLocation(FVector(GetActorLocation().X, GetActorLocation().Y, floor->GetActorLocation().Z));
 			}
 			Direction = GetActorForwardVector();
 		}
