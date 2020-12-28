@@ -246,6 +246,8 @@ public:
 	bool LightMetreFull();
 	bool PointsMultiplierActive();
 	
+	UPROPERTY(BlueprintReadWrite)
+	bool magnetActive = false;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 		class UHotbarComp* Hotbar;
