@@ -7,7 +7,7 @@
 
 APointsPickUp::APointsPickUp()
 {
-	PickUpID = 6;
+	PickUpID = 2;
 	pointsValue = rand() % 250 + 1;
 }
 

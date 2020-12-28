@@ -2,51 +2,38 @@
 
 
 #include "SpeedBoost.h"
+
 #include "BetaArcadeCharacter.h"
 #include "PickUps+Hotbar/HotbarComp.h"
-
+#include "TimerManager.h"
 
 
 ASpeedBoost::ASpeedBoost()
 {
-	PickUpID = 3;
+	PickUpID = 1;
 	pointsValue = 100;
 	/*AllPickUps.Add(this);*/
 }
 
 
-//void ASpeedBoost::ItemAction(class ABetaArcadeCharacter* Character)
+
+//void ASpeedBoost::DuringTimer(class ABetaArcadeCharacter* Character)
 //{
-//	
-//	OwningComp->AddPickUp(this);
-//	/*AddPickUp(this);*/
-//	/*OwningComp->AddPickUp(this);*/
-//		
-//			
-//			/*UE_LOG(LogTemp, Log, TEXT("PickUpUsed"));*/
-//				
-//		
-//	
-//	/*OwningComp->AddPickUp(this);*/
-//	//if (Character != NULL)
-//	//{
-//	//	Character->SetPlayerSpeed(10000);
-//
-//	//	UE_LOG(LogTemp, Log, TEXT("Speed boost active"));
-//	//	/*Destroy();*/
-//	//}
+		
 //}
+
 void ASpeedBoost::UseFromHotbar(class ABetaArcadeCharacter* Character)
 {
 	if (Character != NULL)
 	{
-
 		Character->SetPlayerSpeed(8000);
 		Character->scoreMultiplier = 2;
+		timerHasBeenCalled = true;
 		UE_LOG(LogTemp, Log, TEXT("Speed boost active"));
-		/*Character->AddPointsToScore(++pointsValue);*/
-		
-		/*Destroy();*/
 		Character->Hotbar->RemovePickUp(this);
 	}
+	//if (timerHasBeenCalled = true)
+	//{
+		//GetWorldTimerManager().ClearTimer(PickUpTimerHandle);
+	//}
 }

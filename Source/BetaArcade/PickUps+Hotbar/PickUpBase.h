@@ -17,10 +17,7 @@ public:
 	// Sets default values for this actor's properties
 	APickUpBase();
 
-	/*UPROPERTY(Transient)
-		class UWorld* World;*/
 	
-	//virtual class UWorld* GetWorld() const { return World; };
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "PickUp Properties")
 		class UTexture2D* Thumbnail;
@@ -35,8 +32,18 @@ public:
 	UFUNCTION(BlueprintCallable)
 	virtual void UseFromHotbar(class ABetaArcadeCharacter* Character) {};
 
+	
+	/*UFUNCTION()
+		virtual void DuringTimer(class ABetaArcadeCharacter* Character);*/
+
+	bool timerHasBeenCalled;
+	
+	//FTimerManager PickUpTimerHandle;
+
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 		void UseFromHotbarBP(class ABetaArcadeCharacter* Character);
+
+	bool hasBeenAddedToHotbar = true;
 
 	UPROPERTY()
 		class UHotbarComp* OwningComp;

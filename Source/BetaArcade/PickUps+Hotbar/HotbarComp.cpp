@@ -26,12 +26,12 @@ bool UHotbarComp::AddPickUp(class APickUpBase* PickUp)
 	//Checks to see if pick up of that type is already in hotbar.
 	for(int i = 0; i < PickUps.Num(); ++i)
 	{
-		if (PickUps.Find(PickUp))
-		{
-			UE_LOG(LogTemp, Log, TEXT("Already got one!"));  
-			return false;
+		//if (PickUps.Contains(PickUp))
+		//{
+			//UE_LOG(LogTemp, Log, TEXT("Already got one!"));  
+			//return true;
 			
-		}
+		//}
 	}
 	
 	

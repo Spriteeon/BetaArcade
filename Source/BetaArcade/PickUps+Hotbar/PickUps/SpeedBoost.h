@@ -19,9 +19,7 @@ public:
 	
 	ASpeedBoost();
 
-	/*ASpeedBoost* speedboost;*/
-
-	/*virtual void ItemAction(class ABetaArcadeCharacter* Character) override;*/
+	//virtual void DuringTimer(class ABetaArcadeCharacter* Character)override;
 	virtual void UseFromHotbar(class ABetaArcadeCharacter* Character) override;
 	
 };
