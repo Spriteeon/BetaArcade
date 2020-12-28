@@ -45,7 +45,7 @@ public:
 	//Add and Remove from hotbar Functions. 
 	bool AddPickUp(class APickUpBase* PickUp);
 	
-	
+	UFUNCTION(BlueprintCallable)
 	void RemovePickUp(class APickUpBase* PickUp);
 
 };
