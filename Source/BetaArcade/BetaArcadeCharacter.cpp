@@ -384,17 +384,23 @@ void ABetaArcadeCharacter::MoveRight(float Value)
 			FVector pos = GetActorLocation();
 			if (Value < 0) // A
 			{
-				Left += currentPlayerRotation;
-				leftMove += pos;
-				SetActorRotation(FMath::Lerp(GetActorRotation(), Left, 0.6f));
-				SetActorLocation(leftMove, false, 0, ETeleportType::None);
+				if (GetActorLocation().Y >= -240)
+				{
+					Left += currentPlayerRotation;
+					leftMove += pos;
+					SetActorRotation(FMath::Lerp(GetActorRotation(), Left, 0.6f));
+					SetActorLocation(leftMove, false, 0, ETeleportType::None);
+				}
 			}
 			else if (Value > 0)
 			{
-				Right += currentPlayerRotation;
-				rightMove += pos;
-				SetActorRotation(FMath::Lerp(GetActorRotation(), Right, 0.6f));
-				SetActorLocation(rightMove, false, 0, ETeleportType::None);
+				if (GetActorLocation().Y <= 240)
+				{
+					Right += currentPlayerRotation;
+					rightMove += pos;
+					SetActorRotation(FMath::Lerp(GetActorRotation(), Right, 0.6f));
+					SetActorLocation(rightMove, false, 0, ETeleportType::None);
+				}
 			}
 			Direction = GetActorForwardVector();
 		}
