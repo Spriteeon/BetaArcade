@@ -137,10 +137,10 @@ AActor* ABetaArcadeGameMode::SpawnRandomTile(FVector spawnLocation, FRotator spa
 			return spawnedTile;
 			break;
 		case ETileType::eSwarm:
-			/*eSpawnedTile = ETileType::eSwarm;
-			spawnedTile = world->SpawnActor<AActor>(swarmTileClass, spawnLocation, spawnRotation, spawnParams);*/
-			eSpawnedTile = ETileType::eBasic;
-			spawnedTile = world->SpawnActor<AActor>(basicTileClass, spawnLocation, spawnRotation, spawnParams);
+			eSpawnedTile = ETileType::eSwarm;
+			spawnedTile = world->SpawnActor<AActor>(swarmTileClass, spawnLocation, spawnRotation, spawnParams);
+			//eSpawnedTile = ETileType::eBasic;
+			//spawnedTile = world->SpawnActor<AActor>(basicTileClass, spawnLocation, spawnRotation, spawnParams);
 			spawnedTiles++;
 			elastObstacleTile = ETileType::eSwarm;
 			return spawnedTile;
