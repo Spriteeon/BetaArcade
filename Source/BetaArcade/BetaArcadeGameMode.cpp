@@ -171,10 +171,10 @@ AActor* ABetaArcadeGameMode::SpawnRandomTile(FVector spawnLocation, FRotator spa
 
 ETileType ABetaArcadeGameMode::GetNextTileType()
 {
-	if (tileToSpawn == ETileType::eBasic || tileToSpawn == ETileType::eCorner)
+	if (tileToSpawn == ETileType::eBasic) // || tileToSpawn == ETileType::eCorner)
 	{
 		obstacleSpawn = FMath::RandRange(0, 99);
-		if (obstacleSpawn <= 70)
+		if (obstacleSpawn <= 50)
 		{
 			//Spawn an Obstacle Tile
 			randomModule = FMath::RandRange(1, 5);
