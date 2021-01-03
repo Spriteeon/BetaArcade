@@ -28,8 +28,16 @@ public:
 
 	ABetaArcadeGameMode();
 
-	/*UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Transform)
-	FTransform nextTileTransform;*/
+private:
+
+	int leftRight;
+	int randomModule;
+	int obstacleSpawn;
+
+	AActor* spawnedTile;
+	ETileType elastObstacleTile = ETileType::eBasic;
+
+protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
 		ETileType tileToSpawn;
@@ -53,23 +61,15 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
 		TSubclassOf<class AActor> rightCliffTileClass;
 
-	int leftRight;
-	int randomModule;
-	int obstacleSpawn;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Speed)
 		float mapSpeed = 4000.0f;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Speed)
 		FVector mapDirection = { -1.0f, 0.0f,0.0f };
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Speed)
 		FVector mapSpeedVector = { 0.0f, 0.0f,0.0f };
 
-	AActor* spawnedTile;
-	ETileType elastObstacleTile = ETileType::eBasic;
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-	ETileType eSpawnedTile = ETileType::eBasic;
+		ETileType eSpawnedTile = ETileType::eBasic;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = TileTransform)
 		FVector nextTileLocation = { 0.0f, 0.0f, 0.0f };
@@ -94,6 +94,11 @@ public:
 	ETileType GetNextTileType();
 	int spawnedTiles;
 	int cliffRand;
+
+public:
+
+	/*UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Transform)
+	FTransform nextTileTransform;*/
 
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 		void SetUpMainLevel();
