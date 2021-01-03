@@ -174,13 +174,13 @@ void ABetaArcadeCharacter::CameraFlipControl()
 {
 	if (!isCameraBackwards) // camera is currently facing forward
 	{
-		currentCamRotation += cameraFlipRotation;
-		currentCamPosition -= camZoomPos;
+		currentCamRotation = cameraFlipRotation;
+		currentCamPosition = camZoomPos;
 	}
 	else
 	{
-		currentCamRotation -= cameraFlipRotation;
-		currentCamPosition += camZoomPos;
+		currentCamRotation = initialCamRot;
+		currentCamPosition = initialCamPos;
 	}
 
 	CameraFlip();
@@ -420,4 +420,10 @@ void ABetaArcadeCharacter::BeginPlay()
 
 	GetMapSpeed(); // Stores starting speed
 	initialPos = GetActorLocation();
+
+	initialCamPos = CameraBoom->GetRelativeLocation();
+	initialCamRot = CameraBoom->GetRelativeRotation();
+
+	currentCamRotation = initialCamRot;
+	currentCamPosition = initialCamPos;
 }
