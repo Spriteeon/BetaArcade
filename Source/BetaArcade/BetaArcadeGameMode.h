@@ -101,6 +101,9 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 		void InCombat();
 
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+		void OutCombat();
+
 };
 
 
