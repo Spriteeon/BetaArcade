@@ -98,7 +98,8 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 		void SetUpMainLevel();
 
-	
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+		void InCombat();
 
 };
 
