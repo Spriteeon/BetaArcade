@@ -39,6 +39,9 @@ private:
 
 protected:
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tiles)
+		TArray<AActor*> currentTiles;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
 		ETileType tileToSpawn;
 
