@@ -39,8 +39,11 @@ private:
 
 protected:
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tiles)
+	UPROPERTY(BlueprintReadOnly, Category = Tiles)
 		TArray<AActor*> currentTiles;
+
+	UFUNCTION(BlueprintCallable)
+		void ClearTileArray();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
 		ETileType tileToSpawn;
