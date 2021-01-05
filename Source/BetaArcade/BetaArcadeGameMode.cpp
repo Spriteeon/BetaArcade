@@ -119,7 +119,7 @@ AActor* ABetaArcadeGameMode::SpawnRandomTile(FVector spawnLocation, FRotator spa
 			spawnedTile = world->SpawnActor<AActor>(vaultTileClass, spawnLocation, spawnRotation, spawnParams);
 			spawnedTiles++;
 			elastObstacleTile = ETileType::eVault;
-			currentTiles.Add(spawnedTile);
+			currentTiles.Push(spawnedTile);
 			return spawnedTile;
 			break;
 		case ETileType::eSlide:
@@ -127,7 +127,7 @@ AActor* ABetaArcadeGameMode::SpawnRandomTile(FVector spawnLocation, FRotator spa
 			spawnedTile = world->SpawnActor<AActor>(slideTileClass, spawnLocation, spawnRotation, spawnParams);
 			spawnedTiles++;
 			elastObstacleTile = ETileType::eSlide;
-			currentTiles.Add(spawnedTile);
+			currentTiles.Push(spawnedTile);
 			return spawnedTile;
 			break;
 		case ETileType::eJump:
@@ -135,7 +135,7 @@ AActor* ABetaArcadeGameMode::SpawnRandomTile(FVector spawnLocation, FRotator spa
 			spawnedTile = world->SpawnActor<AActor>(jumpTileClass, spawnLocation, spawnRotation, spawnParams);
 			spawnedTiles++;
 			elastObstacleTile = ETileType::eJump;
-			currentTiles.Add(spawnedTile);
+			currentTiles.Push(spawnedTile);
 			return spawnedTile;
 			break;
 		case ETileType::eSwarm:
@@ -145,7 +145,7 @@ AActor* ABetaArcadeGameMode::SpawnRandomTile(FVector spawnLocation, FRotator spa
 			//spawnedTile = world->SpawnActor<AActor>(basicTileClass, spawnLocation, spawnRotation, spawnParams);
 			spawnedTiles++;
 			elastObstacleTile = ETileType::eSwarm;
-			currentTiles.Add(spawnedTile);
+			currentTiles.Push(spawnedTile);
 			return spawnedTile;
 			break;
 		case ETileType::eCliff:
@@ -161,7 +161,7 @@ AActor* ABetaArcadeGameMode::SpawnRandomTile(FVector spawnLocation, FRotator spa
 				spawnedTile = world->SpawnActor<AActor>(rightCliffTileClass, spawnLocation, spawnRotation, spawnParams);
 				spawnedTiles++;
 			}
-			currentTiles.Add(spawnedTile);
+			currentTiles.Push(spawnedTile);
 			elastObstacleTile = ETileType::eCliff;
 			return spawnedTile;
 			break;
