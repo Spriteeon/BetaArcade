@@ -242,8 +242,7 @@ public:
 	//BETH - 
 	
 	//PICKUPS & HOTBAR 
-	UFUNCTION(BlueprintCallable)
-		void UsePickUp(class APickUpBase* PickUp);
+	
 	UFUNCTION(BlueprintCallable)
 		int GetLightAmount() { return lightCapacity; };
 	
@@ -251,7 +250,6 @@ public:
 		void AddLightAmount(int lightamount) { lightCapacity += lightamount; };
 
 	bool LightMetreFull();
-	bool PointsMultiplierActive();
 	
 	UPROPERTY(BlueprintReadWrite)
 	bool magnetActive = false;
