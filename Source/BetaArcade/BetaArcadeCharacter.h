@@ -17,6 +17,7 @@ namespace CharacterState // Namespace because enum was throwing "Member ... is n
 		Jumping		UMETA(DisplayName = "Jumping"),
 		Vaulting	UMETA(DisplayName = "Vaulting"),
 		Sliding		UMETA(DisplayName = "Sliding"),
+		Combat		UMETA(DisplayName = "Combat"),
 	};
 }
 
@@ -37,11 +38,11 @@ namespace PowerState
 
 UCLASS(config = Game)
 class ABetaArcadeCharacter : public ACharacter
-{	
+{
 	GENERATED_BODY()
 
-	/** Camera boom positioning the camera behind the character */
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Camera, meta = (AllowPrivateAccess = "true"))
+		/** Camera boom positioning the camera behind the character */
+		UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Camera, meta = (AllowPrivateAccess = "true"))
 		class USpringArmComponent* CameraBoom;
 
 	/** Follow camera */
@@ -78,7 +79,6 @@ public:
 		bool canMove = true;
 
 protected:
-
 	/** Resets HMD orientation in VR. */
 	void OnResetVR();
 
@@ -87,11 +87,11 @@ protected:
 
 	/** Called for side to side input */
 	void MoveRight(float Value);
-	
+
 	FRotator currentRot;
 	FVector Direction;
 	UPROPERTY(BlueprintReadWrite)
-	FVector initialPos;
+		FVector initialPos;
 
 	// FRAN STUFF
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -105,34 +105,34 @@ protected:
 	UPROPERTY()
 		UCharacterMovementComponent* playerMovement;
 	UPROPERTY(BlueprintReadWrite)
-	float initialMapSpeed = 0.0f;
+		float initialMapSpeed = 0.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float slideTime = 0.0f; // How long the player slides for
+		float slideTime = 0.0f; // How long the player slides for
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float vaultTime = 0.0f; // How long the player vaults for
+		float vaultTime = 0.0f; // How long the player vaults for
 
-	//// FRAN - Camera zoom control
-	////APlayerCameraManager* camera = GetCamera
-	//void CameraZoomIn();
-	//void CameraZoomOut();
-	//UPROPERTY(EditAnywhere)
-	//float cameraZoomValue = 50.0f;
-	//UPROPERTY(EditAnywhere)
-	//float minCameraZoom = 0.0f;
-	//UPROPERTY(EditAnywhere)
-	//float maxCameraZoom = 0.0f;
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	//float minCameraPitch = 0.0f;
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	//float maxCameraPitch = 0.0f;
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	//float minCameraYaw = 0.0f;
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	//float maxCameraYaw = 0.0f;
+		//// FRAN - Camera zoom control
+		////APlayerCameraManager* camera = GetCamera
+		//void CameraZoomIn();
+		//void CameraZoomOut();
+		//UPROPERTY(EditAnywhere)
+		//float cameraZoomValue = 50.0f;
+		//UPROPERTY(EditAnywhere)
+		//float minCameraZoom = 0.0f;
+		//UPROPERTY(EditAnywhere)
+		//float maxCameraZoom = 0.0f;
+		//UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		//float minCameraPitch = 0.0f;
+		//UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		//float maxCameraPitch = 0.0f;
+		//UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		//float minCameraYaw = 0.0f;
+		//UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		//float maxCameraYaw = 0.0f;
 
-	//UPROPERTY()
-	//	FTransform camBoomTransform;
+		//UPROPERTY()
+		//	FTransform camBoomTransform;
 
 	const int MAX_PLAYER_LIVES = 3;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -153,14 +153,14 @@ protected:
 
 	bool hasCameraRotated = false;
 	UPROPERTY(BlueprintReadWrite)
-	bool isCameraBackwards = false;
+		bool inCombat = false;
 	UPROPERTY(BlueprintReadWrite)
-	bool isCameraZoomed = false; 
-	
+		bool isCameraZoomed = false;
+
 	UPROPERTY(EditAnywhere)
-	FRotator cameraFlipRotation = { 5,-180,0 };
+		FRotator cameraFlipRotation = { 5,-180,0 };
 	UPROPERTY(EditAnywhere)
-	FVector camZoomPos = { -360,40,100 };
+		FVector camZoomPos = { -360,40,100 };
 	FRotator initialCamRot;
 	FVector initialCamPos;
 
@@ -173,7 +173,10 @@ protected:
 		FKey currentSwarmKey;
 	UPROPERTY(BlueprintReadWrite)
 		FString qteText;
-	
+
+	UPROPERTY(BlueprintReadWrite)
+		bool combatActive = false;
+
 protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -183,7 +186,8 @@ protected:
 
 	// State control
 	void HandleState();
-	void CameraFlipControl();
+	UFUNCTION(BlueprintCallable)
+		void CombatControl();
 	UFUNCTION(BlueprintImplementableEvent)
 		void CameraFlip();
 
@@ -209,7 +213,10 @@ protected:
 	void DodgeCheck(FKey playerKeyPressed);
 
 	UFUNCTION(BlueprintImplementableEvent)
-	void GetMapSpeed();
+		void Combat();
+
+	UFUNCTION(BlueprintImplementableEvent)
+		void GetMapSpeed();
 
 	// Notifies UI of change to value
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
@@ -225,47 +232,47 @@ public:
 
 	// LIVES
 	UFUNCTION(BlueprintCallable)
-	int GetPlayerLives() { return playerLives; };
+		int GetPlayerLives() { return playerLives; };
 	UFUNCTION(BlueprintCallable)
 		void AddPlayerLives(int lives) { playerLives += lives; LivesEvent(); }; // Adds however many lives are passed in, to take away lives just pass in a negative
 
-	bool GetSwarmReaction() { return swarmReacting; };	
+	bool GetSwarmReaction() { return swarmReacting; };
 	UFUNCTION(BlueprintCallable)
 		void GetSwarmKey(FKey key, FString text) { currentSwarmKey = key; qteText = text; };
-		
+
 	// SPEED
 	UFUNCTION(BlueprintCallable)
-		void ResetPlayerSpeed() { SetPlayerSpeed(initialMapSpeed);	}; // Sets speed to original value
+		void ResetPlayerSpeed() { SetPlayerSpeed(initialMapSpeed); }; // Sets speed to original value
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 		void SetPlayerSpeed(float speed);
 
 	//BETH - 
-	
+
 	//PICKUPS & HOTBAR 
 	UFUNCTION(BlueprintCallable)
 		void UsePickUp(class APickUpBase* PickUp);
 	UFUNCTION(BlueprintCallable)
 		int GetLightAmount() { return lightCapacity; };
-	
+
 	UFUNCTION(BlueprintCallable, category = "PickUps")
 		void AddLightAmount(int lightamount) { lightCapacity += lightamount; };
 
 	bool LightMetreFull();
 	bool PointsMultiplierActive();
-	
+
 	UPROPERTY(BlueprintReadWrite)
-	bool magnetActive = false;
-	
+		bool magnetActive = false;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 		class UHotbarComp* Hotbar;
 
 	//Points
 	UPROPERTY(BlueprintReadWrite)
 		int scoreMultiplier = 1;
-	
+
 	UFUNCTION(BlueprintCallable)
 		int GetPlayerScore() { return playerScore; };
-	
+
 	UFUNCTION(BlueprintCallable)
 		void AddPointsToScore(int points) { playerScore += (points * scoreMultiplier); };
 
