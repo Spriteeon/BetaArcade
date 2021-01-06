@@ -17,6 +17,7 @@ namespace CharacterState // Namespace because enum was throwing "Member ... is n
 		Jumping		UMETA(DisplayName = "Jumping"),
 		Vaulting	UMETA(DisplayName = "Vaulting"),
 		Sliding		UMETA(DisplayName = "Sliding"),
+		Combat		UMETA(DisplayName = "Combat"),
 	};
 }
 
@@ -78,7 +79,6 @@ public:
 		bool canMove = true;
 
 protected:
-
 	/** Resets HMD orientation in VR. */
 	void OnResetVR();
 
@@ -153,7 +153,7 @@ protected:
 
 	bool hasCameraRotated = false;
 	UPROPERTY(BlueprintReadWrite)
-	bool isCameraBackwards = false;
+	bool inCombat = false;
 	UPROPERTY(BlueprintReadWrite)
 	bool isCameraZoomed = false; 
 	
@@ -173,6 +173,9 @@ protected:
 		FKey currentSwarmKey;
 	UPROPERTY(BlueprintReadWrite)
 		FString qteText;
+
+	UPROPERTY(BlueprintReadWrite)
+		bool combatActive = false;
 	
 protected:
 	// APawn interface
@@ -183,7 +186,8 @@ protected:
 
 	// State control
 	void HandleState();
-	void CameraFlipControl();
+	UFUNCTION(BlueprintCallable)
+	void CombatControl();
 	UFUNCTION(BlueprintImplementableEvent)
 		void CameraFlip();
 
@@ -207,6 +211,9 @@ protected:
 		void StopVaulting();
 
 	void DodgeCheck(FKey playerKeyPressed);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void Combat();
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void GetMapSpeed();
