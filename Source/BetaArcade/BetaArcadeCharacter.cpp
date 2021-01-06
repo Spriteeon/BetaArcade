@@ -70,7 +70,7 @@ void ABetaArcadeCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 	check(PlayerInputComponent);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ABetaArcadeCharacter::BetaJump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ABetaArcadeCharacter::BetaJumpStop);
-	PlayerInputComponent->BindAction("FlipCamera", IE_Pressed, this, &ABetaArcadeCharacter::CombatControl);
+	PlayerInputComponent->BindAction("FlipCamera", IE_Pressed, this, &ABetaArcadeCharacter::CameraFlipControl);
 	PlayerInputComponent->BindAction("Dodge", IE_Pressed, this, &ABetaArcadeCharacter::DodgeCheck);
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &ABetaArcadeCharacter::MoveForward);
@@ -165,37 +165,26 @@ void ABetaArcadeCharacter::HandleState()
 		Slide();
 		break;
 
-	case CharacterState::State::Combat:
-		Combat();
-		break;
-
 	default:
 		break;
 	}
 }
 
-void ABetaArcadeCharacter::CombatControl()
+void ABetaArcadeCharacter::CameraFlipControl()
 {
-	if (!inCombat) // camera is currently facing forward
+	if (!isCameraBackwards) // camera is currently facing forward
 	{
-		lightCapacity = 100; // TESTING - REMOVE WHEN DONE
 		currentCamRotation = cameraFlipRotation;
 		currentCamPosition = camZoomPos;
-
-		combatActive = true;
-		characterState = CharacterState::State::Combat;
 	}
 	else
 	{
 		currentCamRotation = initialCamRot;
 		currentCamPosition = initialCamPos;
-
-		combatActive = false;
-		characterState = CharacterState::State::None;
 	}
 
 	CameraFlip();
-	inCombat = !inCombat;
+	isCameraBackwards = !isCameraBackwards;
 }
 
 void ABetaArcadeCharacter::BetaJump()
@@ -315,14 +304,6 @@ void ABetaArcadeCharacter::DodgeCheck(FKey playerKeyPressed)
 	}
 
 }
-
-/*void ABetaArcadeCharacter::Combat()
-{
-	//lightCapacity 
-	UE_LOG(LogTemp, Warning, TEXT("COMBAT"));
-
-	lightCapacity -= 0.1f;
-}*/
 
 //void ABetaArcadeCharacter::LeftTurn()
 //{
