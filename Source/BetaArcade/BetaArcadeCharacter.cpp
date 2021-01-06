@@ -176,7 +176,7 @@ void ABetaArcadeCharacter::HandleState()
 
 void ABetaArcadeCharacter::CombatControl()
 {
-	if (!inCombat) // camera is currently facing forward
+	if ((!inCombat) && (lightCapacity >= MAX_LIGHT_CAPACITY)) // camera is currently facing forward
 	{
 		lightCapacity = 100; // TESTING - REMOVE WHEN DONE
 		currentCamRotation = cameraFlipRotation;
