@@ -182,6 +182,7 @@ void ABetaArcadeCharacter::CombatControl()
 		lightCapacity = 100; // TESTING - REMOVE WHEN DONE
 		currentCamRotation = cameraFlipRotation;
 		currentCamPosition = camZoomPos;
+		PlayCombatSound();
 
 		combatActive = true;
 		characterState = CharacterState::State::Combat;
@@ -191,6 +192,7 @@ void ABetaArcadeCharacter::CombatControl()
 		GiveBonus();
 		currentCamRotation = initialCamRot;
 		currentCamPosition = initialCamPos;
+		PlayCombatSound();
 
 		combatActive = false;
 		characterState = CharacterState::State::None;

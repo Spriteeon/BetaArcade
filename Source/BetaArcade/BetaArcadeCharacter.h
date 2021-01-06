@@ -193,6 +193,8 @@ protected:
 		void CombatControl();
 	UFUNCTION(BlueprintImplementableEvent)
 		void CameraFlip();
+	UFUNCTION(BlueprintImplementableEvent)
+		void PlayCombatSound();
 	void CombatBonus();
 	void GiveBonus();
 
