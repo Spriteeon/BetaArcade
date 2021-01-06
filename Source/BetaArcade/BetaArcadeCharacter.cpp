@@ -176,8 +176,9 @@ void ABetaArcadeCharacter::HandleState()
 
 void ABetaArcadeCharacter::CombatControl()
 {
-	if ((!inCombat) && (lightCapacity >= MAX_LIGHT_CAPACITY)) // camera is currently facing forward
+	if ((!inCombat) /*&& (lightCapacity >= MAX_LIGHT_CAPACITY)*/) // camera is currently facing forward
 	{
+		bonusChance = 0;
 		lightCapacity = 100; // TESTING - REMOVE WHEN DONE
 		currentCamRotation = cameraFlipRotation;
 		currentCamPosition = camZoomPos;
@@ -187,43 +188,71 @@ void ABetaArcadeCharacter::CombatControl()
 	}
 	else
 	{
+		GiveBonus();
 		currentCamRotation = initialCamRot;
 		currentCamPosition = initialCamPos;
 
 		combatActive = false;
 		characterState = CharacterState::State::None;
+		bonusChance = 0;
 	}
 
 	CameraFlip();
 	inCombat = !inCombat;
 }
 
+void ABetaArcadeCharacter::CombatBonus()
+{
+	if(bonusChance < 100)
+		bonusChance++;
+}
+
+void ABetaArcadeCharacter::GiveBonus()
+{
+	if (bonusChance >= 20)
+	{
+		AddPlayerLives(1);
+		AddPointsToScore(300);
+	}
+	else
+	{
+		AddPointsToScore(100);
+	}
+	UE_LOG(LogTemp, Warning, TEXT("chance: %i"), bonusChance);
+}
+
 void ABetaArcadeCharacter::BetaJump()
 {
-	if (canVault)
+	if (characterState != CharacterState::Combat)
 	{
-		VaultControl();
+		if (canVault)
+		{
+			VaultControl();
+		}
+		else if ((characterState == CharacterState::None) && (canMove))
+		{
+			isJumping = true;
+			UE_LOG(LogTemp, Log, TEXT("Jump"));
+			characterState = CharacterState::State::Jumping;
+			Jump();
+		}
 	}
-	else if ((characterState == CharacterState::None) && (canMove))
+	else
 	{
-		isJumping = true;
-		UE_LOG(LogTemp, Log, TEXT("Jump"));
-		characterState = CharacterState::State::Jumping;
-		Jump();
+		CombatBonus();
 	}
 }
 
 void ABetaArcadeCharacter::JumpEndCheck()
 {
-	if (!isJumping)
+	if (!isJumping) // set on hit floor
 	{
 		characterState = CharacterState::State::None;
 	}
 }
 
-void ABetaArcadeCharacter::BetaJumpStop()
+void ABetaArcadeCharacter::BetaJumpStop() // UE4 func - called in Jump()
 {
-	UE_LOG(LogTemp, Log, TEXT("JumpSTOP"));
 	StopJumping();
 }
 
@@ -315,13 +344,6 @@ void ABetaArcadeCharacter::DodgeCheck(FKey playerKeyPressed)
 	}
 
 }
-
-/*void ABetaArcadeCharacter::Combat()
-{
-	//lightCapacity
-	UE_LOG(LogTemp, Warning, TEXT("COMBAT"));
-	lightCapacity -= 0.1f;
-}*/
 
 //void ABetaArcadeCharacter::LeftTurn()
 //{

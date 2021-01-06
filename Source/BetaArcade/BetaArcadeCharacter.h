@@ -78,6 +78,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 		bool canMove = true;
 
+	UPROPERTY(BlueprintReadWrite)
+		bool inCombat = false;
+
 protected:
 	/** Resets HMD orientation in VR. */
 	void OnResetVR();
@@ -153,8 +156,6 @@ protected:
 
 	bool hasCameraRotated = false;
 	UPROPERTY(BlueprintReadWrite)
-		bool inCombat = false;
-	UPROPERTY(BlueprintReadWrite)
 		bool isCameraZoomed = false;
 
 	UPROPERTY(EditAnywhere)
@@ -176,6 +177,8 @@ protected:
 
 	UPROPERTY(BlueprintReadWrite)
 		bool combatActive = false;
+	UPROPERTY(BlueprintReadWrite)
+	int bonusChance = 0;
 
 protected:
 	// APawn interface
@@ -190,6 +193,8 @@ protected:
 		void CombatControl();
 	UFUNCTION(BlueprintImplementableEvent)
 		void CameraFlip();
+	void CombatBonus();
+	void GiveBonus();
 
 	void BetaJump();
 	void JumpEndCheck();
