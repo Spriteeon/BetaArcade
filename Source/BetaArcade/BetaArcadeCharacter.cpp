@@ -23,7 +23,7 @@ ABetaArcadeCharacter::ABetaArcadeCharacter()
 	GetCharacterMovement()->bOrientRotationToMovement = true; // Character moves in the direction of input...	
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f); // ...at this rotation rate
 	GetCharacterMovement()->JumpZVelocity = 600.f;
-	GetCharacterMovement()->AirControl = 0.2f;	
+	GetCharacterMovement()->AirControl = 0.2f;
 
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(RootComponent);
@@ -47,7 +47,7 @@ ABetaArcadeCharacter::ABetaArcadeCharacter()
 	characterState = CharacterState::State::None;
 
 	playerMovement = GetCharacterMovement();
-	currentCamRotation = { -10,0,0 }; 
+	currentCamRotation = { -10,0,0 };
 	currentCamPosition = CameraBoom->GetComponentLocation();
 	currentMonsterRotation = { 0,0,0 };
 
@@ -56,7 +56,7 @@ ABetaArcadeCharacter::ABetaArcadeCharacter()
 
 	//BETH - Hotbar component initialisation.
 	Hotbar = CreateDefaultSubobject<UHotbarComp>("Hotbar");
- 	Hotbar->NumSlots = 5;
+	Hotbar->NumSlots = 5;
 	/*PickUp->OwningComp = Hotbar;*/
 	playerScore = 0.f;
 }
@@ -70,7 +70,7 @@ void ABetaArcadeCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 	check(PlayerInputComponent);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ABetaArcadeCharacter::BetaJump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ABetaArcadeCharacter::BetaJumpStop);
-	PlayerInputComponent->BindAction("FlipCamera", IE_Pressed, this, &ABetaArcadeCharacter::CameraFlipControl);
+	PlayerInputComponent->BindAction("FlipCamera", IE_Pressed, this, &ABetaArcadeCharacter::CombatControl);
 	PlayerInputComponent->BindAction("Dodge", IE_Pressed, this, &ABetaArcadeCharacter::DodgeCheck);
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &ABetaArcadeCharacter::MoveForward);
@@ -133,7 +133,7 @@ bool ABetaArcadeCharacter::LightMetreFull()
 	{
 		return false;
 	}
-	
+
 }
 
 bool ABetaArcadeCharacter::PointsMultiplierActive()
@@ -165,26 +165,37 @@ void ABetaArcadeCharacter::HandleState()
 		Slide();
 		break;
 
+	case CharacterState::State::Combat:
+		Combat();
+		break;
+
 	default:
 		break;
 	}
 }
 
-void ABetaArcadeCharacter::CameraFlipControl()
+void ABetaArcadeCharacter::CombatControl()
 {
-	if (!isCameraBackwards) // camera is currently facing forward
+	if ((!inCombat) && (lightCapacity >= MAX_LIGHT_CAPACITY)) // camera is currently facing forward
 	{
+		lightCapacity = 100; // TESTING - REMOVE WHEN DONE
 		currentCamRotation = cameraFlipRotation;
 		currentCamPosition = camZoomPos;
+
+		combatActive = true;
+		characterState = CharacterState::State::Combat;
 	}
 	else
 	{
 		currentCamRotation = initialCamRot;
 		currentCamPosition = initialCamPos;
+
+		combatActive = false;
+		characterState = CharacterState::State::None;
 	}
 
 	CameraFlip();
-	isCameraBackwards = !isCameraBackwards;
+	inCombat = !inCombat;
 }
 
 void ABetaArcadeCharacter::BetaJump()
@@ -221,7 +232,7 @@ bool ABetaArcadeCharacter::StartSlide()
 	if (characterState == CharacterState::State::None)
 	{
 		characterState = CharacterState::State::Sliding;
-		
+
 		currentRot = GetActorRotation();
 		FRotator slideRot = { 90, 0, 0 };
 		currentPlayerRotation += slideRot;
@@ -237,7 +248,7 @@ bool ABetaArcadeCharacter::StartSlide()
 }
 
 void ABetaArcadeCharacter::Slide()
-{	
+{
 	SetPlayerSpeed(initialMapSpeed * 0.7);
 	SetActorRelativeRotation(currentPlayerRotation, false, 0, ETeleportType::None);
 }
@@ -304,6 +315,13 @@ void ABetaArcadeCharacter::DodgeCheck(FKey playerKeyPressed)
 	}
 
 }
+
+/*void ABetaArcadeCharacter::Combat()
+{
+	//lightCapacity
+	UE_LOG(LogTemp, Warning, TEXT("COMBAT"));
+	lightCapacity -= 0.1f;
+}*/
 
 //void ABetaArcadeCharacter::LeftTurn()
 //{
