@@ -5,6 +5,6 @@
 
 AMagnet::AMagnet()
 {
-	PickUpID = 1;
+	PickUpID = 3;
 	pointsValue = 100;
 }

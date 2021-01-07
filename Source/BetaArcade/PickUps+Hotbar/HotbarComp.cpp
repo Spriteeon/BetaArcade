@@ -3,12 +3,18 @@
 
 #include "HotbarComp.h"
 #include "PickUpBase.h"
+#include "BetaArcadeCharacter.h"
+#include "PickUps/SpeedBoost.h"
+#include "PickUps/Magnet.h"
+#include "PickUps/BigScoreMultiplier.h"
+
 
 
 
 // Sets default values for this component's properties
 UHotbarComp::UHotbarComp()
 {
+
 }
 
 
@@ -19,12 +25,56 @@ void UHotbarComp::BeginPlay()
 	
 }
 
+void UHotbarComp::HandleHotbar(int ID)
+{
+	switch (ID)
+	{
+		case 1:
+			SpeedBoostAction();
+			break;
+
+		case 2:
+			BigScoreMultiplierAction();
+			break;
+
+		case 3:
+			MagnetAction();
+			break;
+
+	}
+		
+}
+
+
+
+void UHotbarComp::SpeedBoostAction()
+{
+	if (Character != NULL)
+	{
+		Character->SetPlayerSpeed(5500);
+		Character->scoreMultiplier = 2;
+		UE_LOG(LogTemp, Log, TEXT("Speed boost active"));
+		//Character->Hotbar->RemovePickUp(PickUp);
+	}
+}
+
+void UHotbarComp::BigScoreMultiplierAction()
+{
+	if (Character != NULL)
+	{
+
+		Character->scoreMultiplier = 5;
+
+		//RemovePickUp(this);
+	}
+}
+
 //Add PickUp to hotbar
 bool UHotbarComp::AddPickUp(class APickUpBase* PickUp)
 {
 
 	//Checks to see if pick up of that type is already in hotbar.
-	for(int i = 0; i < PickUps.Num(); ++i)
+	for(int i = 0; i < PickUpIDs.Num(); ++i)
 	{
 		//if (PickUps.Contains(PickUp))
 		//{
@@ -36,7 +86,7 @@ bool UHotbarComp::AddPickUp(class APickUpBase* PickUp)
 	
 	
 	//If pick up is not already in hotbar, checks to see if there is an available slot.
-	if (PickUps.Num() >= NumSlots || !PickUp)
+	if (PickUpIDs.Num() >= NumSlots || !PickUp)
 	{
 		
 		UE_LOG(LogTemp, Log, TEXT("Hotbar Full!"));
@@ -44,19 +94,27 @@ bool UHotbarComp::AddPickUp(class APickUpBase* PickUp)
 	}
 	else
 	{
-		PickUps.Add(PickUp);
+		PickUpIDs.Add(PickUp->PickUpID);
+		//HBPickUpThumbnails.Add(PickUp->Thumbnail);
 		OnHotbarUpdated.Broadcast();
 
 		return true;
 	}
 }
 
-//Remove pick up from hotbar
-void UHotbarComp::RemovePickUp(class APickUpBase* PickUp)
+void UHotbarComp::RemovePickUp(int ID)
 {
-		PickUps.RemoveSingle(PickUp);
-		OnHotbarUpdated.Broadcast();
+	PickUpIDs.RemoveSingle(ID);
+	//HBPickUpThumbnails.RemoveSingle(tn);
+	OnHotbarUpdated.Broadcast();
 }
+
+////Remove pick up from hotbar
+//void UHotbarComp::RemovePickUp(/*class APickUpBase* PickUp*/)
+//{
+//		PickUpIDs.RemoveSingle(PickUp->PickUpID);
+//		OnHotbarUpdated.Broadcast();
+//}
 
 
 

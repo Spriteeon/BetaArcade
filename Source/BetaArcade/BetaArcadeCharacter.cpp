@@ -111,6 +111,18 @@ void ABetaArcadeCharacter::Tick(float DeltaTime)
 //BETH - Use Pick Up.
 
 
+void ABetaArcadeCharacter::SortPickUp(class APickUpBase* PickUp)
+{
+	if (PickUp->PickUpID <= 3 && PickUp != NULL)
+	{
+		Hotbar->AddPickUp(PickUp);
+	}
+	else if (PickUp->PickUpID >= 4 && PickUp != NULL)
+	{
+		PickUp->ItemAction(this);
+	}
+}
+
 bool ABetaArcadeCharacter::LightMetreFull()
 {
 	if (lightCapacity >= 100)

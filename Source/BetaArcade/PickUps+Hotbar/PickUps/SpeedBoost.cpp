@@ -12,7 +12,7 @@ ASpeedBoost::ASpeedBoost()
 {
 	PickUpID = 1;
 	pointsValue = 100;
-	/*AllPickUps.Add(this);*/
+	/*Thumbnail = */
 }
 
 
@@ -22,18 +22,18 @@ ASpeedBoost::ASpeedBoost()
 		
 //}
 
-void ASpeedBoost::UseFromHotbar(class ABetaArcadeCharacter* Character)
-{
-	if (Character != NULL)
-	{
-		Character->SetPlayerSpeed(8000);
-		Character->scoreMultiplier = 2;
-		timerHasBeenCalled = true;
-		UE_LOG(LogTemp, Log, TEXT("Speed boost active"));
-		Character->Hotbar->RemovePickUp(this);
-	}
-	//if (timerHasBeenCalled = true)
-	//{
-		//GetWorldTimerManager().ClearTimer(PickUpTimerHandle);
-	//}
-}
+//void ASpeedBoost::UseFromHotbar(class ABetaArcadeCharacter* Character)
+//{
+//	if (Character != NULL)
+//	{
+//		Character->SetPlayerSpeed(8000);
+//		Character->scoreMultiplier = 2;
+//		timerHasBeenCalled = true;
+//		UE_LOG(LogTemp, Log, TEXT("Speed boost active"));
+//		Character->Hotbar->RemovePickUp(this);
+//	}
+//	//if (timerHasBeenCalled = true)
+//	//{
+//		//GetWorldTimerManager().ClearTimer(PickUpTimerHandle);
+//	//}
+//}
