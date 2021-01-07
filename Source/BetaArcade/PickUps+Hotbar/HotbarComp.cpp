@@ -51,7 +51,7 @@ void UHotbarComp::SpeedBoostAction()
 {
 	if (Character != NULL)
 	{
-		Character->SetPlayerSpeed(5500);
+		Character->SetPlayerSpeed(6500);
 		Character->scoreMultiplier = 2;
 		UE_LOG(LogTemp, Log, TEXT("Speed boost active"));
 		//Character->Hotbar->RemovePickUp(PickUp);

@@ -256,8 +256,8 @@ public:
 	//BETH - 
 
 	//PICKUPS & HOTBAR 
-	UFUNCTION(BlueprintCallable)
-		void UsePickUp(class APickUpBase* PickUp);
+	/*UFUNCTION(BlueprintCallable)
+		void UsePickUp(class APickUpBase* PickUp);*/
 	UFUNCTION(BlueprintCallable)
 		void SortPickUp(class APickUpBase* PickUp);
 

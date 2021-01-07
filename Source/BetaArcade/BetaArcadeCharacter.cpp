@@ -109,19 +109,19 @@ void ABetaArcadeCharacter::Tick(float DeltaTime)
 //}
 
 //BETH - Use Pick Up.
-void ABetaArcadeCharacter::UsePickUp(APickUpBase* PickUp)
-{
-	//If id is less than or equal to 3, add to hotbar.
-	if (PickUp != NULL && PickUp->PickUpID == 1)
-	{
-		Hotbar->AddPickUp(PickUp);
-		PickUp->hasBeenAddedToHotbar = true;
-	}
-	else if (PickUp != NULL && PickUp->PickUpID == 2)
-	{
-		PickUp->ItemAction(this);
-	}
-}
+//void ABetaArcadeCharacter::UsePickUp(APickUpBase* PickUp)
+//{
+//	//If id is less than or equal to 3, add to hotbar.
+//	if (PickUp != NULL && PickUp->PickUpID == 1)
+//	{
+//		Hotbar->AddPickUp(PickUp);
+//		PickUp->hasBeenAddedToHotbar = true;
+//	}
+//	else if (PickUp != NULL && PickUp->PickUpID == 2)
+//	{
+//		PickUp->ItemAction(this);
+//	}
+//}
 
 void ABetaArcadeCharacter::SortPickUp(class APickUpBase* PickUp)
 {

@@ -34,8 +34,8 @@ public:
 	UPROPERTY(BlueprintReadOnly)
 	TArray<int> PickUpIDs;
 	
-	UPROPERTY(BlueprintReadOnly)
-	TArray<UTexture2D*> HBPickUpThumbnails;
+	/*UPROPERTY(BlueprintReadOnly)
+	TArray<UTexture2D*> HBPickUpThumbnails;*/
 	
 	/*UFUNCTION(BlueprintCallable)
 	void UseHotbarItem(class APickUpBase* PickUp);*/
