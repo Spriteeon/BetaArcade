@@ -9,7 +9,7 @@
 
 AExtraLife::AExtraLife()
 {
-	PickUpID = 2;
+	PickUpID = 4;
 	pointsValue = 30;
 }
 

@@ -7,18 +7,18 @@
 
 ABigScoreMultiplier::ABigScoreMultiplier()
 {
-	PickUpID = 1;
+	PickUpID = 2;
 	pointsValue = 50;
 }
 
-void ABigScoreMultiplier::UseFromHotbar(ABetaArcadeCharacter* Character)
-{
-	if (Character != NULL)
-	{
-
-		Character->scoreMultiplier = 5;
-		
-		Character->Hotbar->RemovePickUp(this);
-	}
-}
+//void ABigScoreMultiplier::UseFromHotbar(ABetaArcadeCharacter* Character)
+//{
+//	if (Character != NULL)
+//	{
+//
+//		Character->scoreMultiplier = 5;
+//		
+//		Character->Hotbar->RemovePickUp(this);
+//	}
+//}
 
