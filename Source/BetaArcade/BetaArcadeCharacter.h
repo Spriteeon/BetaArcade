@@ -244,9 +244,6 @@ public:
 	//PICKUPS & HOTBAR 
 	
 	UFUNCTION(BlueprintCallable)
-		void SortPickUp(class APickUpBase* PickUp);
-
-	UFUNCTION(BlueprintCallable)
 		int GetLightAmount() { return lightCapacity; };
 	
 	UFUNCTION(BlueprintCallable, category = "PickUps")

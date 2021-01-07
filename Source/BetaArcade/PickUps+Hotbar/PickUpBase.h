@@ -19,7 +19,7 @@ public:
 
 	
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PickUp Properties")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "PickUp Properties")
 		class UTexture2D* Thumbnail;
 protected:
 
@@ -29,24 +29,24 @@ public:
 
 	virtual void ItemAction(class ABetaArcadeCharacter* Character) {};
 
-	/*UFUNCTION(BlueprintCallable)
-	virtual void UseFromHotbar(class ABetaArcadeCharacter* Character) {};*/
+	UFUNCTION(BlueprintCallable)
+	virtual void UseFromHotbar(class ABetaArcadeCharacter* Character) {};
 
 	
 	/*UFUNCTION()
 		virtual void DuringTimer(class ABetaArcadeCharacter* Character);*/
 
-	/*bool timerHasBeenCalled;*/
+	bool timerHasBeenCalled;
 	
 	//FTimerManager PickUpTimerHandle;
 
-	/*UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
-		void UseFromHotbarBP(class ABetaArcadeCharacter* Character);*/
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+		void UseFromHotbarBP(class ABetaArcadeCharacter* Character);
 
-	//bool hasBeenAddedToHotbar = true;
+	bool hasBeenAddedToHotbar = true;
 
-	/*UPROPERTY()
-		class UHotbarComp* OwningComp;*/
+	UPROPERTY()
+		class UHotbarComp* OwningComp;
 
 	UPROPERTY(VisibleAnywhere)
 		int PickUpID = 0;

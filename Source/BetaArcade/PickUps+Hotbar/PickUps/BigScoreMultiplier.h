@@ -18,6 +18,6 @@ class BETAARCADE_API ABigScoreMultiplier : public APickUpBase
 public:
 	
 	
-	//virtual void UseFromHotbar(class ABetaArcadeCharacter* Character) override;
+	virtual void UseFromHotbar(class ABetaArcadeCharacter* Character) override;
 	
 };

@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-//#include "BetaArcadeCharacter.h"
 #include "HotbarComp.generated.h"
 
 
@@ -32,10 +31,7 @@ public:
 
 	//PickUp array. 
 	UPROPERTY(BlueprintReadOnly)
-	TArray<int> PickUpIDs;
-	
-	UPROPERTY(BlueprintReadOnly)
-	TArray<UTexture2D*> HBPickUpThumbnails;
+	TArray<class APickUpBase*> PickUps;
 	
 	/*UFUNCTION(BlueprintCallable)
 	void UseHotbarItem(class APickUpBase* PickUp);*/
@@ -45,34 +41,11 @@ public:
 		return this;
 	}*/
 
-	UFUNCTION(BlueprintCallable)
-	void HandleHotbar(int ID);
-
-	
-
-	void SpeedBoostAction();
-
-	void BigScoreMultiplierAction();
 
 	//Add and Remove from hotbar Functions. 
 	bool AddPickUp(class APickUpBase* PickUp);
 	
 	UFUNCTION(BlueprintCallable)
-	void RemovePickUp(int ID);
-
-	/*UFUNCTION()
-		UTexture2D GetCorrospondingThumbnail(class APickUpBase* PickUp)
-	{
-		if (PickUp->PickUpID == 1)
-		{
-			return PickUp->Thumbnail;
-		}
-	}*/
-
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
-		void MagnetAction();
-
-	UPROPERTY(EditAnywhere)
-	class ABetaArcadeCharacter* Character;
+	void RemovePickUp(class APickUpBase* PickUp);
 
 };
