@@ -96,6 +96,9 @@ protected:
 	UPROPERTY(BlueprintReadWrite)
 		FVector initialPos;
 
+	UFUNCTION(BlueprintImplementableEvent)
+		void AnimationState();
+
 	// FRAN STUFF
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TEnumAsByte<CharacterState::State> characterState;

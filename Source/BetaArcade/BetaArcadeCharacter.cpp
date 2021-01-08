@@ -184,6 +184,8 @@ void ABetaArcadeCharacter::HandleState()
 	default:
 		break;
 	}
+
+	AnimationState();
 }
 
 void ABetaArcadeCharacter::CombatControl()
@@ -293,7 +295,7 @@ bool ABetaArcadeCharacter::StartSlide()
 void ABetaArcadeCharacter::Slide()
 {
 	SetPlayerSpeed(initialMapSpeed * 0.7);
-	SetActorRelativeRotation(currentPlayerRotation, false, 0, ETeleportType::None);
+	//SetActorRelativeRotation(currentPlayerRotation, false, 0, ETeleportType::None);
 }
 
 void ABetaArcadeCharacter::StopSliding()
@@ -304,7 +306,7 @@ void ABetaArcadeCharacter::StopSliding()
 	currentPlayerRotation -= resetRot;
 
 	ResetPlayerSpeed();
-	SetActorRelativeRotation(currentPlayerRotation, false, 0, ETeleportType::None);
+	//SetActorRelativeRotation(currentPlayerRotation, false, 0, ETeleportType::None);
 
 	characterState = CharacterState::State::None;
 }
@@ -333,7 +335,7 @@ bool ABetaArcadeCharacter::StartVault()
 
 void ABetaArcadeCharacter::Vault()
 {
-	SetActorRelativeRotation(currentPlayerRotation, false, 0, ETeleportType::None);
+	//SetActorRelativeRotation(currentPlayerRotation, false, 0, ETeleportType::None);
 }
 
 void ABetaArcadeCharacter::StopVaulting()
@@ -342,7 +344,7 @@ void ABetaArcadeCharacter::StopVaulting()
 	UE_LOG(LogTemp, Log, TEXT("VaultSTOP"));
 	FRotator resetRot = { -90,0,0 };
 	currentPlayerRotation -= resetRot;
-	SetActorRelativeRotation(resetRot, false, 0, ETeleportType::None);
+	//SetActorRelativeRotation(resetRot, false, 0, ETeleportType::None);
 	characterState = CharacterState::State::None;
 }
 
