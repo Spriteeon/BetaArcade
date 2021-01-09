@@ -54,6 +54,8 @@ public:
 
 	void BigScoreMultiplierAction();
 
+	void SecondWindAction();
+
 	//Add and Remove from hotbar Functions. 
 	bool AddPickUp(class APickUpBase* PickUp);
 	
@@ -69,7 +71,7 @@ public:
 		}
 	}*/
 
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	UFUNCTION(BlueprintCallable)
 		void MagnetAction();
 
 	UPROPERTY(EditAnywhere)

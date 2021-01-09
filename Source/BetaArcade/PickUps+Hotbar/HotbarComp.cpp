@@ -31,16 +31,23 @@ void UHotbarComp::HandleHotbar(int ID)
 	{
 		case 1:
 			SpeedBoostAction();
+			RemovePickUp(1);
 			break;
 
 		case 2:
 			BigScoreMultiplierAction();
+			RemovePickUp(2);
 			break;
 
 		case 3:
 			MagnetAction();
+			RemovePickUp(3);
 			break;
 
+		/*case 4:
+			SecondWindAction();
+			RemovePickUp(4);
+			break;*/
 	}
 		
 }
@@ -53,8 +60,9 @@ void UHotbarComp::SpeedBoostAction()
 	{
 		Character->SetPlayerSpeed(6500);
 		Character->scoreMultiplier = 2;
+		Character->currentPowerState = PowerState::State::SpeedBoost;
 		UE_LOG(LogTemp, Log, TEXT("Speed boost active"));
-		//Character->Hotbar->RemovePickUp(PickUp);
+		
 	}
 }
 
@@ -65,8 +73,31 @@ void UHotbarComp::BigScoreMultiplierAction()
 
 		Character->scoreMultiplier = 5;
 
-		//RemovePickUp(this);
+		
 	}
+}
+
+void UHotbarComp::SecondWindAction()
+{
+	if (Character != NULL && Character->GetPlayerLives() <= 0 && PickUpIDs.Contains(10))
+	{
+		Character->AddPlayerLives(1);
+		
+		RemovePickUp(4);
+	}
+}
+
+void UHotbarComp::MagnetAction()
+{
+	if (Character != NULL)
+	{
+
+		Character->isMagnetActive = true;
+		Character->MagnetActivatedAction();
+		
+		RemovePickUp(3);
+	}
+	
 }
 
 //Add PickUp to hotbar
@@ -108,6 +139,8 @@ void UHotbarComp::RemovePickUp(int ID)
 	//HBPickUpThumbnails.RemoveSingle(tn);
 	OnHotbarUpdated.Broadcast();
 }
+
+
 
 ////Remove pick up from hotbar
 //void UHotbarComp::RemovePickUp(/*class APickUpBase* PickUp*/)

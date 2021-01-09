@@ -24,6 +24,9 @@ public:
 
 	virtual void ItemAction(class ABetaArcadeCharacter* Character) override;
 
+	/*UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+		void SetMagnetCollisionOn();
 
-	
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+		void SetStandardCollisionOn();*/
 };
