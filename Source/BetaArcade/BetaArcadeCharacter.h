@@ -29,6 +29,8 @@ namespace PowerState
 	{
 		None		UMETA(DisplayName = "None"),
 		SpeedBoost	UMETA(DisplayName = "SpeedBoost"),
+		Magnet		UMETA(DisplayName = "Magnet"),
+		SecondWind	UMETA(DisplayName = "SecondWind"),
 		ScoreBonus	UMETA(DisplayName = "ScoreBonus"),
 		ExtraLife	UMETA(DisplayName = "ExtraLife"),
 		LightBall	UMETA(DisplayName = "LightBall"),
