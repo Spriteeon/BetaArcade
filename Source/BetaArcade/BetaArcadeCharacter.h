@@ -102,8 +102,7 @@ protected:
 	// FRAN STUFF
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TEnumAsByte<CharacterState::State> characterState;
-	UPROPERTY(BlueprintReadWrite)
-		TEnumAsByte<PowerState::State> currentPowerState;
+	
 
 	UPROPERTY(EditAnywhere)
 		AActor* floor;
@@ -235,6 +234,10 @@ protected:
 public:
 	virtual void Tick(float DeltaTime) override;
 
+	//FRAN- PowerUp State
+	UPROPERTY(BlueprintReadWrite)
+		TEnumAsByte<PowerState::State> currentPowerState;
+
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 		void MovePlayerToMiddle();
 	UFUNCTION(BlueprintImplementableEvent)
@@ -270,11 +273,15 @@ public:
 	UFUNCTION(BlueprintCallable, category = "PickUps")
 		void AddLightAmount(int lightamount) { lightCapacity += lightamount; };
 
-	bool LightMetreFull();
-	bool PointsMultiplierActive();
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+		void MagnetActivatedAction();
 
+	bool LightMetreFull();
+	
+	
+	//bool PointsMultiplierActive();
 	UPROPERTY(BlueprintReadWrite)
-		bool magnetActive = false;
+	bool isMagnetActive;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 		class UHotbarComp* Hotbar;

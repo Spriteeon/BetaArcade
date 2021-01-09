@@ -6,7 +6,7 @@
 
 ALightOrb::ALightOrb()
 {
-	PickUpID = 5;
+	PickUpID = 8;
 	pointsValue = 20;
 }
 

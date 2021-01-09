@@ -125,11 +125,11 @@ void ABetaArcadeCharacter::Tick(float DeltaTime)
 
 void ABetaArcadeCharacter::SortPickUp(class APickUpBase* PickUp)
 {
-	if (PickUp->PickUpID <= 3 && PickUp != NULL)
+	if (PickUp->PickUpID <= 4 && PickUp != NULL)
 	{
 		Hotbar->AddPickUp(PickUp);
 	}
-	else if (PickUp->PickUpID >= 4 && PickUp != NULL)
+	else if (PickUp->PickUpID >= 6 && PickUp != NULL)
 	{
 		PickUp->ItemAction(this);
 	}
@@ -148,10 +148,12 @@ bool ABetaArcadeCharacter::LightMetreFull()
 
 }
 
-bool ABetaArcadeCharacter::PointsMultiplierActive()
-{
-	return false;
-}
+
+
+//bool ABetaArcadeCharacter::PointsMultiplierActive()
+//{
+//	return false;
+//}
 
 
 // FRAN - State control

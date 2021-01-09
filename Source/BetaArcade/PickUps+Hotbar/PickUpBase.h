@@ -48,7 +48,7 @@ public:
 	/*UPROPERTY()
 		class UHotbarComp* OwningComp;*/
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(EditAnywhere)
 		int PickUpID = 0;
 	
 	UPROPERTY(EditAnywhere)
