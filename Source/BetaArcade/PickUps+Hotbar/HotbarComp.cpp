@@ -44,10 +44,10 @@ void UHotbarComp::HandleHotbar(int ID)
 			RemovePickUp(3);
 			break;
 
-		/*case 4:
+		case 4:
 			SecondWindAction();
 			RemovePickUp(4);
-			break;*/
+			break;
 	}
 		
 }
@@ -70,7 +70,7 @@ void UHotbarComp::BigScoreMultiplierAction()
 {
 	if (Character != NULL)
 	{
-
+		Character->currentPowerState = PowerState::State::ScoreBonus;
 		Character->scoreMultiplier = 5;
 
 		
@@ -81,6 +81,7 @@ void UHotbarComp::SecondWindAction()
 {
 	if (Character != NULL && Character->GetPlayerLives() <= 0 && PickUpIDs.Contains(10))
 	{
+		Character->currentPowerState = PowerState::State::SecondWind;
 		Character->AddPlayerLives(1);
 		
 		RemovePickUp(4);
@@ -91,7 +92,7 @@ void UHotbarComp::MagnetAction()
 {
 	if (Character != NULL)
 	{
-
+		Character->currentPowerState = PowerState::State::Magnet;
 		Character->isMagnetActive = true;
 		UE_LOG(LogTemp, Log, TEXT("Magnet true"));
 

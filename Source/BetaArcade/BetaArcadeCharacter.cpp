@@ -139,6 +139,7 @@ bool ABetaArcadeCharacter::LightMetreFull()
 {
 	if (lightCapacity >= 100)
 	{
+		currentPowerState = PowerState::State::FullLight;
 		return true;
 	}
 	else
