@@ -18,6 +18,7 @@ namespace CharacterState // Namespace because enum was throwing "Member ... is n
 		Vaulting	UMETA(DisplayName = "Vaulting"),
 		Sliding		UMETA(DisplayName = "Sliding"),
 		Combat		UMETA(DisplayName = "Combat"),
+		Swarm		UMETA(DisplayName = "Swarm"),
 	};
 }
 

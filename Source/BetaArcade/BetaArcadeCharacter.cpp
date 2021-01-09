@@ -159,9 +159,6 @@ bool ABetaArcadeCharacter::LightMetreFull()
 // FRAN - State control
 void ABetaArcadeCharacter::HandleState()
 {
-	/*if (constantRun)
-		MoveForward(1.0f);*/
-
 	switch (characterState)
 	{
 	case CharacterState::State::None:
@@ -181,6 +178,9 @@ void ABetaArcadeCharacter::HandleState()
 
 	case CharacterState::State::Combat:
 		Combat();
+		break;
+
+	case CharacterState::State::Swarm:
 		break;
 
 	default:
@@ -296,7 +296,7 @@ bool ABetaArcadeCharacter::StartSlide()
 
 void ABetaArcadeCharacter::Slide()
 {
-	SetPlayerSpeed(initialMapSpeed * 0.7);
+	//SetPlayerSpeed(initialMapSpeed * 0.7);
 	//SetActorRelativeRotation(currentPlayerRotation, false, 0, ETeleportType::None);
 }
 
@@ -432,10 +432,10 @@ void ABetaArcadeCharacter::MoveRight(float Value)
 	FRotator Left = { 0,-50,0 };
 	FRotator Right = { 0,50,0 };
 
-	FVector leftMove = { 0,-20,0 };
-	FVector rightMove = { 0,20,0 };
+	FVector leftMove = { 0,-14,0 };
+	FVector rightMove = { 0,14,0 };
 
-	if ((characterState == CharacterState::State::None) && (canMove))
+	if (((characterState == CharacterState::State::None) && (canMove)) || ((characterState == CharacterState::State::Swarm) && (canMove)))
 	{
 		if ((Controller != NULL) && (Value != 0.0f))
 		{
