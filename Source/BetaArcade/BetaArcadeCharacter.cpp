@@ -108,21 +108,9 @@ void ABetaArcadeCharacter::Tick(float DeltaTime)
 //	
 //}
 
-//BETH - Use Pick Up.
-//void ABetaArcadeCharacter::UsePickUp(APickUpBase* PickUp)
-//{
-//	//If id is less than or equal to 3, add to hotbar.
-//	if (PickUp != NULL && PickUp->PickUpID == 1)
-//	{
-//		Hotbar->AddPickUp(PickUp);
-//		PickUp->hasBeenAddedToHotbar = true;
-//	}
-//	else if (PickUp != NULL && PickUp->PickUpID == 2)
-//	{
-//		PickUp->ItemAction(this);
-//	}
-//}
+//BETH - 
 
+//Sort Pick Ups into instant use or hotbar.
 void ABetaArcadeCharacter::SortPickUp(class APickUpBase* PickUp)
 {
 	if (PickUp->PickUpID <= 4 && PickUp != NULL)
@@ -135,6 +123,7 @@ void ABetaArcadeCharacter::SortPickUp(class APickUpBase* PickUp)
 	}
 }
 
+//Sets power state of player when light meter is full. 
 bool ABetaArcadeCharacter::LightMetreFull()
 {
 	if (lightCapacity >= 100)
@@ -148,13 +137,6 @@ bool ABetaArcadeCharacter::LightMetreFull()
 	}
 
 }
-
-
-
-//bool ABetaArcadeCharacter::PointsMultiplierActive()
-//{
-//	return false;
-//}
 
 
 // FRAN - State control

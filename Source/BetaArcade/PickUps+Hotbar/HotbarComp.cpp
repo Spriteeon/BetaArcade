@@ -25,6 +25,7 @@ void UHotbarComp::BeginPlay()
 	
 }
 
+//Determins which power up function is called. 
 void UHotbarComp::HandleHotbar(int ID)
 {
 	switch (ID)
@@ -53,7 +54,7 @@ void UHotbarComp::HandleHotbar(int ID)
 }
 
 
-
+//Speed boost effect
 void UHotbarComp::SpeedBoostAction()
 {
 	if (Character != NULL)
@@ -61,22 +62,22 @@ void UHotbarComp::SpeedBoostAction()
 		Character->SetPlayerSpeed(6500);
 		Character->scoreMultiplier = 2;
 		Character->currentPowerState = PowerState::State::SpeedBoost;
-		UE_LOG(LogTemp, Log, TEXT("Speed boost active"));
 		
 	}
 }
 
+//Score multiplier effect
 void UHotbarComp::BigScoreMultiplierAction()
 {
 	if (Character != NULL)
 	{
 		Character->currentPowerState = PowerState::State::ScoreBonus;
 		Character->scoreMultiplier = 5;
-
 		
 	}
 }
 
+//Second wind effect
 void UHotbarComp::SecondWindAction()
 {
 	if (Character != NULL && Character->GetPlayerLives() <= 0 && PickUpIDs.Contains(10))
@@ -88,6 +89,7 @@ void UHotbarComp::SecondWindAction()
 	}
 }
 
+//Magnet effect (changes isMagnetActive which calls blueprint function to switch orb collision)
 void UHotbarComp::MagnetAction()
 {
 	if (Character != NULL)
@@ -96,9 +98,6 @@ void UHotbarComp::MagnetAction()
 		Character->isMagnetActive = true;
 		UE_LOG(LogTemp, Log, TEXT("Magnet true"));
 
-		//Character->MagnetActivatedAction();
-		
-		
 		RemovePickUp(3);
 	}
 	
@@ -123,35 +122,27 @@ bool UHotbarComp::AddPickUp(class APickUpBase* PickUp)
 	//If pick up is not already in hotbar, checks to see if there is an available slot.
 	if (PickUpIDs.Num() >= NumSlots || !PickUp)
 	{
-		
+		//if no slot is available
 		UE_LOG(LogTemp, Log, TEXT("Hotbar Full!"));
 		return false;
 	}
 	else
 	{
+		//if slot available
 		PickUpIDs.Add(PickUp->PickUpID);
-		//HBPickUpThumbnails.Add(PickUp->Thumbnail);
 		OnHotbarUpdated.Broadcast();
 
 		return true;
 	}
 }
 
+//Remove pick up from hotbar
 void UHotbarComp::RemovePickUp(int ID)
 {
 	PickUpIDs.RemoveSingle(ID);
-	//HBPickUpThumbnails.RemoveSingle(tn);
 	OnHotbarUpdated.Broadcast();
 }
 
-
-
-////Remove pick up from hotbar
-//void UHotbarComp::RemovePickUp(/*class APickUpBase* PickUp*/)
-//{
-//		PickUpIDs.RemoveSingle(PickUp->PickUpID);
-//		OnHotbarUpdated.Broadcast();
-//}
 
 
 
