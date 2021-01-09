@@ -93,7 +93,10 @@ void UHotbarComp::MagnetAction()
 	{
 
 		Character->isMagnetActive = true;
-		Character->MagnetActivatedAction();
+		UE_LOG(LogTemp, Log, TEXT("Magnet true"));
+
+		//Character->MagnetActivatedAction();
+		
 		
 		RemovePickUp(3);
 	}

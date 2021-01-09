@@ -281,7 +281,7 @@ public:
 	
 	//bool PointsMultiplierActive();
 	UPROPERTY(BlueprintReadWrite)
-	bool isMagnetActive = false;
+	bool isMagnetActive;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 		class UHotbarComp* Hotbar;
