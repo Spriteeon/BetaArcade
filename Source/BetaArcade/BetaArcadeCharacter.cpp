@@ -113,14 +113,33 @@ void ABetaArcadeCharacter::Tick(float DeltaTime)
 //Sort Pick Ups into instant use or hotbar.
 void ABetaArcadeCharacter::SortPickUp(class APickUpBase* PickUp)
 {
-	if (PickUp->PickUpID <= 4 && PickUp != NULL)
+	if (PickUp->PickUpID <= 3 && PickUp != NULL)
 	{
+		
+		Hotbar->AddPickUp(PickUp);
+
+	}
+
+	else if (PickUp->PickUpID == 4 && PickUp != NULL)
+	{
+		isSecondWindInHotbar = true;
+		UE_LOG(LogTemp, Log, TEXT("second wind in hb is true"));
+
 		Hotbar->AddPickUp(PickUp);
 	}
+
 	else if (PickUp->PickUpID >= 6 && PickUp != NULL)
 	{
 		PickUp->ItemAction(this);
 	}
+}
+
+void ABetaArcadeCharacter::SecondWindAction()
+{
+		currentPowerState = PowerState::State::SecondWind;
+		AddPlayerLives(1);
+		Hotbar->RemovePickUp(4);
+	
 }
 
 //Sets power state of player when light meter is full. 
@@ -137,6 +156,7 @@ bool ABetaArcadeCharacter::LightMetreFull()
 	}
 
 }
+
 
 
 // FRAN - State control
