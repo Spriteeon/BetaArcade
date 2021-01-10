@@ -22,39 +22,33 @@ public:
 	// Called when the game starts
 	virtual void BeginPlay();
 
-	//Hotbar Capacity.
+	//Hotbar slot Capacity.
 	UPROPERTY(EditAnywhere)
-		int NumSlots = 0;
+	int NumSlots = 0;
 	
 	//Delegate for updating UI.
 	UPROPERTY(BlueprintAssignable)
 	FOnHotbarUpdated OnHotbarUpdated;
 
-	//PickUp array. 
+	//PickUps in hotbar array. 
 	UPROPERTY(BlueprintReadOnly)
 	TArray<int> PickUpIDs;
-	
-	/*UPROPERTY(BlueprintReadOnly)
-	TArray<UTexture2D*> HBPickUpThumbnails;*/
-	
-	/*UFUNCTION(BlueprintCallable)
-	void UseHotbarItem(class APickUpBase* PickUp);*/
 
-	/*UHotbarComp* get_this(UHotbarComp)
-	{
-		return this;
-	}*/
-
+	//Handles which pick up effect function is called.
 	UFUNCTION(BlueprintCallable)
 	void HandleHotbar(int ID);
 
 	
-
+	//Pick Up effect functions.
 	void SpeedBoostAction();
 
 	void BigScoreMultiplierAction();
 
 	void SecondWindAction();
+
+	UFUNCTION(BlueprintCallable)
+	void MagnetAction();
+
 
 	//Add and Remove from hotbar Functions. 
 	bool AddPickUp(class APickUpBase* PickUp);
@@ -62,18 +56,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void RemovePickUp(int ID);
 
-	/*UFUNCTION()
-		UTexture2D GetCorrospondingThumbnail(class APickUpBase* PickUp)
-	{
-		if (PickUp->PickUpID == 1)
-		{
-			return PickUp->Thumbnail;
-		}
-	}*/
-
-	UFUNCTION(BlueprintCallable)
-		void MagnetAction();
-
+	//Instance of character to assign hotbar to in editor.
 	UPROPERTY(EditAnywhere)
 	class ABetaArcadeCharacter* Character;
 

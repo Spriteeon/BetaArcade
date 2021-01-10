@@ -18,41 +18,35 @@ public:
 	APickUpBase();
 
 	
-
+	//Thumbnail Property for pick ups.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PickUp Properties")
 		class UTexture2D* Thumbnail;
 protected:
 
 
 public:	
-	/*class ABetaArcadeCharacter;*/
 
+	//What happens if the pick up effect is instant (doesnt go into hotbar).
 	virtual void ItemAction(class ABetaArcadeCharacter* Character) {};
+
+	//Individual pick up ID used for sorting and using pick ups.
+	UPROPERTY(EditAnywhere)
+		int PickUpID = 0;
+
+	UPROPERTY(EditAnywhere)
+		int pointsValue = 0;
 
 	/*UFUNCTION(BlueprintCallable)
 	virtual void UseFromHotbar(class ABetaArcadeCharacter* Character) {};*/
 
-	
-	/*UFUNCTION()
-		virtual void DuringTimer(class ABetaArcadeCharacter* Character);*/
-
-	/*bool timerHasBeenCalled;*/
-	
-	//FTimerManager PickUpTimerHandle;
 
 	/*UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 		void UseFromHotbarBP(class ABetaArcadeCharacter* Character);*/
 
 	//bool hasBeenAddedToHotbar = true;
 
-	/*UPROPERTY()
-		class UHotbarComp* OwningComp;*/
 
-	UPROPERTY(EditAnywhere)
-		int PickUpID = 0;
 	
-	UPROPERTY(EditAnywhere)
-		int pointsValue = 0;
 	
 
 };

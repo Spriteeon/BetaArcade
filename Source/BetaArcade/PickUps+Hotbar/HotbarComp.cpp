@@ -25,7 +25,7 @@ void UHotbarComp::BeginPlay()
 	
 }
 
-//Determins which power up function is called. 
+//Determines which power up function is called. 
 void UHotbarComp::HandleHotbar(int ID)
 {
 	switch (ID)
