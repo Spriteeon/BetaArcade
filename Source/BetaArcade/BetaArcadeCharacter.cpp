@@ -33,10 +33,10 @@ ABetaArcadeCharacter::ABetaArcadeCharacter()
 	PlayerCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("PlayerCamera"));
 	PlayerCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 
-	MonsterBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("MonsterBoom"));
+	/*MonsterBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("MonsterBoom"));
 	MonsterBoom->SetupAttachment(RootComponent);
 	MonsterBoom->TargetArmLength = 1000.0f;
-	MonsterBoom->bUsePawnControlRotation = true;
+	MonsterBoom->bUsePawnControlRotation = true;*/
 
 	/*camera->ViewPitchMax = maxCameraPitch;
 	camera->ViewPitchMin = minCameraPitch;

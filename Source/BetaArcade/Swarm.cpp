@@ -60,7 +60,6 @@ bool ASwarm::CheckSuccess()
 
 void ASwarm::Failed()
 {
-	UE_LOG(LogTemp, Log, TEXT("FAILED"));
 	player->SetPlayerSpeed(slowSpeed);
 	player->AddPlayerLives(-1);
 }
