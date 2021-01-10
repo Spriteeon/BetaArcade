@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Character.h"
-
+#include "Monster.h"
 #include "BetaArcadeCharacter.generated.h"
 
 UENUM(BlueprintType)
@@ -52,10 +52,11 @@ class ABetaArcadeCharacter : public ACharacter
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Camera, meta = (AllowPrivateAccess = "true"))
 		class UCameraComponent* PlayerCamera;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-		class USpringArmComponent* MonsterBoom;
+	/*UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+		class USpringArmComponent* MonsterBoom;*/
+
 public:
-	ABetaArcadeCharacter();
+	ABetaArcadeCharacter();	
 
 	/*UFUNCTION(BlueprintCallable)
 		void LeftTurn();
@@ -106,6 +107,8 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TEnumAsByte<CharacterState::State> characterState;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		AMonster* monster;
 
 	UPROPERTY(EditAnywhere)
 		AActor* floor;
