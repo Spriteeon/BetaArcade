@@ -15,6 +15,7 @@ protected:
 	UPROPERTY(BlueprintReadWrite)
 	ABetaArcadeCharacter* player;
 
+	UPROPERTY(BlueprintReadWrite)
 	FKey qteKey;
 	FString qteText;
 
