@@ -12,15 +12,9 @@ ASpeedBoost::ASpeedBoost()
 {
 	PickUpID = 1;
 	pointsValue = 100;
-	/*Thumbnail = */
 }
 
 
-
-//void ASpeedBoost::DuringTimer(class ABetaArcadeCharacter* Character)
-//{
-		
-//}
 
 //void ASpeedBoost::UseFromHotbar(class ABetaArcadeCharacter* Character)
 //{

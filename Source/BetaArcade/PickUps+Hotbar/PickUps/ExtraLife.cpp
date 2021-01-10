@@ -21,6 +21,5 @@ void AExtraLife::ItemAction(class ABetaArcadeCharacter* Character)
 		Character->AddPlayerLives(1);
 		Character->AddPointsToScore(pointsValue);
 		UE_LOG(LogTemp, Log, TEXT("Added life"));
-		/*Destroy();*/
 	}
 }
