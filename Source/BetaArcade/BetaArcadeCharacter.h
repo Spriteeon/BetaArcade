@@ -281,10 +281,16 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 		void MagnetActivatedAction();
 
+	UFUNCTION(BlueprintCallable)
+		void SecondWindAction();
+
+
 	bool LightMetreFull();
 	
+	UPROPERTY(BlueprintReadWrite)
+	bool isSecondWindInHotbar = false;
 	
-	//bool PointsMultiplierActive();
+	
 	UPROPERTY(BlueprintReadWrite)
 	bool isMagnetActive;
 

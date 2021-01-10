@@ -45,10 +45,10 @@ void UHotbarComp::HandleHotbar(int ID)
 			RemovePickUp(3);
 			break;
 
-		case 4:
+		/*case 4:
 			SecondWindAction();
 			RemovePickUp(4);
-			break;
+			break;*/
 	}
 		
 }
@@ -78,16 +78,16 @@ void UHotbarComp::BigScoreMultiplierAction()
 }
 
 //Second wind effect
-void UHotbarComp::SecondWindAction()
-{
-	if (Character != NULL && Character->GetPlayerLives() <= 0 && PickUpIDs.Contains(10))
-	{
-		Character->currentPowerState = PowerState::State::SecondWind;
-		Character->AddPlayerLives(1);
-		
-		RemovePickUp(4);
-	}
-}
+//void UHotbarComp::SecondWindAction()
+//{
+//	if (Character != NULL && Character->GetPlayerLives() <= 0 && PickUpIDs.Contains(10))
+//	{
+//		Character->currentPowerState = PowerState::State::SecondWind;
+//		Character->AddPlayerLives(1);
+//		
+//		RemovePickUp(4);
+//	}
+//}
 
 //Magnet effect (changes isMagnetActive which calls blueprint function to switch orb collision)
 void UHotbarComp::MagnetAction()
