@@ -255,7 +255,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 		int GetPlayerLives() { return playerLives; };
 	UFUNCTION(BlueprintCallable)
-		void AddPlayerLives(int lives) { playerLives += lives; LivesEvent(); }; // Adds however many lives are passed in, to take away lives just pass in a negative
+		void AddPlayerLives(int lives) { if (playerLives < MAX_PLAYER_LIVES) { playerLives += lives; LivesEvent(); } }; // Adds however many lives are passed in, to take away lives just pass in a negative
 
 	bool GetSwarmReaction() { return swarmReacting; };
 	UFUNCTION(BlueprintCallable)
