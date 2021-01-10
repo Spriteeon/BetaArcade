@@ -56,9 +56,7 @@ class ABetaArcadeCharacter : public ACharacter
 		class USpringArmComponent* MonsterBoom;*/
 
 public:
-	ABetaArcadeCharacter();
-
-	
+	ABetaArcadeCharacter();	
 
 	/*UFUNCTION(BlueprintCallable)
 		void LeftTurn();
