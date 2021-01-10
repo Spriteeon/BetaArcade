@@ -233,6 +233,8 @@ protected:
 	// Notifies UI of change to value
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 		void LivesEvent();
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+		void GameOver();
 
 public:
 	virtual void Tick(float DeltaTime) override;
