@@ -139,6 +139,7 @@ void ABetaArcadeCharacter::SecondWindAction()
 		currentPowerState = PowerState::State::SecondWind;
 		AddPlayerLives(1);
 		Hotbar->RemovePickUp(4);
+		isSecondWindInHotbar = false;
 	
 }
 
