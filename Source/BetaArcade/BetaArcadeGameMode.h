@@ -14,8 +14,8 @@ enum class ETileType : uint8
 	eVault,
 	eSlide,
 	eJump,
-	eSwarm,
 	eCliff,
+	eSwarm,
 	eCorner,
 };
 
@@ -33,6 +33,7 @@ private:
 	int leftRight;
 	int randomModule;
 	int obstacleSpawn;
+	int duplicateTest;
 
 	AActor* spawnedTile;
 	ETileType elastObstacleTile = ETileType::eBasic;
