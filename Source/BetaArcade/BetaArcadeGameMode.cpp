@@ -180,43 +180,78 @@ void ABetaArcadeGameMode::ClearTileArray()
 
 ETileType ABetaArcadeGameMode::GetNextTileType()
 {
-	if (tileToSpawn == ETileType::eBasic) // || tileToSpawn == ETileType::eCorner)
+	if (tileToSpawn == ETileType::eBasic || tileToSpawn == ETileType::eCorner)
 	{
 		obstacleSpawn = FMath::RandRange(0, 99);
 		if (obstacleSpawn <= 50)
 		{
 			//Spawn an Obstacle Tile
-			randomModule = FMath::RandRange(1, 5);
-			if (elastObstacleTile == ETileType(randomModule)) //To never get the same obstacle twice in a row
+			randomModule = FMath::RandRange(1, 9);
+			if (randomModule > 5)
+			{
+				duplicateTest = randomModule - 5;
+			}
+			else
+			{
+				duplicateTest = randomModule;
+			}
+			if (elastObstacleTile == ETileType(duplicateTest)) //To never get the same obstacle twice in a row
 			{
 				randomModule++;
-				if (randomModule > 5)
+				if (randomModule > 9)
 				{
 					randomModule = 1;
 				}
 			}
-			switch (randomModule)
+
+			if (randomModule == 1 || randomModule == 6) // Vault
 			{
-			case 1: //Vault
 				return ETileType::eVault;
-				break;
-			case 2: //Slide
+			}
+			else if (randomModule == 2 || randomModule == 7) // Slide
+			{
 				return ETileType::eSlide;
-				break;
-			case 3: //Jump
+			}
+			else if (randomModule == 3 || randomModule == 8) // Jump
+			{
 				return ETileType::eJump;
-				break;
-			case 4: //Swarm
-				return ETileType::eSwarm;
-				break;
-			case 5: //Cliff
+			}
+			else if (randomModule == 4 || randomModule == 9) // Cliff
+			{
 				return ETileType::eCliff;
-				break;
-			default:
+			}
+			else if (randomModule == 5) // Swarm
+			{
+				return ETileType::eSwarm;
+			}
+			else
+			{
 				//ERROR
 				return ETileType::eBasic;
-				break;
 			}
+
+			//switch (randomModule)
+			//{
+			//case 1: //Vault
+			//	return ETileType::eVault;
+			//	break;
+			//case 2: //Slide
+			//	return ETileType::eSlide;
+			//	break;
+			//case 3: //Jump
+			//	return ETileType::eJump;
+			//	break;
+			//case 4: //Cliff
+			//	return ETileType::eCliff;
+			//	break;
+			//case 5: //Swarm
+			//	return ETileType::eSwarm;
+			//	break;
+			//default:
+			//	//ERROR
+			//	return ETileType::eBasic;
+			//	break;
+			//}
 		}
 		else
 		{
