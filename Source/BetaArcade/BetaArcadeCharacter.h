@@ -293,7 +293,9 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	bool isSecondWindInHotbar = false;
 	
-	
+	UPROPERTY(BlueprintreadWrite)
+	bool hasHadLifeRemoved = false;
+
 	UPROPERTY(BlueprintReadWrite)
 	bool isMagnetActive;
 
