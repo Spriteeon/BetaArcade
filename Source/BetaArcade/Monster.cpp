@@ -24,15 +24,34 @@ void AMonster::BeginPlay()
 }
 
 // Called every frame
-//void AMonster::Tick(float DeltaTime)
-//{
-//	Super::Tick(DeltaTime);
-//
-//}
-
-void AMonster::UpdatePosition(FVector pos)
+void AMonster::Tick(float DeltaTime)
 {
-	this->SetActorLocation(pos);
+	Super::Tick(DeltaTime);
+
+}
+
+void AMonster::UpdateMonsterDistance(int playerLives, float currentPlayerXPos)
+{
+
+	switch (playerLives)
+	{
+	case 3:
+		newMonsterPos.X = currentPlayerXPos - playerThreeLivesDistance;
+		break;
+	case 2:
+		newMonsterPos.X = currentPlayerXPos - playerTwoLivesDistance;
+		break;
+	case 1:
+		newMonsterPos.X = currentPlayerXPos - playerOneLifeDistance;
+		break;
+	case 0:
+		// Player is Dead
+		break;
+	default:
+		break;
+	}
+
+	this->SetActorLocation(newMonsterPos);
 }
 
 // Called to bind functionality to input
