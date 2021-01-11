@@ -25,17 +25,17 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(BlueprintReadOnly, Category = LifeDistance)
-		float playerOneLifeDistance = 1000.0f;
+		float playerOneLifeDistance = 2000.0f;
 	UPROPERTY(BlueprintReadOnly, Category = LifeDistance)
-		float playerTwoLivesDistance = 2000.0f;
+		float playerTwoLivesDistance = 3500.0f;
 	UPROPERTY(BlueprintReadOnly, Category = LifeDistance)
-		float playerThreeLivesDistance = 3000.0f;
+		float playerThreeLivesDistance = 5000.0f;
 
 	UFUNCTION(BlueprintCallable)
 		void UpdateMonsterDistance(int playerLives, float currentPlayerXPos);
 
 	UPROPERTY(BlueprintReadWrite, Category = MonsterPos)
-		FVector newMonsterPos = { 0.0f, 0.0f, 0.0f };
+		FVector newMonsterPos = { 0.0f, 0.0f, 110.0f };
 
 public:
 

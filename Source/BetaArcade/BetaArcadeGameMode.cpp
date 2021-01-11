@@ -263,3 +263,26 @@ ETileType ABetaArcadeGameMode::GetNextTileType()
 		return ETileType::eBasic;
 	}
 }
+
+void ABetaArcadeGameMode::SpawnFloatingIsland()
+{
+	UWorld* world = GetWorld();
+	if (world)
+	{
+		FActorSpawnParameters spawnParams;
+		spawnParams.Owner = this;
+
+		islandLocation = GetIslandSpawnLocation();
+
+		world->SpawnActor<AActor>(floatingIslandClass, islandLocation, islandRotation, spawnParams);
+	}
+}
+
+FVector ABetaArcadeGameMode::GetIslandSpawnLocation()
+{
+	// Loop through spawn points and pick one randomly
+	numOfSpawnPoints = spawnPointActors.Num();
+	randomSpawnPointIndex = FMath::RandRange(0, numOfSpawnPoints - 1);
+
+	return spawnPointActors[randomSpawnPointIndex]->GetActorLocation();
+}

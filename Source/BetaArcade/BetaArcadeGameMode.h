@@ -43,6 +43,22 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category = Tiles)
 		TArray<AActor*> currentTiles;
 
+	UPROPERTY(BlueprintReadWrite, Category = IslandSpawning)
+		TArray<AActor*> spawnPointActors;
+
+	FRotator islandRotation = { 0.0f, 0.0f, 0.0f };
+	FVector islandLocation = { 0.0f, 0.0f, 0.0f };
+
+	UFUNCTION(BlueprintCallable)
+		void SpawnFloatingIsland();
+	FVector GetIslandSpawnLocation();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Island)
+		TSubclassOf<class AActor> floatingIslandClass;
+
+	int numOfSpawnPoints;
+	int randomSpawnPointIndex;
+
 	UFUNCTION(BlueprintCallable)
 		void ClearTileArray();
 

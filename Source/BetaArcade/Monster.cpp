@@ -14,6 +14,8 @@ AMonster::AMonster()
 	CapsuleComponent->InitCapsuleSize(42.f, 96.0f);
 	RootComponent = CapsuleComponent;
 
+	newMonsterPos = this->GetActorLocation();
+
 }
 
 // Called when the game starts or when spawned
@@ -50,6 +52,7 @@ void AMonster::UpdateMonsterDistance(int playerLives, float currentPlayerXPos)
 	default:
 		break;
 	}
+	newMonsterPos.Z = 110.0f;
 
 	this->SetActorLocation(newMonsterPos);
 }
