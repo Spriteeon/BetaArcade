@@ -293,7 +293,7 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	bool isSecondWindInHotbar = false;
 	
-	UPROPERTY(BlueprintreadWrite)
+	UPROPERTY(BlueprintReadWrite)
 	bool hasHadLifeRemoved = false;
 
 	UPROPERTY(BlueprintReadWrite)
