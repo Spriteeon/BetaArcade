@@ -196,18 +196,20 @@ void ABetaArcadeCharacter::HandleState()
 
 void ABetaArcadeCharacter::CombatControl()
 {
-	if ((!inCombat) /*&& (lightCapacity >= MAX_LIGHT_CAPACITY)*/) // camera is currently facing forward
+	if ((!inCombat) && (LightMetreFull())) // camera is currently facing forward
 	{
 		bonusChance = 0;
-		lightCapacity = 100; // TESTING - REMOVE WHEN DONE
 		currentCamRotation = cameraFlipRotation;
 		currentCamPosition = camZoomPos;
 		PlayCombatSound();
 
 		combatActive = true;
 		characterState = CharacterState::State::Combat;
+
+		CameraFlip();
+		inCombat = !inCombat;
 	}
-	else
+	else if (inCombat)
 	{
 		GiveBonus();
 		currentCamRotation = initialCamRot;
@@ -217,10 +219,10 @@ void ABetaArcadeCharacter::CombatControl()
 		combatActive = false;
 		characterState = CharacterState::State::None;
 		bonusChance = 0;
-	}
 
-	CameraFlip();
-	inCombat = !inCombat;
+		CameraFlip();
+		inCombat = !inCombat;
+	}
 }
 
 void ABetaArcadeCharacter::CombatBonus()
