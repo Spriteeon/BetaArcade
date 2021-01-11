@@ -11,7 +11,7 @@ class BETAARCADE_API AMonster : public APawn
 {
 	GENERATED_BODY()
 
-		UPROPERTY(EditAnywhere, Category = "Collision")
+	UPROPERTY(EditAnywhere, Category = "Collision")
 		class UCapsuleComponent* CapsuleComponent;
 
 public:
@@ -24,13 +24,23 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UPROPERTY(BlueprintReadOnly, Category = LifeDistance)
+		float playerOneLifeDistance = 1000.0f;
+	UPROPERTY(BlueprintReadOnly, Category = LifeDistance)
+		float playerTwoLivesDistance = 2000.0f;
+	UPROPERTY(BlueprintReadOnly, Category = LifeDistance)
+		float playerThreeLivesDistance = 3000.0f;
+
+	UFUNCTION(BlueprintCallable)
+		void UpdateMonsterDistance(int playerLives, float currentPlayerXPos);
+
+	UPROPERTY(BlueprintReadWrite, Category = MonsterPos)
+		FVector newMonsterPos = { 0.0f, 0.0f, 0.0f };
+
 public:
 
 	// Called every frame
-	//virtual void Tick(float DeltaTime) override;
-
-	UFUNCTION(BlueprintCallable)
-		void UpdatePosition(FVector pos);
+	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	//virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
