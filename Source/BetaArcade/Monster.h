@@ -24,6 +24,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	// Monster position based on Player Lives
 	UPROPERTY(BlueprintReadOnly, Category = LifeDistance)
 		float playerOneLifeDistance = 2000.0f;
 	UPROPERTY(BlueprintReadOnly, Category = LifeDistance)

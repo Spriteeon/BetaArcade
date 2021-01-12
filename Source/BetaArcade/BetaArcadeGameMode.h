@@ -8,7 +8,7 @@
 #include "BetaArcadeGameMode.generated.h"
 
 UENUM(BlueprintType)
-enum class ETileType : uint8
+enum class ETileType : uint8 // Enum Class for Tile Type
 {
 	eBasic,
 	eVault,
@@ -30,7 +30,7 @@ public:
 
 private:
 
-	int leftRight;
+	int leftRight; // Used to Randomly select a Left or Right module
 	int randomModule;
 	int obstacleSpawn;
 	int duplicateTest;
@@ -40,9 +40,11 @@ private:
 
 protected:
 
+	// Array used for Obstacle Tiles
 	UPROPERTY(BlueprintReadOnly, Category = Tiles)
 		TArray<AActor*> currentTiles;
 
+	// Array used for moving floating Island Spawning
 	UPROPERTY(BlueprintReadWrite, Category = IslandSpawning)
 		TArray<AActor*> spawnPointActors;
 
@@ -65,6 +67,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
 		ETileType tileToSpawn;
 
+	// As Modules are Blueprint Classes, classes are defined in the Game Mode Blueprint
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
 		TSubclassOf<class AActor> basicTileClass;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
@@ -84,6 +87,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
 		TSubclassOf<class AActor> rightCliffTileClass;
 
+	// Map Movement
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Speed)
 		float mapSpeed = 4000.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Speed)
@@ -114,9 +118,9 @@ protected:
 	UFUNCTION(BlueprintCallable)
 		AActor* SpawnRandomTile(FVector spawnLocation, FRotator spawnRotation);
 
+	// Gets Random Obstacle
 	ETileType GetNextTileType();
 	int spawnedTiles;
-	int cliffRand;
 
 public:
 
@@ -126,6 +130,7 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 		void SetUpMainLevel();
 
+	// Called when Player enters Combat
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 		void InCombat();
 

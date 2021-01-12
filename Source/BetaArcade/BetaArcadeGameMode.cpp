@@ -17,7 +17,7 @@ ABetaArcadeGameMode::ABetaArcadeGameMode()
 	spawnedTiles = 0;
 }
 
-AActor* ABetaArcadeGameMode::SpawnStartTile()
+AActor* ABetaArcadeGameMode::SpawnStartTile() // Spawn Start Tiles with no obstacles at start of Game
 {
 	
 	UWorld* world = GetWorld();
@@ -32,7 +32,7 @@ AActor* ABetaArcadeGameMode::SpawnStartTile()
 	return NULL;
 }
 
-AActor* ABetaArcadeGameMode::SpawnCornerTile(FVector spawnLocation, FRotator spawnRotation)
+AActor* ABetaArcadeGameMode::SpawnCornerTile(FVector spawnLocation, FRotator spawnRotation) // Spawn Corner Tile
 {
 
 	UWorld* world = GetWorld();
@@ -77,17 +77,17 @@ void ABetaArcadeGameMode::SetNewTransforms(FVector nextLocation, FRotator nextRo
 
 }
 
-AActor* ABetaArcadeGameMode::SpawnRandomTile(FVector spawnLocation, FRotator spawnRotation)
+AActor* ABetaArcadeGameMode::SpawnRandomTile(FVector spawnLocation, FRotator spawnRotation) // Random Tile Spawn Function
 {
 
 	UWorld* world = GetWorld();
 	if (world)
 	{
-		tileToSpawn = GetNextTileType();
+		tileToSpawn = GetNextTileType(); // Tile Type is Selected Ranomly here
 		FActorSpawnParameters spawnParams;
 		spawnParams.Owner = this;
 
-		switch (tileToSpawn)
+		switch (tileToSpawn) // Use a Switch to Spawn different Tiles
 		{
 		case ETileType::eBasic:
 			eSpawnedTile = ETileType::eBasic;
@@ -150,8 +150,8 @@ AActor* ABetaArcadeGameMode::SpawnRandomTile(FVector spawnLocation, FRotator spa
 			break;
 		case ETileType::eCliff:
 			eSpawnedTile = ETileType::eCliff;
-			cliffRand = FMath::RandRange(0, 9);
-			if (cliffRand <= 4) // Left
+			leftRight = FMath::RandRange(0, 9);
+			if (leftRight <= 4) // Left
 			{
 				spawnedTile = world->SpawnActor<AActor>(leftCliffTileClass, spawnLocation, spawnRotation, spawnParams);
 				spawnedTiles++;
@@ -183,10 +183,10 @@ ETileType ABetaArcadeGameMode::GetNextTileType()
 	if (tileToSpawn == ETileType::eBasic || tileToSpawn == ETileType::eCorner)
 	{
 		obstacleSpawn = FMath::RandRange(0, 99);
-		if (obstacleSpawn <= 50)
+		if (obstacleSpawn <= 50) // Lower Number to turn down Obstacle Spawning
 		{
 			//Spawn an Obstacle Tile
-			randomModule = FMath::RandRange(1, 9);
+			randomModule = FMath::RandRange(1, 9); // Obstacle Spawning is done with random number Generator
 			if (randomModule > 5)
 			{
 				duplicateTest = randomModule - 5;
@@ -230,6 +230,8 @@ ETileType ABetaArcadeGameMode::GetNextTileType()
 				return ETileType::eBasic;
 			}
 
+			// Did originally use a Switch but this was not good to change individual tile spawn rates
+
 			//switch (randomModule)
 			//{
 			//case 1: //Vault
@@ -264,7 +266,7 @@ ETileType ABetaArcadeGameMode::GetNextTileType()
 	}
 }
 
-void ABetaArcadeGameMode::SpawnFloatingIsland()
+void ABetaArcadeGameMode::SpawnFloatingIsland() // Spawn Level Floating Islands
 {
 	UWorld* world = GetWorld();
 	if (world)
