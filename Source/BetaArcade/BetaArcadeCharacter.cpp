@@ -33,16 +33,6 @@ ABetaArcadeCharacter::ABetaArcadeCharacter()
 	PlayerCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("PlayerCamera"));
 	PlayerCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 
-	/*MonsterBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("MonsterBoom"));
-	MonsterBoom->SetupAttachment(RootComponent);
-	MonsterBoom->TargetArmLength = 1000.0f;
-	MonsterBoom->bUsePawnControlRotation = true;*/
-
-	/*camera->ViewPitchMax = maxCameraPitch;
-	camera->ViewPitchMin = minCameraPitch;
-	camera->ViewYawMax = maxCameraYaw;
-	camera->ViewYawMin = minCameraYaw;*/
-
 	playerLives = MAX_PLAYER_LIVES;
 	characterState = CharacterState::State::None;
 
@@ -70,23 +60,11 @@ void ABetaArcadeCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 	check(PlayerInputComponent);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ABetaArcadeCharacter::BetaJump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ABetaArcadeCharacter::BetaJumpStop);
-	PlayerInputComponent->BindAction("FlipCamera", IE_Pressed, this, &ABetaArcadeCharacter::CombatControl);
+	PlayerInputComponent->BindAction("FlipCamera", IE_Pressed, this, &ABetaArcadeCharacter::EnterCombat);
 	PlayerInputComponent->BindAction("Dodge", IE_Pressed, this, &ABetaArcadeCharacter::DodgeCheck);
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &ABetaArcadeCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &ABetaArcadeCharacter::MoveRight);
-
-	// We have 2 versions of the rotation bindings to handle different kinds of devices differently
-	// "turn" handles devices that provide an absolute delta, such as a mouse.
-	// "turnrate" is for devices that we choose to treat as a rate of change, such as an analog joystick
-	//PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
-	//PlayerInputComponent->BindAxis("TurnRate", this, &ABetaArcadeCharacter::TurnAtRate);
-	/*PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
-	PlayerInputComponent->BindAxis("LookUpRate", this, &ABetaArcadeCharacter::LookUpAtRate);*/
-	/*PlayerInputComponent->BindAction("CameraZoomIn", IE_Pressed, this, &ABetaArcadeCharacter::CameraZoomIn);
-	PlayerInputComponent->BindAction("CameraZoomIn", IE_Released, this, &ABetaArcadeCharacter::CameraZoomIn);
-	PlayerInputComponent->BindAction("CameraZoomOut", IE_Pressed, this, &ABetaArcadeCharacter::CameraZoomOut);
-	PlayerInputComponent->BindAction("CameraZoomOut", IE_Released, this, &ABetaArcadeCharacter::CameraZoomOut);*/
 
 	// VR headset functionality
 	PlayerInputComponent->BindAction("ResetVR", IE_Pressed, this, &ABetaArcadeCharacter::OnResetVR);
@@ -99,14 +77,6 @@ void ABetaArcadeCharacter::Tick(float DeltaTime)
 
 	HandleState();
 }
-
-//void ABetaArcadeCharacter::MovePlayerToMiddle()
-//{
-//	//LookAtMiddle();
-//	//SetActorRotation(FMath::Lerp(GetActorRotation(), GetActorRotation() + FRotator(0,30,0), 1.0f));
-//	//SetActorLocation((FMath::Lerp(GetActorLocation(), FVector(GetActorLocation().X, 0, GetActorLocation().Z), 0.5f)), false, 0, ETeleportType::None);
-//	
-//}
 
 //BETH - 
 
@@ -158,8 +128,6 @@ bool ABetaArcadeCharacter::LightMetreFull()
 
 }
 
-
-
 // FRAN - State control
 void ABetaArcadeCharacter::HandleState()
 {
@@ -173,11 +141,9 @@ void ABetaArcadeCharacter::HandleState()
 		break;
 
 	case CharacterState::State::Vaulting:
-		Vault();
 		break;
 
 	case CharacterState::State::Sliding:
-		Slide();
 		break;
 
 	case CharacterState::State::Combat:
@@ -194,9 +160,9 @@ void ABetaArcadeCharacter::HandleState()
 	AnimationState();
 }
 
-void ABetaArcadeCharacter::CombatControl()
+void ABetaArcadeCharacter::EnterCombat()
 {
-	if ((!inCombat) && (LightMetreFull())) // camera is currently facing forward
+	if ((!inCombat) && (LightMetreFull())) // not currently in combat
 	{
 		bonusChance = 0;
 		currentCamRotation = cameraFlipRotation;
@@ -209,19 +175,23 @@ void ABetaArcadeCharacter::CombatControl()
 		CameraFlip();
 		inCombat = !inCombat;
 	}
-	else if (inCombat)
+}
+
+void ABetaArcadeCharacter::EndCombat()
+{
+	if (inCombat)
 	{
+		PlayCombatSound();
+		inCombat = !inCombat;
 		GiveBonus();
 		currentCamRotation = initialCamRot;
 		currentCamPosition = initialCamPos;
-		PlayCombatSound();
 
 		combatActive = false;
-		characterState = CharacterState::State::None;
 		bonusChance = 0;
 
 		CameraFlip();
-		inCombat = !inCombat;
+		characterState = CharacterState::State::None;
 	}
 }
 
@@ -242,7 +212,6 @@ void ABetaArcadeCharacter::GiveBonus()
 	{
 		AddPointsToScore(100);
 	}
-	UE_LOG(LogTemp, Warning, TEXT("chance: %i"), bonusChance);
 }
 
 void ABetaArcadeCharacter::BetaJump()
@@ -256,7 +225,6 @@ void ABetaArcadeCharacter::BetaJump()
 		else if ((characterState == CharacterState::None) && (canMove))
 		{
 			isJumping = true;
-			UE_LOG(LogTemp, Log, TEXT("Jump"));
 			characterState = CharacterState::State::Jumping;
 			Jump();
 		}
@@ -285,37 +253,14 @@ bool ABetaArcadeCharacter::StartSlide()
 	if (characterState == CharacterState::State::None)
 	{
 		characterState = CharacterState::State::Sliding;
-
-		currentRot = GetActorRotation();
-		FRotator slideRot = { 90, 0, 0 };
-		currentPlayerRotation += slideRot;
-
-		UE_LOG(LogTemp, Log, TEXT("Slide"));
 		return true;
 	}
-	else
-	{
-		UE_LOG(LogTemp, Log, TEXT("Can't slide"));
-		return false;
-	}
-}
 
-void ABetaArcadeCharacter::Slide()
-{
-	//SetPlayerSpeed(initialMapSpeed * 0.7);
-	//SetActorRelativeRotation(currentPlayerRotation, false, 0, ETeleportType::None);
+	return false;
 }
 
 void ABetaArcadeCharacter::StopSliding()
 {
-	UE_LOG(LogTemp, Log, TEXT("SlideSTOP"));
-
-	FRotator resetRot = { 90,0,0 };
-	currentPlayerRotation -= resetRot;
-
-	ResetPlayerSpeed();
-	//SetActorRelativeRotation(currentPlayerRotation, false, 0, ETeleportType::None);
-
 	characterState = CharacterState::State::None;
 }
 
@@ -326,33 +271,15 @@ bool ABetaArcadeCharacter::StartVault()
 		characterState = CharacterState::State::Vaulting;
 		Jump();
 
-		currentRot = GetActorRotation();
-		FRotator vaultRot = { -90, 0, 0 };
-		currentPlayerRotation += vaultRot;
-		Vault();
-
-		UE_LOG(LogTemp, Log, TEXT("Vault"));
 		return true;
 	}
-	else
-	{
-		UE_LOG(LogTemp, Log, TEXT("Can't vault"));
-		return false;
-	}
-}
-
-void ABetaArcadeCharacter::Vault()
-{
-	//SetActorRelativeRotation(currentPlayerRotation, false, 0, ETeleportType::None);
+	
+	return false;
 }
 
 void ABetaArcadeCharacter::StopVaulting()
 {
 	StopJumping();
-	UE_LOG(LogTemp, Log, TEXT("VaultSTOP"));
-	FRotator resetRot = { -90,0,0 };
-	currentPlayerRotation -= resetRot;
-	//SetActorRelativeRotation(resetRot, false, 0, ETeleportType::None);
 	characterState = CharacterState::State::None;
 }
 
@@ -369,57 +296,10 @@ void ABetaArcadeCharacter::DodgeCheck(FKey playerKeyPressed)
 
 }
 
-//void ABetaArcadeCharacter::LeftTurn()
-//{
-//	currentCamRotation += { 0, -60, 0 };
-//	currentPlayerRotation += {0, -60, 0};
-//	currentMonsterRotation += {0, -60, 0};
-//
-//	SetActorRotation(FMath::Lerp(GetActorRotation(), currentPlayerRotation, 0.7f));
-//	Direction = GetActorForwardVector();
-//	playerDirection = GetActorForwardVector();
-//}
-//
-//void ABetaArcadeCharacter::RightTurn()
-//{
-//	currentCamRotation += { 0, 60, 0 };
-//	currentPlayerRotation += {0, 60, 0};
-//	currentMonsterRotation += {0, 60, 0};
-//
-//	SetActorRotation(FMath::Lerp(GetActorRotation(), currentPlayerRotation, 0.7f));
-//	Direction = GetActorForwardVector();
-//	playerDirection = GetActorForwardVector();
-//}
-
 void ABetaArcadeCharacter::OnResetVR()
 {
 	UHeadMountedDisplayFunctionLibrary::ResetOrientationAndPosition();
 }
-
-//// FRAN - CAMERA ZOOM
-//void ABetaArcadeCharacter::CameraZoomIn()
-//{
-//	if (CameraBoom->TargetArmLength - cameraZoomValue > minCameraZoom)
-//		CameraBoom->TargetArmLength -= cameraZoomValue;
-//}
-//
-//void ABetaArcadeCharacter::CameraZoomOut()
-//{
-//	if (CameraBoom->TargetArmLength + cameraZoomValue < maxCameraZoom)
-//		CameraBoom->TargetArmLength += cameraZoomValue;
-//}
-//
-//void ABetaArcadeCharacter::TurnAtRate(float Rate)
-//{
-//	// calculate delta for this frame from the rate information
-//	AddControllerYawInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());
-//}
-//
-//void ABetaArcadeCharacter::LookUpAtRate(float Rate)
-//{
-//	// calculate delta for this frame from the rate information
-//	AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
-//}
 
 void ABetaArcadeCharacter::MoveForward(float Value)
 {

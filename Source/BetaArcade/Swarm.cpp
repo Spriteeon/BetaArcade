@@ -44,6 +44,7 @@ void ASwarm::ChooseKey()
 	}
 
 	player->GetSwarmKey(qteKey, qteText);
+	player->swarmReacting = false; // Resets bool once its been assigned key else it will also be success
 }
 
 // Called every frame

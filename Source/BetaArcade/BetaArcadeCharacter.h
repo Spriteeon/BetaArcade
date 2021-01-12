@@ -52,16 +52,8 @@ class ABetaArcadeCharacter : public ACharacter
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Camera, meta = (AllowPrivateAccess = "true"))
 		class UCameraComponent* PlayerCamera;
 
-	/*UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-		class USpringArmComponent* MonsterBoom;*/
-
 public:
 	ABetaArcadeCharacter();	
-
-	/*UFUNCTION(BlueprintCallable)
-		void LeftTurn();
-	UFUNCTION(BlueprintCallable)
-		void RightTurn();*/
 
 	UPROPERTY(BlueprintReadOnly)
 		FVector playerDirection = { 0,0,0 };
@@ -123,28 +115,6 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float vaultTime = 0.0f; // How long the player vaults for
 
-		//// FRAN - Camera zoom control
-		////APlayerCameraManager* camera = GetCamera
-		//void CameraZoomIn();
-		//void CameraZoomOut();
-		//UPROPERTY(EditAnywhere)
-		//float cameraZoomValue = 50.0f;
-		//UPROPERTY(EditAnywhere)
-		//float minCameraZoom = 0.0f;
-		//UPROPERTY(EditAnywhere)
-		//float maxCameraZoom = 0.0f;
-		//UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		//float minCameraPitch = 0.0f;
-		//UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		//float maxCameraPitch = 0.0f;
-		//UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		//float minCameraYaw = 0.0f;
-		//UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		//float maxCameraYaw = 0.0f;
-
-		//UPROPERTY()
-		//	FTransform camBoomTransform;
-
 	const int MAX_PLAYER_LIVES = 3;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int playerLives = 0;
@@ -198,7 +168,9 @@ protected:
 	// State control
 	void HandleState();
 	UFUNCTION(BlueprintCallable)
-		void CombatControl();
+		void EnterCombat();
+	UFUNCTION(BlueprintCallable)
+		void EndCombat();
 	UFUNCTION(BlueprintImplementableEvent)
 		void CameraFlip();
 	UFUNCTION(BlueprintImplementableEvent)
@@ -220,8 +192,6 @@ protected:
 		void VaultControl();
 	UFUNCTION(BlueprintCallable)
 		bool StartVault();
-	UFUNCTION(BlueprintCallable)
-		void Vault();
 	UFUNCTION(BlueprintCallable)
 		void StopVaulting();
 
@@ -245,11 +215,6 @@ public:
 	//FRAN- PowerUp State
 	UPROPERTY(BlueprintReadWrite)
 		TEnumAsByte<PowerState::State> currentPowerState;
-
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
-		void MovePlayerToMiddle();
-	UFUNCTION(BlueprintImplementableEvent)
-		void LookAtMiddle();
 
 	// LIVES
 	UFUNCTION(BlueprintCallable)
