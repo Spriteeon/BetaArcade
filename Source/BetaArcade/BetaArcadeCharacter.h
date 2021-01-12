@@ -77,6 +77,9 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 		bool inCombat = false;
 
+	UPROPERTY(BlueprintReadWrite)
+		bool lightWidgetActive = false;
+
 protected:
 	/** Resets HMD orientation in VR. */
 	void OnResetVR();
@@ -150,8 +153,6 @@ protected:
 
 	UPROPERTY(BlueprintReadWrite)
 		FKey currentSwarmKey;
-	UPROPERTY(BlueprintReadWrite)
-		FString qteText;
 
 	UPROPERTY(BlueprintReadWrite)
 		bool combatActive = false;
@@ -224,13 +225,18 @@ public:
 
 	bool GetSwarmReaction() { return swarmReacting; };
 	UFUNCTION(BlueprintCallable)
-		void GetSwarmKey(FKey key, FString text) { currentSwarmKey = key; qteText = text; };
+		void GetSwarmKey(FKey key) { currentSwarmKey = key;};
 
 	// SPEED
 	UFUNCTION(BlueprintCallable)
 		void ResetPlayerSpeed() { SetPlayerSpeed(initialMapSpeed); }; // Sets speed to original value
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 		void SetPlayerSpeed(float speed);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void LightWidgetOn();
+	UFUNCTION(BlueprintImplementableEvent)
+	void LightWidgetOff();
 
 	//BETH - 
 
@@ -252,7 +258,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void SecondWindAction();
 
-
+	UFUNCTION(BlueprintCallable)
 	bool LightMetreFull();
 	
 	UPROPERTY(BlueprintReadWrite)

@@ -131,6 +131,12 @@ bool ABetaArcadeCharacter::LightMetreFull()
 // FRAN - State control
 void ABetaArcadeCharacter::HandleState()
 {
+	if ((LightMetreFull()) && (!lightWidgetActive))
+	{
+		LightWidgetOn();
+		lightWidgetActive = true;
+	}
+
 	switch (characterState)
 	{
 	case CharacterState::State::None:
@@ -164,6 +170,8 @@ void ABetaArcadeCharacter::EnterCombat()
 {
 	if ((!inCombat) && (LightMetreFull())) // not currently in combat
 	{
+		LightWidgetOff();
+
 		bonusChance = 0;
 		currentCamRotation = cameraFlipRotation;
 		currentCamPosition = camZoomPos;

@@ -26,24 +26,21 @@ void ASwarm::ChooseKey()
 	{
 	case 0: 
 		qteKey = EKeys::Q;
-		qteText = "Q";
 		break;
 
 	case 1:
 		qteKey = EKeys::W;
-		qteText = "W";
 		break;
 
 	case 2:
 		qteKey = EKeys::E;
-		qteText = "E";
 		break;
 
 	default:
 		break;
 	}
 
-	player->GetSwarmKey(qteKey, qteText);
+	player->GetSwarmKey(qteKey);
 	player->swarmReacting = false; // Resets bool once its been assigned key else it will also be success
 }
 

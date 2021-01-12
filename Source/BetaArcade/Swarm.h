@@ -17,7 +17,6 @@ protected:
 
 	UPROPERTY(BlueprintReadWrite)
 	FKey qteKey;
-	FString qteText;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	float slowTime = 0.0f;
